@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>兵团决战</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #1a1a2e;
+  display: flex; justify-content: center; align-items: center;
+  height: 100vh; overflow: hidden;
+  font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  user-select: none;
+}
+#game-container {
+  display: flex; flex-direction: column;
+  width: 100vw; height: 100vh;
+  max-width: 1600px; max-height: 1000px;
+}
+#top-bar {
+  height: 42px; background: linear-gradient(180deg, #16213e, #0f3460);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; color: #e0e0e0; font-size: 14px;
+  border-bottom: 2px solid #533483;
+  flex-shrink: 0;
+}
+#top-bar .info-group { display: flex; gap: 20px; align-items: center; }
+#top-bar .label { color: #888; font-size: 12px; }
+#top-bar .value { color: #fff; font-weight: bold; font-size: 16px; }
+#top-bar .status { font-size: 15px; font-weight: bold; padding: 4px 12px; border-radius: 4px; }
+#top-bar .status.deploy { background: #2d6a4f; color: #95d5b2; }
+#top-bar .status.countdown { background: #e07c24; color: #fff; }
+#top-bar .status.battle { background: #c92a2a; color: #fff; }
+#top-bar .status.win { background: #2d6a4f; color: #95d5b2; animation: pulse 1s infinite; }
+#top-bar .status.lose { background: #6b2121; color: #faa; animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+#canvas-wrap { flex: 1; position: relative; overflow: hidden; background: #1a1a2e; }
+canvas { display: block; width: 100%; height: 100%; }
+#bottom-bar {
+  height: 58px; background: linear-gradient(180deg, #0f3460, #16213e);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 0 12px; border-top: 2px solid #533483; flex-shrink: 0;
+}
+#bottom-bar button {
+  padding: 8px 14px; border: 2px solid #444; border-radius: 6px;
+  background: #1a1a2e; color: #ccc; cursor: pointer; font-size: 13px;
+  font-family: inherit; transition: all 0.15s; white-space: nowrap;
+}
+#bottom-bar button:hover { border-color: #888; color: #fff; }
+#bottom-bar button.active { border-color: #4da6ff; background: #1a3a5c; color: #4da6ff; box-shadow: 0 0 8px rgba(77,166,255,0.4); }
+#bottom-bar button:disabled { opacity: 0.4; cursor: not-allowed; border-color: #333; }
+#bottom-bar .btn-start { border-color: #2d6a4f; color: #95d5b2; font-weight: bold; }
+#bottom-bar .btn-start:hover { background: #2d6a4f; color: #fff; }
+#bottom-bar .btn-reset { border-color: #8b4513; color: #d4a574; }
+#bottom-bar .btn-skill { border-color: #ffcc00; color: #ffcc00; font-weight: bold; }
+#bottom-bar .btn-skill:hover:not(:disabled) { background: #4a3800; }
+#bottom-bar .count-badge {
+  background: #1a3a5c; color: #4da6ff; padding: 4px 10px;
+  border-radius: 10px; font-size: 12px; font-weight: bold;
+}
+#stats-panel {
+  position: absolute; top: 8px; right: 8px; width: 180px;
+  background: rgba(0,0,0,0.8); border: 1px solid #444; border-radius: 8px;
+  padding: 10px; color: #ccc; font-size: 12px; display: none; z-index: 10;
+}
+#stats-panel h3 { color: #fff; font-size: 13px; margin-bottom: 6px; border-bottom: 1px solid #444; padding-bottom: 4px; }
+#stats-panel .stat-row { display: flex; justify-content: space-between; margin: 2px 0; }
+#stats-panel .stat-row .kills { color: #f88; }
+#stats-panel .stat-row .my-kills { color: #8f8; }
+#result-overlay {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.75); display: none;
+  justify-content: center; align-items: center; z-index: 20;
+}
+#result-overlay .result-box {
+  text-align: center; padding: 40px 60px;
+  background: #1a1a2e; border: 3px solid #533483; border-radius: 16px;
+}
+#result-overlay .result-title { font-size: 48px; font-weight: bold; margin-bottom: 16px; }
+#result-overlay .result-title.win { color: #ffcc00; }
+#result-overlay .result-title.lose { color: #c92a2a; }
+#result-overlay .result-stats { color: #ccc; font-size: 14px; line-height: 1.8; }
+#skill-indicator {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  color: #ffcc00; font-size: 28px; font-weight: bold; pointer-events: none;
+  display: none; z-index: 15; text-shadow: 0 0 20px rgba(255,204,0,0.8);
+  animation: skillFade 1.5s forwards;
+}
+@keyframes skillFade {
+  0% { opacity: 1; transform: translate(-50%,-50%) scale(0.5); }
+  30% { opacity: 1; transform: translate(-50%,-50%) scale(1.2); }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1); }
+}
+</style>
+</head>
+<body>
+<div id="game-container">
+  <div id="top-bar">
+    <div class="info-group">
+      <span class="label">关卡</span>
+      <span id="difficulty-text" class="value" style="color:#ff3333;">平原遭遇战（地狱·3000敌）</span>
+    </div>
+    <div class="info-group">
+      <span class="label">状态</span>
+      <span id="status-text" class="status deploy">部署阶段</span>
+    </div>
+    <div class="info-group">
+      <span class="label">倒计时</span>
+      <span id="countdown-text" class="value">--</span>
+    </div>
+    <div class="info-group">
+      <span class="label">我方</span>
+      <span id="player-count" class="value">1</span>
+    </div>
+    <div class="info-group">
+      <span class="label">敌方</span>
+      <span id="enemy-count" class="value">0</span>
+    </div>
+    <div class="info-group">
+      <span class="label">已部署</span>
+      <span id="deployed-count" class="value">0 / 500</span>
+    </div>
+    <div class="info-group">
+      <span class="label">技能</span>
+      <span id="skill-status-text" class="value">就绪</span>
+    </div>
+  </div>
+  <div id="canvas-wrap">
+    <canvas id="gameCanvas"></canvas>
+    <div id="stats-panel"></div>
+    <div id="result-overlay">
+      <div class="result-box">
+        <div id="result-title" class="result-title"></div>
+        <div id="result-stats" class="result-stats"></div>
+      </div>
+    </div>
+    <div id="skill-indicator">⚔ 战鼓激励</div>
+  </div>
+  <div id="bottom-bar">
+    <button id="btn-shield" class="active" data-type="shield">🛡 盾兵</button>
+    <button id="btn-spear" data-type="spear">🔱 长矛兵</button>
+    <button id="btn-cavalry" data-type="cavalry">⚔ 骑兵</button>
+    <button id="btn-archer" data-type="archer">🏹 射手</button>
+    <button id="btn-maxim" data-type="maxim">🔫 马克沁</button>
+    <button id="btn-musketeer" data-type="musketeer">🎯 火枪手</button>
+    <button id="btn-artillery" data-type="artillery">💣 炮兵</button>
+    <button id="btn-skill" class="btn-skill">📯 战鼓激励</button>
+    <span id="count-badge" class="count-badge">已部署: 0 / 500</span>
+    <button id="btn-start" class="btn-start">⚡ 开始战斗</button>
+    <button id="btn-reset" class="btn-reset">🔄 重置关卡</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIGURATION
+// ============================================================
+const UNIT_CONFIG = {
+  shield: {
+    name: '盾兵', hp: 160, attack: 8, range: 18, speed: 0.55,
+    attackCooldown: 900, radius: 7, color: '#3366cc', colorDark: '#2244aa',
+    shape: 'square', category: 'shield'
+  },
+  spear: {
+    name: '长矛兵', hp: 100, attack: 14, range: 28, speed: 0.75,
+    attackCooldown: 850, radius: 6, color: '#3355aa', colorDark: '#223388',
+    shape: 'triangle', category: 'spear', bonusVs: 'cavalry', bonusMultiplier: 1.6
+  },
+  cavalry: {
+    name: '骑兵', hp: 130, attack: 22, range: 18, speed: 1.35,
+    attackCooldown: 1000, radius: 8, color: '#2244aa', colorDark: '#112266',
+    shape: 'diamond', category: 'cavalry', bonusVs: 'archer', bonusMultiplier: 1.7
+  },
+  archer: {
+    name: '射手', hp: 70, attack: 12, range: 130, speed: 0.6,
+    attackCooldown: 1200, radius: 5, color: '#4488bb', colorDark: '#226699',
+    shape: 'circle', category: 'archer', projectile: true
+  },
+  general: {
+    name: '将军', hp: 500, attack: 35, range: 26, speed: 0.8,
+    attackCooldown: 800, radius: 12, color: '#ffcc00', colorDark: '#cc9900',
+    shape: 'star', category: 'general'
+  },
+  maxim: {
+    name: '马克沁', hp: 100, attack: 50, range: 250, speed: 0.2,
+    attackCooldown: 60, radius: 11, color: '#556677', colorDark: '#334455',
+    shape: 'maxim', category: 'maxim', projectile: true, crewCost: 2,
+    bonusVs: 'shield', bonusMultiplier: 1.8, splashRadius: 45, splashTargets: 4
+  },
+  musketeer: {
+    name: '火枪手', hp: 110, attack: 30, range: 110, speed: 0.7,
+    attackCooldown: 1400, radius: 7, color: '#336644', colorDark: '#224422',
+    shape: 'musketeer', category: 'musketeer', projectile: true,
+    bayonetAttack: 42, bayonetRange: 24, bayonetCooldown: 850,
+    bonusVs: 'cavalry', bonusMultiplier: 1.6
+  },
+  artillery: {
+    name: '炮兵', hp: 80, attack: 180, range: 900, speed: 0.15,
+    attackCooldown: 3800, radius: 14, color: '#555533', colorDark: '#333311',
+    shape: 'artillery', category: 'artillery', projectile: true, crewCost: 3,
+    bonusVs: 'shield', bonusMultiplier: 2.0, splashRadius: 80, splashTargets: 10
+  }
+};
+
+const ENEMY_COLORS = {
+  shield:     { color: '#cc3333', colorDark: '#aa2222' },
+  spear:      { color: '#cc4444', colorDark: '#aa2222' },
+  cavalry:    { color: '#cc2222', colorDark: '#991111' },
+  archer:     { color: '#dd5544', colorDark: '#bb3322' },
+  general:    { color: '#ff4444', colorDark: '#cc0000' },
+  maxim:      { color: '#665544', colorDark: '#443322' },
+  musketeer:  { color: '#994433', colorDark: '#772211' },
+  artillery:  { color: '#888833', colorDark: '#666611' }
+};
+
+const ENEMY_ARMY = [
+  { type: 'shield', count: 800, zone: 'front' },
+  { type: 'spear', count: 700, zone: 'mid' },
+  { type: 'cavalry', count: 500, zone: 'flank' },
+  { type: 'archer', count: 999, zone: 'back' },
+  { type: 'general', count: 1, zone: 'command' }
+];
+
+const MAX_PLAYER_UNITS = 500;
+const COUNTDOWN_SECONDS = 3;
+const DIFFICULTY_NAME = '平原遭遇战（地狱·3000敌）';
+
+const SKILL_CONFIG = {
+  cooldown: 15000,
+  duration: 5000,
+  attackBoost: 1.3,
+  speedBoost: 1.2
+};
+
+const MORALE_CONFIG = {
+  generalAuraRadius: 150,
+  attackBoostNearGeneral: 1.1,
+  speedPenaltyGeneralDead: 0.9,
+  cooldownPenaltyGeneralDead: 1.1
+};
+
+const SPATIAL_CELL_SIZE = 100;
+const TARGET_UPDATE_INTERVAL = 20;
+const MAX_PROJECTILES = 1000;
+const SEPARATION_RADIUS = 22;
+const SEPARATION_FORCE = 0.35;
+const SEPARATION_UPDATE_INTERVAL = 3;
+
+// ============================================================
+// SPATIAL GRID for performance optimization
+// ============================================================
+class SpatialGrid {
+  constructor(width, height, cellSize) {
+    this.cellSize = cellSize;
+    this.cols = Math.ceil(width / cellSize);
+    this.rows = Math.ceil(height / cellSize);
+    this.cells = new Array(this.cols * this.rows);
+    this.clear();
+  }
+  clear() {
+    for (let i = 0; i < this.cells.length; i++) this.cells[i] = [];
+  }
+  getIndex(x, y) {
+    const cx = Math.floor(x / this.cellSize);
+    const cy = Math.floor(y / this.cellSize);
+    if (cx < 0 || cy < 0 || cx >= this.cols || cy >= this.rows) return -1;
+    return cy * this.cols + cx;
+  }
+  insert(unit) {
+    const idx = this.getIndex(unit.x, unit.y);
+    if (idx >= 0) this.cells[idx].push(unit);
+  }
+  getNearby(x, y, range) {
+    const result = [];
+    const minCX = Math.max(0, Math.floor((x - range) / this.cellSize));
+    const maxCX = Math.min(this.cols - 1, Math.floor((x + range) / this.cellSize));
+    const minCY = Math.max(0, Math.floor((y - range) / this.cellSize));
+    const maxCY = Math.min(this.rows - 1, Math.floor((y + range) / this.cellSize));
+    for (let cy = minCY; cy <= maxCY; cy++) {
+      for (let cx = minCX; cx <= maxCX; cx++) {
+        const cell = this.cells[cy * this.cols + cx];
+        for (let i = 0; i < cell.length; i++) result.push(cell[i]);
+      }
+    }
+    return result;
+  }
+}
+
+// ============================================================
+// PROJECTILE CLASS
+// ============================================================
+class Projectile {
+  constructor(x, y, target, damage, team, isTracer = false) {
+    this.x = x; this.y = y;
+    this.target = target;
+    this.damage = damage;
+    this.team = team;
+    this.isHeavy = damage >= 100; // Artillery cannonball
+    this.speed = this.isHeavy ? 3 : (isTracer ? 7 : 4);
+    this.alive = true;
+    this.radius = this.isHeavy ? 5 : (isTracer ? 1.5 : 2);
+    this.vx = 0; this.vy = 0;
+    this.isTracer = isTracer;
+  }
+  update() {
+    if (!this.target || !this.target.alive) { this.alive = false; return; }
+    const dx = this.target.x - this.x;
+    const dy = this.target.y - this.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < this.speed + this.target.radius) {
+      this.target.takeDamage(this.damage);
+      this.alive = false;
+      return;
+    }
+    this.vx = (dx / dist) * this.speed;
+    this.vy = (dy / dist) * this.speed;
+    this.x += this.vx;
+    this.y += this.vy;
+  }
+  draw(ctx) {
+    if (this.isHeavy) {
+      // Cannonball with smoke trail
+      ctx.fillStyle = 'rgba(80,80,80,0.4)';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius + 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#333';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#555';
+      ctx.beginPath();
+      ctx.arc(this.x - 1, this.y - 1, this.radius * 0.6, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (this.isTracer) {
+      ctx.strokeStyle = this.team === 0 ? '#ffdd44' : '#ff8844';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y);
+      ctx.lineTo(this.x - this.vx * 1.5, this.y - this.vy * 1.5);
+      ctx.stroke();
+      ctx.fillStyle = this.team === 0 ? '#ffdd44' : '#ff8844';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      ctx.fillStyle = this.team === 0 ? '#88ccff' : '#ff8866';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+}
+
+// ============================================================
+// UNIT CLASS
+// ============================================================
+class Unit {
+  constructor(type, x, y, team, isGeneral = false) {
+    const cfg = UNIT_CONFIG[type];
+    this.type = type;
+    this.category = cfg.category;
+    this.x = x; this.y = y;
+    this.team = team; // 0 = player, 1 = enemy
+    this.isGeneral = isGeneral;
+    this.alive = true;
+
+    this.maxHp = cfg.hp;
+    this.hp = cfg.hp;
+    this.baseAttack = cfg.attack;
+    this.baseRange = cfg.range;
+    this.baseSpeed = cfg.speed;
+    this.baseAttackCooldown = cfg.attackCooldown;
+    this.radius = cfg.radius;
+    this.shape = cfg.shape;
+    this.bonusVs = cfg.bonusVs || null;
+    this.bonusMultiplier = cfg.bonusMultiplier || 1;
+    this.isRanged = cfg.projectile === true;
+
+    if (team === 0) {
+      this.color = cfg.color;
+      this.colorDark = cfg.colorDark;
+    } else {
+      const ec = ENEMY_COLORS[type];
+      this.color = ec.color;
+      this.colorDark = ec.colorDark;
+    }
+
+    this.attackCooldownTimer = 0;
+    this.target = null;
+    this.targetUpdateCounter = Math.floor(Math.random() * TARGET_UPDATE_INTERVAL);
+    this.separationCounter = Math.floor(Math.random() * SEPARATION_UPDATE_INTERVAL);
+    this.vx = 0; this.vy = 0;
+
+    // For rendering
+    this.flashTimer = 0;
+    this.skillGlowTimer = 0;
+  }
+
+  getAttack() {
+    let atk = this.baseAttack;
+    // Morale: general alive nearby boost
+    if (this.moraleAttackBoost) atk *= this.moraleAttackBoost;
+    // General skill boost
+    if (this.skillAttackBoost) atk *= this.skillAttackBoost;
+    return atk;
+  }
+
+  getSpeed() {
+    let spd = this.baseSpeed;
+    if (this.moraleSpeedPenalty) spd *= this.moraleSpeedPenalty;
+    if (this.skillSpeedBoost) spd *= this.skillSpeedBoost;
+    return spd;
+  }
+
+  getAttackCooldown() {
+    let cd = this.baseAttackCooldown;
+    if (this.moraleCooldownPenalty) cd *= this.moraleCooldownPenalty;
+    return cd;
+  }
+
+  getRange() { return this.baseRange; }
+
+  takeDamage(amount) {
+    this.hp -= amount;
+    this.flashTimer = 6;
+    if (this.hp <= 0) {
+      this.hp = 0;
+      this.alive = false;
+    }
+  }
+
+  distanceTo(other) {
+    const dx = this.x - other.x;
+    const dy = this.y - other.y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  findTarget(game) {
+    // Search radius wide enough to find enemies in adjacent formations
+    const SEARCH_RADIUS = 400;
+    let bestDist = SEARCH_RADIUS;
+    let bestTarget = null;
+    const enemies = game.spatialGrid.getNearby(this.x, this.y, SEARCH_RADIUS);
+    for (let i = 0; i < enemies.length; i++) {
+      const e = enemies[i];
+      if (e.team === this.team || !e.alive) continue;
+      // Cavalry prefers archers
+      let priorityDist = this.distanceTo(e);
+      if (this.bonusVs === 'archer' && e.category === 'archer') priorityDist *= 0.5;
+      if (this.bonusVs === 'shield' && e.category === 'shield') priorityDist *= 0.5;
+      if (priorityDist < bestDist) {
+        bestDist = priorityDist;
+        bestTarget = e;
+      }
+    }
+    this.target = bestTarget;
+  }
+
+  update(dt, game) {
+    if (!this.alive) return;
+    if (this.flashTimer > 0) this.flashTimer--;
+    if (this.skillGlowTimer > 0) this.skillGlowTimer--;
+
+    // Update morale effects
+    this.updateMorale(game);
+
+    // Cooldown tick
+    if (this.attackCooldownTimer > 0) this.attackCooldownTimer -= dt;
+
+    // Update target periodically
+    this.targetUpdateCounter--;
+    if (this.targetUpdateCounter <= 0) {
+      this.targetUpdateCounter = TARGET_UPDATE_INTERVAL;
+      this.findTarget(game);
+    }
+    if (this.target && !this.target.alive) this.target = null;
+
+    if (this.target) {
+      const dist = this.distanceTo(this.target);
+      if (dist <= this.getRange()) {
+        // In range: attack
+        if (this.attackCooldownTimer <= 0) {
+          this.attackTarget(game);
+        }
+        // Stop moving
+        this.vx = 0; this.vy = 0;
+      } else {
+        // Move toward target
+        const dx = this.target.x - this.x;
+        const dy = this.target.y - this.y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d > 0) {
+          const spd = this.getSpeed();
+          this.vx = (dx / d) * spd;
+          this.vy = (dy / d) * spd;
+        }
+      }
+    } else {
+      // No target: advance toward enemy side
+      const dir = this.team === 0 ? 1 : -1;
+      this.vx = dir * this.getSpeed() * 0.8;
+      this.vy = (Math.random() - 0.5) * this.getSpeed() * 0.4;
+    }
+
+    // Apply separation from nearby allies (throttled)
+    this.separationCounter--;
+    if (this.separationCounter <= 0) {
+      this.separationCounter = SEPARATION_UPDATE_INTERVAL;
+      this.applySeparation(game);
+    }
+
+    // Move
+    this.x += this.vx * dt * 0.06;
+    this.y += this.vy * dt * 0.06;
+
+    // Clamp to battlefield
+    const margin = this.radius + 2;
+    if (this.x < margin) this.x = margin;
+    if (this.y < margin) this.y = margin;
+    if (this.x > game.canvasWidth - margin) this.x = game.canvasWidth - margin;
+    if (this.y > game.canvasHeight - margin) this.y = game.canvasHeight - margin;
+  }
+
+  applySeparation(game) {
+    const nearby = game.spatialGrid.getNearby(this.x, this.y, SEPARATION_RADIUS);
+    let sepX = 0, sepY = 0, count = 0;
+    for (let i = 0; i < nearby.length; i++) {
+      const u = nearby[i];
+      if (u === this || !u.alive || u.team !== this.team) continue;
+      const dx = this.x - u.x;
+      const dy = this.y - u.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const minDist = this.radius + u.radius + 2;
+      if (dist < minDist && dist > 0.01) {
+        sepX += (dx / dist) * (minDist - dist);
+        sepY += (dy / dist) * (minDist - dist);
+        count++;
+      }
+    }
+    if (count > 0) {
+      this.vx += (sepX / count) * SEPARATION_FORCE;
+      this.vy += (sepY / count) * SEPARATION_FORCE;
+    }
+  }
+
+  updateMorale(game) {
+    this.moraleAttackBoost = null;
+    this.moraleSpeedPenalty = null;
+    this.moraleCooldownPenalty = null;
+
+    // Use cached general references from Game (set once per frame in Game.update)
+    const general = this.team === 0 ? game.playerGeneral : game.enemyGeneral;
+
+    if (general) {
+      if (this !== general) {
+        const distToGeneral = this.distanceTo(general);
+        if (distToGeneral <= MORALE_CONFIG.generalAuraRadius) {
+          this.moraleAttackBoost = MORALE_CONFIG.attackBoostNearGeneral;
+        }
+      }
+    } else {
+      this.moraleSpeedPenalty = MORALE_CONFIG.speedPenaltyGeneralDead;
+      this.moraleCooldownPenalty = MORALE_CONFIG.cooldownPenaltyGeneralDead;
+    }
+  }
+
+  attackTarget(game) {
+    const target = this.target;
+    if (!target || !target.alive) return;
+
+    const cfg = UNIT_CONFIG[this.type];
+
+    // Musketeer: bayonet charge when enemy is close
+    if (cfg.bayonetRange !== undefined) {
+      const dist = this.distanceTo(target);
+      if (dist <= cfg.bayonetRange) {
+        // Bayonet melee strike
+        let dmg = cfg.bayonetAttack;
+        if (this.bonusVs && target.category === this.bonusVs) dmg *= this.bonusMultiplier;
+        target.takeDamage(dmg);
+        this.attackCooldownTimer = cfg.bayonetCooldown;
+        return;
+      }
+    }
+
+    let dmg = this.getAttack();
+
+    // Bonus vs specific unit type
+    if (this.bonusVs && target.category === this.bonusVs) {
+      dmg *= this.bonusMultiplier;
+    }
+
+    if (this.isRanged) {
+      // Spawn projectile at primary target
+      const isTracer = this.category === 'maxim' || this.category === 'artillery';
+      game.addProjectile(this.x, this.y, target, dmg, this.team, isTracer);
+
+      // Splash damage (Maxim / Artillery)
+      if (cfg.splashRadius && cfg.splashTargets) {
+        const nearby = game.spatialGrid.getNearby(target.x, target.y, cfg.splashRadius);
+        let splashed = 0;
+        for (let i = 0; i < nearby.length && splashed < cfg.splashTargets; i++) {
+          const e = nearby[i];
+          if (e === target || e.team === this.team || !e.alive) continue;
+          const dist = Math.sqrt((e.x - target.x) ** 2 + (e.y - target.y) ** 2);
+          if (dist <= cfg.splashRadius) {
+            let splashDmg = this.getAttack();
+            if (this.bonusVs && e.category === this.bonusVs) splashDmg *= this.bonusMultiplier;
+            e.takeDamage(splashDmg);
+            splashed++;
+          }
+        }
+      }
+    } else {
+      target.takeDamage(dmg);
+    }
+
+    this.attackCooldownTimer = this.getAttackCooldown();
+  }
+
+  draw(ctx) {
+    if (!this.alive) return;
+    ctx.save();
+    ctx.translate(this.x, this.y);
+
+    // Skill glow ring
+    if (this.skillGlowTimer > 0) {
+      ctx.beginPath();
+      ctx.arc(0, 0, this.radius + 6, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(255,204,0,${this.skillGlowTimer / 30})`;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // Flash on damage
+    const baseColor = this.flashTimer > 0 ? '#ffffff' : this.color;
+
+    // General gold border
+    if (this.isGeneral) {
+      ctx.beginPath();
+      ctx.arc(0, 0, this.radius + 3, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,200,0,0.6)';
+      ctx.fill();
+      ctx.strokeStyle = '#ffcc00';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // Draw shape
+    ctx.fillStyle = baseColor;
+    ctx.strokeStyle = this.colorDark;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+
+    switch (this.shape) {
+      case 'square':
+        ctx.rect(-this.radius, -this.radius, this.radius * 2, this.radius * 2);
+        break;
+      case 'triangle':
+        ctx.moveTo(0, -this.radius);
+        ctx.lineTo(-this.radius, this.radius);
+        ctx.lineTo(this.radius, this.radius);
+        ctx.closePath();
+        break;
+      case 'diamond':
+        ctx.moveTo(0, -this.radius);
+        ctx.lineTo(this.radius, 0);
+        ctx.lineTo(0, this.radius);
+        ctx.lineTo(-this.radius, 0);
+        ctx.closePath();
+        break;
+      case 'star':
+        this.drawStar(ctx, 0, 0, this.radius, this.radius * 0.45, 5);
+        break;
+      case 'maxim':
+        this.drawMaxim(ctx);
+        break;
+      case 'musketeer':
+        this.drawMusketeer(ctx);
+        break;
+      case 'artillery':
+        this.drawArtillery(ctx);
+        break;
+      case 'circle':
+      default:
+        ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+        break;
+    }
+    ctx.fill();
+    ctx.stroke();
+
+    // Health bar
+    if (this.hp < this.maxHp) {
+      const barW = this.radius * 2.2;
+      const barH = 3;
+      const barY = -this.radius - 8;
+      const hpRatio = this.hp / this.maxHp;
+      ctx.fillStyle = '#400000';
+      ctx.fillRect(-barW / 2, barY, barW, barH);
+      ctx.fillStyle = hpRatio > 0.5 ? '#44cc44' : hpRatio > 0.25 ? '#cccc44' : '#cc4444';
+      ctx.fillRect(-barW / 2, barY, barW * hpRatio, barH);
+    }
+
+    // General indicator
+    if (this.isGeneral) {
+      ctx.fillStyle = '#fff';
+      ctx.font = `${this.radius}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('★', 0, this.radius * 0.35);
+    }
+
+    ctx.restore();
+  }
+
+  drawStar(ctx, cx, cy, outerR, innerR, points) {
+    const step = Math.PI / points;
+    for (let i = 0; i < points * 2; i++) {
+      const r = i % 2 === 0 ? outerR : innerR;
+      const angle = i * step - Math.PI / 2;
+      const x = cx + Math.cos(angle) * r;
+      const y = cy + Math.sin(angle) * r;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+  }
+
+  drawMaxim(ctx) {
+    const r = this.radius;
+    // Gun body (water-cooled barrel jacket) - horizontal rectangle
+    ctx.fillStyle = '#3a4045';
+    ctx.fillRect(-r * 0.9, -r * 0.35, r * 1.8, r * 0.7);
+    ctx.strokeStyle = '#222';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(-r * 0.9, -r * 0.35, r * 1.8, r * 0.7);
+    // Barrel
+    ctx.fillStyle = '#2a2a2a';
+    ctx.fillRect(-r * 1.3, -r * 0.15, r * 0.5, r * 0.3);
+    // Water jacket rings
+    ctx.strokeStyle = '#555';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < 3; i++) {
+      const sx = -r * 0.5 + i * r * 0.5;
+      ctx.beginPath();
+      ctx.moveTo(sx, -r * 0.35);
+      ctx.lineTo(sx, r * 0.35);
+      ctx.stroke();
+    }
+    // Tripod legs
+    ctx.strokeStyle = '#3a3025';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(-r * 0.3, r * 0.35);
+    ctx.lineTo(-r * 0.5, r * 0.85);
+    ctx.moveTo(r * 0.3, r * 0.35);
+    ctx.lineTo(r * 0.5, r * 0.85);
+    ctx.moveTo(0, r * 0.35);
+    ctx.lineTo(0, r * 0.9);
+    ctx.stroke();
+    // Two crew dots behind gun
+    ctx.fillStyle = this.colorDark;
+    ctx.beginPath();
+    ctx.arc(-r * 0.4, -r * 0.9, r * 0.3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(r * 0.5, -r * 0.8, r * 0.3, 0, Math.PI * 2);
+    ctx.fill();
+    // Muzzle flash when recently fired
+    if (this.flashTimer > 0) {
+      ctx.fillStyle = '#ffcc00';
+      ctx.beginPath();
+      ctx.arc(-r * 1.3, 0, r * 0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(-r * 1.3, 0, r * 0.2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  drawMusketeer(ctx) {
+    const r = this.radius;
+    // Body - rectangle
+    ctx.fillStyle = this.colorDark;
+    ctx.fillRect(-r * 0.5, -r * 0.6, r, r * 1.2);
+    ctx.strokeStyle = '#111';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(-r * 0.5, -r * 0.6, r, r * 1.2);
+    // Hat
+    ctx.fillStyle = '#1a1a1a';
+    ctx.fillRect(-r * 0.7, -r * 1.1, r * 1.4, r * 0.5);
+    // Musket barrel - long thin line pointing forward-right
+    ctx.strokeStyle = '#4a3a2a';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(r * 0.5, -r * 0.2);
+    ctx.lineTo(r * 2.0, -r * 0.8);
+    ctx.stroke();
+    // Bayonet tip (triangle)
+    ctx.fillStyle = '#ccc';
+    ctx.beginPath();
+    ctx.moveTo(r * 2.0, -r * 0.8);
+    ctx.lineTo(r * 2.3, -r * 0.95);
+    ctx.lineTo(r * 1.9, -r * 1.05);
+    ctx.closePath();
+    ctx.fill();
+    // Musket stock
+    ctx.fillStyle = '#6b4a2a';
+    ctx.fillRect(-r * 1.0, -r * 0.3, r * 0.6, r * 0.2);
+    // Muzzle flash
+    if (this.flashTimer > 2) {
+      ctx.fillStyle = '#ffdd66';
+      ctx.beginPath();
+      ctx.arc(r * 2.0, -r * 0.8, r * 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  drawArtillery(ctx) {
+    const r = this.radius;
+    // Cannon wheels
+    ctx.strokeStyle = '#3a3020';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(-r * 0.6, r * 0.6, r * 0.45, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(r * 0.6, r * 0.6, r * 0.45, 0, Math.PI * 2);
+    ctx.stroke();
+    // Spokes
+    ctx.lineWidth = 1;
+    for (let w = -1; w <= 1; w += 2) {
+      for (let a = 0; a < 4; a++) {
+        const angle = a * Math.PI / 2;
+        ctx.beginPath();
+        ctx.moveTo(w * r * 0.6 + Math.cos(angle) * r * 0.15, r * 0.6 + Math.sin(angle) * r * 0.15);
+        ctx.lineTo(w * r * 0.6 + Math.cos(angle) * r * 0.4, r * 0.6 + Math.sin(angle) * r * 0.4);
+        ctx.stroke();
+      }
+    }
+    // Cannon barrel
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(-r * 0.3, -r * 0.1);
+    ctx.lineTo(-r * 1.5, -r * 0.5);
+    ctx.stroke();
+    // Barrel thicker part
+    ctx.fillStyle = '#444';
+    ctx.fillRect(-r * 1.3, -r * 0.7, r * 0.7, r * 0.6);
+    // Gun body
+    ctx.fillStyle = '#4a4a3a';
+    ctx.fillRect(-r * 0.7, -r * 0.3, r * 1.4, r * 0.8);
+    ctx.strokeStyle = '#222';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(-r * 0.7, -r * 0.3, r * 1.4, r * 0.8);
+    // Three crew dots
+    ctx.fillStyle = this.colorDark;
+    for (let i = 0; i < 3; i++) {
+      ctx.beginPath();
+      ctx.arc(-r * 0.5 + i * r * 0.5, -r * 0.9, r * 0.25, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    // Muzzle flash
+    if (this.flashTimer > 2) {
+      ctx.fillStyle = '#ff8800';
+      ctx.beginPath();
+      ctx.arc(-r * 1.8, -r * 0.5, r * 0.7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffdd44';
+      ctx.beginPath();
+      ctx.arc(-r * 1.8, -r * 0.5, r * 0.35, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+}
+
+// ============================================================
+// GAME CLASS
+// ============================================================
+class Game {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.resize();
+
+    this.state = 'deploy'; // deploy | countdown | battle | win | lose
+    this.playerUnits = [];
+    this.enemyUnits = [];
+    this.projectiles = [];
+    this.playerDeployedCount = 0;
+    this.selectedType = 'shield';
+
+    // Battle stats
+    this.playerKills = 0;
+    this.enemyKills = 0;
+    this.initialPlayerCounts = {};
+    this.initialEnemyCounts = {};
+
+    // Countdown
+    this.countdownRemaining = 0;
+
+    // Skill
+    this.skillCooldownRemaining = 0;
+    this.skillActive = false;
+    this.skillTimer = 0;
+
+    // Drag deployment
+    this.isDragging = false;
+    this.dragStartX = 0;
+    this.dragStartY = 0;
+    this.dragEndX = 0;
+    this.dragEndY = 0;
+    this.mouseX = 0;
+    this.mouseY = 0;
+    this.mouseOnCanvas = false;
+
+    // Frame counter
+    this.frameCount = 0;
+
+    // Cached general references for morale system
+    this.playerGeneral = null;
+    this.enemyGeneral = null;
+
+    // Spatial grid
+    this.spatialGrid = null;
+
+    // Last time
+    this.lastTime = performance.now();
+
+    this.init();
+    this.setupEvents();
+    this.loop();
+  }
+
+  resize() {
+    const wrap = this.canvas.parentElement;
+    this.canvasWidth = wrap.clientWidth;
+    this.canvasHeight = wrap.clientHeight;
+    this.canvas.width = this.canvasWidth;
+    this.canvas.height = this.canvasHeight;
+    this.midline = this.canvasWidth / 2;
+    this.spatialGrid = new SpatialGrid(this.canvasWidth, this.canvasHeight, SPATIAL_CELL_SIZE);
+    // Rebuild spatial grid with current units
+    if (this.playerUnits && this.enemyUnits) this.rebuildSpatialGrid();
+  }
+
+  rebuildSpatialGrid() {
+    this.spatialGrid = new SpatialGrid(this.canvasWidth, this.canvasHeight, SPATIAL_CELL_SIZE);
+    this.spatialGrid.clear();
+    for (const u of this.playerUnits) if (u.alive) this.spatialGrid.insert(u);
+    for (const u of this.enemyUnits) if (u.alive) this.spatialGrid.insert(u);
+  }
+
+  init() {
+    this.playerUnits = [];
+    this.enemyUnits = [];
+    this.projectiles = [];
+    this.playerDeployedCount = 0;
+    this.playerKills = 0;
+    this.enemyKills = 0;
+    this.state = 'deploy';
+    this.skillCooldownRemaining = 0;
+    this.skillActive = false;
+    this.skillTimer = 0;
+    this.playerGeneral = null;
+    this.enemyGeneral = null;
+
+    // Deploy player general (free, doesn't count toward 500)
+    const genX = this.midline * 0.35;
+    const genY = this.canvasHeight / 2;
+    this.playerUnits.push(new Unit('general', genX, genY, 0, true));
+
+    // Deploy enemy army
+    this.createEnemyArmy();
+
+    // Record initial counts
+    this.initialPlayerCounts = this.countByType(this.playerUnits);
+    this.initialEnemyCounts = this.countByType(this.enemyUnits);
+
+    this.spatialGrid = new SpatialGrid(this.canvasWidth, this.canvasHeight, SPATIAL_CELL_SIZE);
+    this.updateUI();
+  }
+
+  countByType(units) {
+    const counts = {};
+    for (const u of units) {
+      if (!u.alive) continue;
+      counts[u.category] = (counts[u.category] || 0) + 1;
+    }
+    return counts;
+  }
+
+  countAlive(units) {
+    let c = 0;
+    for (const u of units) if (u.alive) c++;
+    return c;
+  }
+
+  countAliveByType(units) {
+    const counts = { shield: 0, spear: 0, cavalry: 0, archer: 0, general: 0, maxim: 0, musketeer: 0, artillery: 0 };
+    for (const u of units) {
+      if (u.alive) counts[u.category] = (counts[u.category] || 0) + 1;
+    }
+    return counts;
+  }
+
+  createEnemyArmy() {
+    const h = this.canvasHeight;
+    const ml = this.midline;
+    const margin = 15;
+
+    // Shield: 800 front wall
+    this.deployFormation('shield', 800, ml + 40, margin, ml + 240, h - margin, 1, true);
+
+    // Spear: 700 mid line
+    this.deployFormation('spear', 700, ml + 250, margin + 10, ml + 420, h - margin - 10, 1, true);
+
+    // Cavalry: 500 split across top and bottom flanks (250 each)
+    const flankHeight = h * 0.24;
+    this.deployFormation('cavalry', 250, ml + 50, margin, ml + 230, margin + flankHeight, 1, true);
+    this.deployFormation('cavalry', 250, ml + 50, h - margin - flankHeight, ml + 230, h - margin, 1, true);
+
+    // Archer: 999 back line
+    this.deployFormation('archer', 999, ml + 430, margin, ml + 620, h - margin, 1, true);
+
+    // General: center back
+    const genX = ml + 350;
+    const genY = h / 2;
+    this.enemyUnits.push(new Unit('general', genX, genY, 1, true));
+  }
+
+  deployFormation(type, count, x1, y1, x2, y2, team, compact = false) {
+    const cfg = UNIT_CONFIG[type];
+    const spacing = cfg.radius * (compact ? 2.0 : 2.8);
+    const availWidth = x2 - x1;
+    const availHeight = y2 - y1;
+    const cols = Math.max(1, Math.floor(availHeight / spacing));
+    const rows = Math.ceil(count / cols);
+
+    for (let i = 0; i < count; i++) {
+      const row = Math.floor(i / cols);
+      const col = i % cols;
+      const rowCount = Math.min(cols, count - row * cols);
+      const jitterX = compact ? 0.15 : 0.3;
+      const jitterY = compact ? 0.15 : 0.3;
+      const x = x1 + (row / Math.max(1, rows - 1)) * availWidth + (Math.random() - 0.5) * spacing * jitterX;
+      const y = y1 + (col / Math.max(1, rowCount - 1)) * availHeight + (Math.random() - 0.5) * spacing * jitterY;
+      this.enemyUnits.push(new Unit(type,
+        Math.max(x1, Math.min(x2, x)),
+        Math.max(y1, Math.min(y2, y)),
+        team, false));
+    }
+  }
+
+  getCrewCost(type) {
+    const cfg = UNIT_CONFIG[type];
+    return cfg.crewCost || 1;
+  }
+
+  deployPlayerUnit(x, y) {
+    if (this.state !== 'deploy') return false;
+    if (x > this.midline - 10) return false;
+    if (this.selectedType === 'general') return false;
+    const cost = this.getCrewCost(this.selectedType);
+    if (this.playerDeployedCount + cost > MAX_PLAYER_UNITS) return false;
+
+    this.playerUnits.push(new Unit(this.selectedType, x, y, 0, false));
+    this.playerDeployedCount += cost;
+    this.updateUI();
+    return true;
+  }
+
+  deployLine(x1, y1, x2, y2) {
+    if (this.state !== 'deploy') return 0;
+    if (this.selectedType === 'general') return 0;
+
+    const cfg = UNIT_CONFIG[this.selectedType];
+    const cost = cfg.crewCost || 1;
+    const spacing = cfg.radius * 2.8;
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const lineLen = Math.sqrt(dx * dx + dy * dy);
+    if (lineLen < 1) {
+      return this.deployPlayerUnit(x1, y1) ? 1 : 0;
+    }
+
+    const maxFit = Math.floor(lineLen / spacing) + 1;
+    const remaining = MAX_PLAYER_UNITS - this.playerDeployedCount;
+    const maxBySlots = Math.floor(remaining / cost);
+    const count = Math.min(maxFit, maxBySlots);
+    if (count <= 0) return 0;
+
+    for (let i = 0; i < count; i++) {
+      const t = count === 1 ? 0.5 : i / (count - 1);
+      const px = x1 + dx * t;
+      const py = y1 + dy * t;
+      if (px < this.midline - 10 && px > 5 && py > 5 && py < this.canvasHeight - 5) {
+        this.playerUnits.push(new Unit(this.selectedType, px, py, 0, false));
+        this.playerDeployedCount += cost;
+      }
+    }
+    this.updateUI();
+    return count;
+  }
+
+  startBattle() {
+    if (this.state !== 'deploy') return;
+    this.state = 'countdown';
+    this.countdownRemaining = COUNTDOWN_SECONDS;
+    document.getElementById('stats-panel').style.display = 'block';
+    this.updateUI();
+  }
+
+  reset() {
+    this.init();
+    this.updateUI();
+    document.getElementById('stats-panel').style.display = 'none';
+    document.getElementById('result-overlay').style.display = 'none';
+  }
+
+  activateSkill() {
+    if (this.state !== 'battle') return;
+    if (this.skillCooldownRemaining > 0 || this.skillActive) return;
+    if (!this.isPlayerGeneralAlive()) return;
+
+    this.skillActive = true;
+    this.skillTimer = SKILL_CONFIG.duration;
+    this.skillCooldownRemaining = SKILL_CONFIG.cooldown;
+
+    // Apply skill to all player units
+    for (const u of this.playerUnits) {
+      if (!u.alive) continue;
+      u.skillAttackBoost = SKILL_CONFIG.attackBoost;
+      u.skillSpeedBoost = SKILL_CONFIG.speedBoost;
+      u.skillGlowTimer = 30;
+    }
+
+    // Show indicator
+    const indicator = document.getElementById('skill-indicator');
+    indicator.style.display = 'block';
+    indicator.style.animation = 'none';
+    indicator.offsetHeight;
+    indicator.style.animation = 'skillFade 1.5s forwards';
+
+    this.updateUI();
+  }
+
+  isPlayerGeneralAlive() {
+    for (const u of this.playerUnits) {
+      if (u.isGeneral && u.alive) return true;
+    }
+    return false;
+  }
+
+  isEnemyGeneralAlive() {
+    for (const u of this.enemyUnits) {
+      if (u.isGeneral && u.alive) return true;
+    }
+    return false;
+  }
+
+  addProjectile(x, y, target, damage, team, isTracer = false) {
+    if (this.projectiles.length >= MAX_PROJECTILES) return;
+    this.projectiles.push(new Projectile(x, y, target, damage, team, isTracer));
+  }
+
+  update(dt) {
+    if (this.state === 'win' || this.state === 'lose') return;
+
+    // Cap dt
+    const cappedDt = Math.min(dt, 33);
+
+    // Update countdown
+    if (this.state === 'countdown') {
+      this.countdownRemaining -= cappedDt / 1000;
+      if (this.countdownRemaining <= 0) {
+        this.countdownRemaining = 0;
+        this.state = 'battle';
+        this.updateUI();
+      }
+    }
+
+    // Update skill
+    if (this.skillActive) {
+      this.skillTimer -= cappedDt;
+      if (this.skillTimer <= 0) {
+        this.skillActive = false;
+        this.skillTimer = 0;
+        // Remove skill effects
+        for (const u of this.playerUnits) {
+          u.skillAttackBoost = null;
+          u.skillSpeedBoost = null;
+        }
+      }
+    }
+    if (this.skillCooldownRemaining > 0 && !this.skillActive) {
+      this.skillCooldownRemaining -= cappedDt;
+      if (this.skillCooldownRemaining < 0) this.skillCooldownRemaining = 0;
+    }
+
+    // Update spatial grid
+    this.spatialGrid.clear();
+    for (const u of this.playerUnits) if (u.alive) this.spatialGrid.insert(u);
+    for (const u of this.enemyUnits) if (u.alive) this.spatialGrid.insert(u);
+
+    // Cache general references for morale (avoid O(n) per unit)
+    this.playerGeneral = null;
+    this.enemyGeneral = null;
+    for (const u of this.playerUnits) {
+      if (u.isGeneral && u.alive) { this.playerGeneral = u; break; }
+    }
+    for (const u of this.enemyUnits) {
+      if (u.isGeneral && u.alive) { this.enemyGeneral = u; break; }
+    }
+
+    // Update units (only in battle)
+    if (this.state === 'battle') {
+      for (const u of this.playerUnits) {
+        if (u.alive) u.update(cappedDt, this);
+      }
+      for (const u of this.enemyUnits) {
+        if (u.alive) u.update(cappedDt, this);
+      }
+    }
+
+    // Track kills
+    this.trackKills();
+
+    // Update projectiles
+    for (let i = this.projectiles.length - 1; i >= 0; i--) {
+      this.projectiles[i].update();
+      if (!this.projectiles[i].alive) this.projectiles.splice(i, 1);
+    }
+
+    // Check win/lose
+    if (this.state === 'battle') {
+      this.checkWinLose();
+    }
+
+    // Update UI periodically
+    this.frameCount++;
+    if (this.frameCount % 30 === 0) {
+      this.updateUI();
+    }
+  }
+
+  trackKills() {
+    // Player losses = initial player total - currently alive
+    const initialPTotal = Object.values(this.initialPlayerCounts).reduce((a, b) => a + b, 0);
+    this.enemyKills = initialPTotal - this.countAlive(this.playerUnits);
+
+    // Enemy losses = initial enemy total - currently alive
+    const initialETotal = Object.values(this.initialEnemyCounts).reduce((a, b) => a + b, 0);
+    this.playerKills = initialETotal - this.countAlive(this.enemyUnits);
+  }
+
+  checkWinLose() {
+    const pAlive = this.countAlive(this.playerUnits);
+    const eAlive = this.countAlive(this.enemyUnits);
+    if (eAlive === 0) {
+      this.state = 'win';
+      this.showResult(true);
+    } else if (pAlive === 0) {
+      this.state = 'lose';
+      this.showResult(false);
+    }
+  }
+
+  showResult(won) {
+    const overlay = document.getElementById('result-overlay');
+    const title = document.getElementById('result-title');
+    const stats = document.getElementById('result-stats');
+    overlay.style.display = 'flex';
+    title.textContent = won ? '🎉 胜利！' : '💀 失败！';
+    title.className = 'result-title ' + (won ? 'win' : 'lose');
+
+    const pCounts = this.countAliveByType(this.playerUnits);
+    const eCounts = this.countAliveByType(this.enemyUnits);
+
+    stats.innerHTML = `
+      我方击杀: <b>${this.playerKills}</b> &nbsp; 敌方击杀: <b>${this.enemyKills}</b><br>
+      <br>我方剩余:<br>
+      盾兵: ${pCounts.shield} | 长矛兵: ${pCounts.spear} | 骑兵: ${pCounts.cavalry}<br>
+      射手: ${pCounts.archer} | 马克沁: ${pCounts.maxim || 0} | 火枪手: ${pCounts.musketeer || 0}<br>
+      炮兵: ${pCounts.artillery || 0} | 将军: ${pCounts.general ? '存活' : '阵亡'}<br>
+      <br>敌方剩余:<br>
+      盾兵: ${eCounts.shield} | 长矛兵: ${eCounts.spear} | 骑兵: ${eCounts.cavalry}<br>
+      射手: ${eCounts.archer} | 将军: ${eCounts.general ? '存活' : '阵亡'}
+    `;
+    this.updateUI();
+  }
+
+  render() {
+    const ctx = this.ctx;
+    const w = this.canvasWidth;
+    const h = this.canvasHeight;
+
+    // Clear
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fillRect(0, 0, w, h);
+
+    // Draw grid lines (subtle)
+    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < w; x += 80) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+    for (let y = 0; y < h; y += 80) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+
+    // Midline
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([8, 12]);
+    ctx.beginPath();
+    ctx.moveTo(this.midline, 0);
+    ctx.lineTo(this.midline, h);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Team zone labels
+    ctx.fillStyle = 'rgba(50,80,180,0.06)';
+    ctx.fillRect(0, 0, this.midline, h);
+    ctx.fillStyle = 'rgba(180,50,50,0.06)';
+    ctx.fillRect(this.midline, 0, w - this.midline, h);
+
+    ctx.fillStyle = 'rgba(100,140,220,0.15)';
+    ctx.font = '24px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('我方阵地', this.midline / 2, h / 2);
+    ctx.fillStyle = 'rgba(220,120,100,0.15)';
+    ctx.fillText('敌方阵地', this.midline + (w - this.midline) / 2, h / 2);
+
+    // Draw units
+    for (const u of this.playerUnits) if (u.alive) u.draw(ctx);
+    for (const u of this.enemyUnits) if (u.alive) u.draw(ctx);
+
+    // Draw projectiles
+    for (const p of this.projectiles) p.draw(ctx);
+
+    // Draw drag preview line
+    if (this.isDragging && this.state === 'deploy' && this.selectedType !== 'general') {
+      const cfg = UNIT_CONFIG[this.selectedType];
+      ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 6]);
+      ctx.beginPath();
+      ctx.moveTo(this.dragStartX, this.dragStartY);
+      ctx.lineTo(this.dragEndX, this.dragEndY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Preview units along line
+      const spacing = cfg.radius * 2.8;
+      const dx = this.dragEndX - this.dragStartX;
+      const dy = this.dragEndY - this.dragStartY;
+      const lineLen = Math.sqrt(dx * dx + dy * dy);
+      const maxFit = Math.floor(lineLen / spacing) + 1;
+      const remaining = MAX_PLAYER_UNITS - this.playerDeployedCount;
+      const count = Math.min(maxFit, remaining);
+
+      for (let i = 0; i < count; i++) {
+        const t = count === 1 ? 0.5 : i / (count - 1);
+        const px = this.dragStartX + dx * t;
+        const py = this.dragStartY + dy * t;
+        if (px < this.midline - 5 && px > 5 && py > 5 && py < h - 5) {
+          ctx.globalAlpha = 0.5;
+          ctx.fillStyle = cfg.color;
+          if (cfg.shape === 'maxim' || cfg.shape === 'artillery') {
+            ctx.fillRect(px - cfg.radius, py - cfg.radius * 0.35, cfg.radius * 2, cfg.radius * 0.7);
+          } else if (cfg.shape === 'musketeer') {
+            ctx.fillRect(px - cfg.radius * 0.5, py - cfg.radius * 0.6, cfg.radius, cfg.radius * 1.2);
+          } else {
+            ctx.beginPath();
+            ctx.arc(px, py, cfg.radius, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.globalAlpha = 1;
+        }
+      }
+    }
+
+    // Draw mouse preview (single unit ghost)
+    if (!this.isDragging && this.mouseOnCanvas && this.state === 'deploy' &&
+        this.mouseX < this.midline - 5 && this.selectedType !== 'general') {
+      const cfg = UNIT_CONFIG[this.selectedType];
+      ctx.globalAlpha = 0.4;
+      if (cfg.shape === 'maxim' || cfg.shape === 'artillery') {
+        ctx.fillStyle = cfg.color;
+        ctx.fillRect(this.mouseX - cfg.radius, this.mouseY - cfg.radius * 0.35, cfg.radius * 2, cfg.radius * 0.7);
+      } else if (cfg.shape === 'musketeer') {
+        ctx.fillStyle = cfg.color;
+        ctx.fillRect(this.mouseX - cfg.radius * 0.5, this.mouseY - cfg.radius * 0.6, cfg.radius, cfg.radius * 1.2);
+      } else {
+        ctx.fillStyle = cfg.color;
+        ctx.beginPath();
+        ctx.arc(this.mouseX, this.mouseY, cfg.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    // Draw countdown overlay
+    if (this.state === 'countdown') {
+      const sec = Math.ceil(this.countdownRemaining);
+      ctx.fillStyle = 'rgba(0,0,0,0.4)';
+      ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = '#ffcc00';
+      ctx.font = 'bold 80px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(sec > 0 ? sec : '开始！', w / 2, h / 2 + 20);
+    }
+  }
+
+  updateUI() {
+    const pAlive = this.countAlive(this.playerUnits);
+    const eAlive = this.countAlive(this.enemyUnits);
+
+    document.getElementById('player-count').textContent = pAlive;
+    document.getElementById('enemy-count').textContent = eAlive;
+    document.getElementById('deployed-count').textContent = `${this.playerDeployedCount} / ${MAX_PLAYER_UNITS}`;
+    document.getElementById('count-badge').textContent = `已部署: ${this.playerDeployedCount} / ${MAX_PLAYER_UNITS}`;
+
+    const statusEl = document.getElementById('status-text');
+    statusEl.className = 'status ' + this.state;
+    const statusMap = { deploy: '部署阶段', countdown: '倒计时', battle: '战斗中', win: '胜利！', lose: '失败！' };
+    statusEl.textContent = statusMap[this.state] || '';
+
+    // Countdown
+    if (this.state === 'countdown') {
+      document.getElementById('countdown-text').textContent = Math.ceil(this.countdownRemaining) + 's';
+    } else {
+      document.getElementById('countdown-text').textContent = '--';
+    }
+
+    // Skill status
+    const skillStatus = document.getElementById('skill-status-text');
+    const btnSkill = document.getElementById('btn-skill');
+    if (this.skillActive) {
+      skillStatus.textContent = `生效中 ${(this.skillTimer / 1000).toFixed(1)}s`;
+      btnSkill.disabled = true;
+      btnSkill.textContent = `📯 生效中 ${(this.skillTimer / 1000).toFixed(1)}s`;
+    } else if (this.skillCooldownRemaining > 0) {
+      skillStatus.textContent = `冷却 ${(this.skillCooldownRemaining / 1000).toFixed(1)}s`;
+      btnSkill.disabled = true;
+      btnSkill.textContent = `📯 冷却 ${(this.skillCooldownRemaining / 1000).toFixed(1)}s`;
+    } else {
+      skillStatus.textContent = '就绪';
+      btnSkill.disabled = this.state !== 'battle' || !this.isPlayerGeneralAlive();
+      btnSkill.textContent = '📯 战鼓激励';
+    }
+
+    // Start button
+    const btnStart = document.getElementById('btn-start');
+    btnStart.disabled = this.state !== 'deploy';
+
+    // Unit buttons
+    const btns = ['btn-shield', 'btn-spear', 'btn-cavalry', 'btn-archer', 'btn-maxim', 'btn-musketeer', 'btn-artillery'];
+    btns.forEach(id => {
+      const btn = document.getElementById(id);
+      btn.classList.toggle('active', btn.dataset.type === this.selectedType);
+      btn.disabled = this.state !== 'deploy';
+    });
+
+    // Stats panel
+    this.updateStatsPanel();
+  }
+
+  updateStatsPanel() {
+    const panel = document.getElementById('stats-panel');
+    if (this.state !== 'battle' && this.state !== 'win' && this.state !== 'lose') {
+      if (panel.style.display === 'block' && this.state === 'deploy') panel.style.display = 'none';
+      return;
+    }
+    panel.style.display = 'block';
+
+    const pCounts = this.countAliveByType(this.playerUnits);
+    const eCounts = this.countAliveByType(this.enemyUnits);
+
+    panel.innerHTML = `
+      <h3>📊 战斗统计</h3>
+      <div style="color:#8f8;margin-bottom:4px;">━ 我方 ━</div>
+      <div class="stat-row"><span>击杀</span><span class="my-kills">${this.playerKills}</span></div>
+      <div class="stat-row"><span>🛡 盾兵</span><span>${pCounts.shield}</span></div>
+      <div class="stat-row"><span>🔱 长矛兵</span><span>${pCounts.spear}</span></div>
+      <div class="stat-row"><span>⚔ 骑兵</span><span>${pCounts.cavalry}</span></div>
+      <div class="stat-row"><span>🏹 射手</span><span>${pCounts.archer}</span></div>
+      <div class="stat-row"><span>🔫 马克沁</span><span>${pCounts.maxim || 0}</span></div>
+      <div class="stat-row"><span>🎯 火枪手</span><span>${pCounts.musketeer || 0}</span></div>
+      <div class="stat-row"><span>💣 炮兵</span><span>${pCounts.artillery || 0}</span></div>
+      <div class="stat-row"><span>⭐ 将军</span><span>${pCounts.general ? '存活' : '<span style="color:#f44">阵亡</span>'}</span></div>
+      <div style="color:#f88;margin:6px 0 4px;">━ 敌方 ━</div>
+      <div class="stat-row"><span>击杀</span><span class="kills">${this.enemyKills}</span></div>
+      <div class="stat-row"><span>🛡 盾兵</span><span>${eCounts.shield}</span></div>
+      <div class="stat-row"><span>🔱 长矛兵</span><span>${eCounts.spear}</span></div>
+      <div class="stat-row"><span>⚔ 骑兵</span><span>${eCounts.cavalry}</span></div>
+      <div class="stat-row"><span>🏹 射手</span><span>${eCounts.archer}</span></div>
+      <div class="stat-row"><span>⭐ 将军</span><span>${eCounts.general ? '存活' : '<span style="color:#f44">阵亡</span>'}</span></div>
+    `;
+  }
+
+  setupEvents() {
+    // Unit selection buttons
+    ['btn-shield', 'btn-spear', 'btn-cavalry', 'btn-archer', 'btn-maxim', 'btn-musketeer', 'btn-artillery'].forEach(id => {
+      document.getElementById(id).addEventListener('click', (e) => {
+        if (this.state !== 'deploy') return;
+        this.selectedType = e.target.dataset.type;
+        this.updateUI();
+      });
+    });
+
+    // Start battle
+    document.getElementById('btn-start').addEventListener('click', () => this.startBattle());
+
+    // Reset
+    document.getElementById('btn-reset').addEventListener('click', () => this.reset());
+
+    // Skill
+    document.getElementById('btn-skill').addEventListener('click', () => this.activateSkill());
+
+    // Canvas mouse events
+    this.canvas.addEventListener('mousedown', (e) => this.onMouseDown(e));
+    this.canvas.addEventListener('mousemove', (e) => this.onMouseMove(e));
+    this.canvas.addEventListener('mouseup', (e) => this.onMouseUp(e));
+    this.canvas.addEventListener('mouseleave', (e) => this.onMouseLeave(e));
+
+    // Touch events
+    this.canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      const t = e.touches[0];
+      this.onMouseDown({ clientX: t.clientX, clientY: t.clientY });
+    });
+    this.canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const t = e.touches[0];
+      this.onMouseMove({ clientX: t.clientX, clientY: t.clientY });
+    });
+    this.canvas.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      // onMouseUp uses stored dragStart/End, not the event position
+      this.onMouseUp(e);
+    });
+
+    // Window resize
+    window.addEventListener('resize', () => {
+      this.resize();
+      // Re-deploy enemies on resize (simplified: just adjust positions proportionally)
+      this.repositionOnResize();
+    });
+
+    // Keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (this.state !== 'deploy') return;
+      switch (e.key) {
+        case '1': this.selectedType = 'shield'; break;
+        case '2': this.selectedType = 'spear'; break;
+        case '3': this.selectedType = 'cavalry'; break;
+        case '4': this.selectedType = 'archer'; break;
+        case '5': this.selectedType = 'maxim'; break;
+        case '6': this.selectedType = 'musketeer'; break;
+        case '7': this.selectedType = 'artillery'; break;
+        case 'Enter': this.startBattle(); break;
+        case 'r': case 'R': this.reset(); break;
+        default: return;
+      }
+      this.updateUI();
+    });
+  }
+
+  getCanvasPos(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    const scaleX = this.canvasWidth / rect.width;
+    const scaleY = this.canvasHeight / rect.height;
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY
+    };
+  }
+
+  onMouseDown(e) {
+    if (this.state !== 'deploy') return;
+    const pos = this.getCanvasPos(e);
+    if (pos.x >= this.midline - 5 || this.selectedType === 'general') return;
+    this.isDragging = true;
+    this.dragStartX = pos.x;
+    this.dragStartY = pos.y;
+    this.dragEndX = pos.x;
+    this.dragEndY = pos.y;
+  }
+
+  onMouseMove(e) {
+    const pos = this.getCanvasPos(e);
+    this.mouseX = pos.x;
+    this.mouseY = pos.y;
+    this.mouseOnCanvas = true;
+    if (this.isDragging) {
+      // Clamp to left half
+      this.dragEndX = Math.min(pos.x, this.midline - 8);
+      this.dragEndY = Math.max(8, Math.min(pos.y, this.canvasHeight - 8));
+    }
+  }
+
+  onMouseUp(e) {
+    if (!this.isDragging) return;
+    this.isDragging = false;
+    const dx = this.dragEndX - this.dragStartX;
+    const dy = this.dragEndY - this.dragStartY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 3) {
+      // Single click deploy
+      this.deployPlayerUnit(this.dragStartX, this.dragStartY);
+    } else {
+      // Line deploy
+      this.deployLine(this.dragStartX, this.dragStartY, this.dragEndX, this.dragEndY);
+    }
+  }
+
+  onMouseLeave(e) {
+    this.mouseOnCanvas = false;
+    if (this.isDragging) {
+      // Finalize drag on leave
+      this.onMouseUp(e);
+    }
+  }
+
+  repositionOnResize() {
+    if (this.state === 'deploy' || this.state === 'countdown') {
+      this.init();
+    }
+    // During battle/win/lose, units keep their coordinates (clamped in update)
+  }
+
+  loop() {
+    const now = performance.now();
+    const dt = now - this.lastTime;
+    this.lastTime = now;
+
+    this.update(dt);
+    this.render();
+
+    // Update UI every frame during countdown
+    if (this.state === 'countdown') {
+      this.updateUI();
+    }
+
+    requestAnimationFrame(() => this.loop());
+  }
+}
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+window.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('gameCanvas');
+  new Game(canvas);
+});
+</script>
+</body>
+</html>
