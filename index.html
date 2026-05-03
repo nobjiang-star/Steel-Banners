@@ -119,15 +119,6 @@ canvas { display: block; width: 100%; height: 100%; }
 #mission-select .mission-card .m-icon { font-size: 24px; margin-bottom: 3px; }
 #mission-select .mission-card .m-name { color: #fff; font-weight: bold; font-size: 13px; margin-bottom: 3px; }
 #mission-select .mission-card .m-desc { color: #888; font-size: 10px; line-height: 1.3; }
-#mission-select .diff-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 14px; }
-#mission-select .diff-row span { color: #888; font-size: 12px; }
-#mission-select .diff-btn {
-  padding: 5px 14px; border: 2px solid #444; border-radius: 5px;
-  background: #1a1a2e; color: #ccc; cursor: pointer; font-size: 12px;
-  font-family: inherit; transition: all 0.15s;
-}
-#mission-select .diff-btn:hover { border-color: #888; }
-#mission-select .diff-btn.selected { border-color: #ffcc00; color: #ffcc00; }
 #mission-select .btn-go {
   display: block; margin: 0 auto; padding: 10px 44px;
   border: 2px solid #2d6a4f; border-radius: 8px;
@@ -143,7 +134,7 @@ canvas { display: block; width: 100%; height: 100%; }
     <div class="info-group">
       <span class="label">关卡</span>
       <span id="mission-name" class="value" style="color:#ffcc00;">--</span>
-      <span id="difficulty-badge" style="font-size:10px;padding:2px 6px;border-radius:3px;">--</span>
+      <span style="font-size:10px;padding:2px 6px;border-radius:3px;background:#6b2121;color:#f88;">🔴 地狱</span>
     </div>
     <div class="info-group">
       <span class="label">状态</span>
@@ -181,26 +172,20 @@ canvas { display: block; width: 100%; height: 100%; }
     <div id="mission-select">
       <div class="select-box">
         <h2>⚔ 钢铁战旗</h2>
-        <div class="subtitle">选择关卡与难度</div>
+        <div class="subtitle">选择战场 — 地狱模式 · 敌军×2.5 · 多面进攻</div>
         <div class="mission-grid" id="mission-grid"></div>
-        <div class="diff-row">
-          <span>难度：</span>
-          <button class="diff-btn selected" data-diff="0">🟢 普通</button>
-          <button class="diff-btn" data-diff="1">🟡 困难</button>
-          <button class="diff-btn" data-diff="2">🔴 地狱</button>
-        </div>
-        <button class="btn-go" id="btn-go">⚡ 出征</button>
+        <button class="btn-go" id="btn-go">⚡ 出征 (地狱模式)</button>
       </div>
     </div>
   </div>
   <div id="bottom-bar">
-    <button id="btn-shield" class="active" data-type="shield">🛡 盾<span class="unit-count">0/120</span></button>
-    <button id="btn-spear" data-type="spear">🔱 矛<span class="unit-count">0/100</span></button>
-    <button id="btn-cavalry" data-type="cavalry">⚔ 骑<span class="unit-count">0/40</span></button>
-    <button id="btn-archer" data-type="archer">🏹 弓<span class="unit-count">0/60</span></button>
-    <button id="btn-maxim" data-type="maxim">🔫 机枪<span class="unit-count">0/16</span></button>
-    <button id="btn-musketeer" data-type="musketeer">🎯 火枪<span class="unit-count">0/50</span></button>
-    <button id="btn-artillery" data-type="artillery">💣 炮<span class="unit-count">0/10</span></button>
+    <button id="btn-shield" class="active" data-type="shield">🛡 盾<span class="unit-count">0/60</span></button>
+    <button id="btn-spear" data-type="spear">🔱 矛<span class="unit-count">0/45</span></button>
+    <button id="btn-cavalry" data-type="cavalry">⚔ 骑<span class="unit-count">0/20</span></button>
+    <button id="btn-archer" data-type="archer">🏹 弓<span class="unit-count">0/30</span></button>
+    <button id="btn-maxim" data-type="maxim">🔫 机枪<span class="unit-count">0/8</span></button>
+    <button id="btn-musketeer" data-type="musketeer">🎯 火枪<span class="unit-count">0/24</span></button>
+    <button id="btn-artillery" data-type="artillery">💣 炮<span class="unit-count">0/5</span></button>
     <button id="btn-skill" class="btn-skill">📯 战鼓</button>
     <button id="btn-start" class="btn-start">⚡ 开战</button>
     <button id="btn-reset" class="btn-reset">🔄 重置</button>
@@ -303,28 +288,29 @@ class Particle {
 // ============================================================
 // CONFIGURATION
 // ============================================================
+// Hell-mode reduced unit caps — every soldier counts
 const UNIT_CONFIG = {
   shield: {
     name: '盾兵', hp: 180, attack: 12, range: 18, speed: 0.45,
     attackCooldown: 900, radius: 7, color: '#3366cc', colorDark: '#2244aa',
-    shape: 'square', category: 'shield', maxCount: 120
+    shape: 'square', category: 'shield', maxCount: 60
   },
   spear: {
     name: '长矛兵', hp: 110, attack: 20, range: 34, speed: 0.65,
     attackCooldown: 850, radius: 6, color: '#3355aa', colorDark: '#223388',
     shape: 'triangle', category: 'spear', bonusVs: 'cavalry', bonusMultiplier: 2.2,
-    maxCount: 100
+    maxCount: 45
   },
   cavalry: {
     name: '骑兵', hp: 150, attack: 32, range: 18, speed: 1.5,
     attackCooldown: 1100, radius: 8, color: '#2244aa', colorDark: '#112266',
     shape: 'diamond', category: 'cavalry', bonusVs: 'archer', bonusMultiplier: 2.0,
-    maxCount: 40
+    maxCount: 20
   },
   archer: {
     name: '射手', hp: 60, attack: 16, range: 150, speed: 0.55,
     attackCooldown: 1300, radius: 5, color: '#4488bb', colorDark: '#226699',
-    shape: 'circle', category: 'archer', projectile: true, maxCount: 60
+    shape: 'circle', category: 'archer', projectile: true, maxCount: 30
   },
   general: {
     name: '将军', hp: 600, attack: 45, range: 30, speed: 0.7,
@@ -336,21 +322,21 @@ const UNIT_CONFIG = {
     attackCooldown: 50, radius: 11, color: '#556677', colorDark: '#334455',
     shape: 'maxim', category: 'maxim', projectile: true,
     bonusVs: 'shield', bonusMultiplier: 2.5, splashRadius: 50, splashTargets: 5,
-    maxCount: 16
+    maxCount: 8
   },
   musketeer: {
     name: '火枪手', hp: 90, attack: 38, range: 130, speed: 0.6,
     attackCooldown: 1600, radius: 7, color: '#336644', colorDark: '#224422',
     shape: 'musketeer', category: 'musketeer', projectile: true,
     bayonetAttack: 55, bayonetRange: 22, bayonetCooldown: 800,
-    bonusVs: 'cavalry', bonusMultiplier: 1.7, maxCount: 50
+    bonusVs: 'cavalry', bonusMultiplier: 1.7, maxCount: 24
   },
   artillery: {
     name: '炮兵', hp: 70, attack: 250, range: 9999, speed: 0,
     attackCooldown: 4500, radius: 14, color: '#555533', colorDark: '#333311',
     shape: 'artillery', category: 'artillery', projectile: true,
     bonusVs: 'shield', bonusMultiplier: 2.8, splashRadius: 100, splashTargets: 12,
-    maxCount: 10
+    maxCount: 5
   }
 };
 
@@ -365,98 +351,112 @@ const ENEMY_COLORS = {
   artillery:  { color: '#888833', colorDark: '#666611' }
 };
 
-const DIFFICULTY_LEVELS = [
-  { name: '普通', emoji: '🟢', enemyCountMul: 1.0, enemyStatMul: 1.0 },
-  { name: '困难', emoji: '🟡', enemyCountMul: 1.6, enemyStatMul: 1.2 },
-  { name: '地狱', emoji: '🔴', enemyCountMul: 2.5, enemyStatMul: 1.4 }
-];
+// Hell-mode fixed stats (was difficulty-based)
+const HELL_ENEMY_COUNT_MUL = 2.5;
+const HELL_ENEMY_STAT_MUL = 1.4;
 
+// Missions — enemies come from multiple directions, diverse terrain
 const MISSIONS = [
   {
-    id: 'plains', name: '平原遭遇战', icon: '🌾',
-    desc: '开阔平原正面交锋。炮兵可覆盖全图，优先部署远程单位。',
-    terrainZones: [],
+    id: 'plains', name: '平原合战', icon: '🌾',
+    desc: '敌主力正面推进，骑兵两翼包抄。泥沼地减速，扼守干燥地带。',
+    terrainZones: [
+      { x1: 0.35, y1: 0.15, x2: 0.48, y2: 0.42, type: 'mud', speedMul: 0.45 },
+      { x1: 0.35, y1: 0.58, x2: 0.48, y2: 0.85, type: 'mud', speedMul: 0.45 }
+    ],
     enemyGroups: [
-      { type: 'shield', count: 400, x1: 0.55, y1: 0.05, x2: 0.85, y2: 0.95 },
-      { type: 'spear', count: 300, x1: 0.65, y1: 0.08, x2: 0.9, y2: 0.92 },
-      { type: 'cavalry', count: 150, x1: 0.5, y1: 0.05, x2: 0.6, y2: 0.3 },
-      { type: 'cavalry', count: 150, x1: 0.5, y1: 0.7, x2: 0.6, y2: 0.95 },
-      { type: 'archer', count: 350, x1: 0.75, y1: 0.1, x2: 0.92, y2: 0.9 },
-      { type: 'general', count: 1, x1: 0.7, y1: 0.45, x2: 0.7, y2: 0.55 }
+      { type: 'shield', count: 350, x1: 0.55, y1: 0.08, x2: 0.82, y2: 0.92 },
+      { type: 'spear', count: 280, x1: 0.62, y1: 0.12, x2: 0.88, y2: 0.88 },
+      { type: 'cavalry', count: 140, x1: 0.48, y1: 0.02, x2: 0.6, y2: 0.2 },
+      { type: 'cavalry', count: 140, x1: 0.48, y1: 0.8, x2: 0.6, y2: 0.98 },
+      { type: 'archer', count: 320, x1: 0.72, y1: 0.12, x2: 0.92, y2: 0.88 },
+      { type: 'general', count: 1, x1: 0.78, y1: 0.44, x2: 0.78, y2: 0.56 }
     ]
   },
   {
-    id: 'canyon', name: '峡谷伏击战', icon: '⛰',
-    desc: '狭窄峡谷，两侧峭壁阻碍骑兵。守住中央通道即可克敌。',
+    id: 'canyon', name: '峡谷伏击', icon: '⛰',
+    desc: '峡谷两侧伏兵四起!敌正面封锁通道，上下伏击队从背后杀出。',
     terrainZones: [
-      { x1: 0.15, y1: 0, x2: 0.85, y2: 0.14, type: 'rough', speedMul: 0.5 },
-      { x1: 0.15, y1: 0.86, x2: 0.85, y2: 1.0, type: 'rough', speedMul: 0.5 }
+      { x1: 0.12, y1: 0, x2: 0.88, y2: 0.12, type: 'rough', speedMul: 0.4 },
+      { x1: 0.12, y1: 0.88, x2: 0.88, y2: 1.0, type: 'rough', speedMul: 0.4 }
     ],
     enemyGroups: [
-      { type: 'shield', count: 300, x1: 0.55, y1: 0.18, x2: 0.85, y2: 0.82 },
-      { type: 'spear', count: 250, x1: 0.6, y1: 0.2, x2: 0.9, y2: 0.8 },
-      { type: 'cavalry', count: 80, x1: 0.5, y1: 0.2, x2: 0.6, y2: 0.45 },
-      { type: 'cavalry', count: 80, x1: 0.5, y1: 0.55, x2: 0.6, y2: 0.8 },
-      { type: 'archer', count: 250, x1: 0.75, y1: 0.2, x2: 0.92, y2: 0.8 },
-      { type: 'general', count: 1, x1: 0.72, y1: 0.45, x2: 0.72, y2: 0.55 }
+      { type: 'shield', count: 280, x1: 0.55, y1: 0.16, x2: 0.84, y2: 0.84 },
+      { type: 'spear', count: 220, x1: 0.6, y1: 0.2, x2: 0.9, y2: 0.8 },
+      { type: 'cavalry', count: 100, x1: 0.02, y1: 0.12, x2: 0.12, y2: 0.3 },
+      { type: 'cavalry', count: 100, x1: 0.02, y1: 0.7, x2: 0.12, y2: 0.88 },
+      { type: 'archer', count: 240, x1: 0.72, y1: 0.18, x2: 0.92, y2: 0.82 },
+      { type: 'general', count: 1, x1: 0.8, y1: 0.45, x2: 0.8, y2: 0.55 }
     ]
   },
   {
-    id: 'river', name: '河流渡口防御', icon: '🌊',
-    desc: '中央河流大幅减速。炮兵和射手在后方全力输出。',
+    id: 'river', name: '渡口防线', icon: '🌊',
+    desc: '河流+两岸泥沼迟滞敌军。敌从正面、上游、下游三路强渡。',
     terrainZones: [
-      { x1: 0.38, y1: 0, x2: 0.5, y2: 1.0, type: 'river', speedMul: 0.3 }
+      { x1: 0.36, y1: 0, x2: 0.5, y2: 1.0, type: 'river', speedMul: 0.25 },
+      { x1: 0.25, y1: 0.08, x2: 0.36, y2: 0.44, type: 'mud', speedMul: 0.5 },
+      { x1: 0.25, y1: 0.56, x2: 0.36, y2: 0.92, type: 'mud', speedMul: 0.5 }
     ],
     enemyGroups: [
-      { type: 'shield', count: 350, x1: 0.55, y1: 0.05, x2: 0.82, y2: 0.95 },
-      { type: 'spear', count: 350, x1: 0.65, y1: 0.08, x2: 0.9, y2: 0.92 },
-      { type: 'cavalry', count: 100, x1: 0.5, y1: 0.4, x2: 0.62, y2: 0.6 },
-      { type: 'archer', count: 450, x1: 0.78, y1: 0.1, x2: 0.93, y2: 0.9 },
+      { type: 'shield', count: 320, x1: 0.55, y1: 0.08, x2: 0.8, y2: 0.92 },
+      { type: 'spear', count: 300, x1: 0.62, y1: 0.12, x2: 0.88, y2: 0.88 },
+      { type: 'cavalry', count: 120, x1: 0.5, y1: 0.02, x2: 0.62, y2: 0.18 },
+      { type: 'cavalry', count: 120, x1: 0.5, y1: 0.82, x2: 0.62, y2: 0.98 },
+      { type: 'archer', count: 380, x1: 0.76, y1: 0.1, x2: 0.93, y2: 0.9 },
       { type: 'musketeer', count: 80, x1: 0.7, y1: 0.15, x2: 0.85, y2: 0.85 },
+      { type: 'general', count: 1, x1: 0.85, y1: 0.45, x2: 0.85, y2: 0.55 }
+    ]
+  },
+  {
+    id: 'highland', name: '高地守卫', icon: '🏔',
+    desc: '高地射程加成是唯一优势。敌从正面和两侧同时仰攻，腹背受敌!',
+    terrainZones: [
+      { x1: 0.02, y1: 0, x2: 0.3, y2: 1.0, type: 'highground', speedMul: 1.0, rangeBonus: 1.25 },
+      { x1: 0.3, y1: 0, x2: 0.5, y2: 1.0, type: 'mud', speedMul: 0.5 }
+    ],
+    enemyGroups: [
+      { type: 'shield', count: 420, x1: 0.55, y1: 0.08, x2: 0.85, y2: 0.92 },
+      { type: 'spear', count: 350, x1: 0.62, y1: 0.12, x2: 0.9, y2: 0.88 },
+      { type: 'cavalry', count: 180, x1: 0.35, y1: 0.02, x2: 0.52, y2: 0.18 },
+      { type: 'cavalry', count: 180, x1: 0.35, y1: 0.82, x2: 0.52, y2: 0.98 },
+      { type: 'archer', count: 420, x1: 0.72, y1: 0.12, x2: 0.93, y2: 0.88 },
+      { type: 'general', count: 1, x1: 0.86, y1: 0.45, x2: 0.86, y2: 0.55 }
+    ]
+  },
+  {
+    id: 'encircle', name: '四面楚歌', icon: '💀',
+    desc: '被彻底合围!敌军从四面八方涌来。在中心布阵，向四方迎战。',
+    terrainZones: [
+      { x1: 0.08, y1: 0.08, x2: 0.45, y2: 0.4, type: 'rough', speedMul: 0.55 },
+      { x1: 0.55, y1: 0.6, x2: 0.92, y2: 0.92, type: 'rough', speedMul: 0.55 }
+    ],
+    enemyGroups: [
+      { type: 'shield', count: 250, x1: 0.55, y1: 0.15, x2: 0.85, y2: 0.85 },
+      { type: 'spear', count: 200, x1: 0.6, y1: 0.2, x2: 0.9, y2: 0.8 },
+      { type: 'cavalry', count: 120, x1: 0.05, y1: 0.02, x2: 0.18, y2: 0.25 },
+      { type: 'cavalry', count: 120, x1: 0.05, y1: 0.75, x2: 0.18, y2: 0.98 },
+      { type: 'archer', count: 300, x1: 0.7, y1: 0.1, x2: 0.92, y2: 0.9 },
+      { type: 'musketeer', count: 60, x1: 0.08, y1: 0.4, x2: 0.2, y2: 0.6 },
       { type: 'general', count: 1, x1: 0.82, y1: 0.45, x2: 0.82, y2: 0.55 }
     ]
   },
   {
-    id: 'highland', name: '高地守卫战', icon: '🏔',
-    desc: '左侧高地提供射程加成。在坡上部署炮兵和射手获取优势。',
+    id: 'fortress', name: '要塞绝境', icon: '🏰',
+    desc: '敌军重兵集团+炮兵集群。要塞提供减伤，但敌军从三面压来。',
     terrainZones: [
-      { x1: 0.02, y1: 0, x2: 0.32, y2: 1.0, type: 'highground', speedMul: 1.0, rangeBonus: 1.25 }
+      { x1: 0.02, y1: 0.2, x2: 0.24, y2: 0.8, type: 'fort', speedMul: 1.0, defenseBonus: true },
+      { x1: 0.24, y1: 0.05, x2: 0.48, y2: 0.38, type: 'trench', speedMul: 0.6, defenseBonus: true },
+      { x1: 0.24, y1: 0.62, x2: 0.48, y2: 0.95, type: 'trench', speedMul: 0.6, defenseBonus: true }
     ],
     enemyGroups: [
       { type: 'shield', count: 500, x1: 0.55, y1: 0.05, x2: 0.85, y2: 0.95 },
-      { type: 'spear', count: 400, x1: 0.65, y1: 0.08, x2: 0.92, y2: 0.92 },
-      { type: 'cavalry', count: 250, x1: 0.5, y1: 0.05, x2: 0.6, y2: 0.3 },
-      { type: 'cavalry', count: 250, x1: 0.5, y1: 0.7, x2: 0.6, y2: 0.95 },
-      { type: 'archer', count: 500, x1: 0.75, y1: 0.1, x2: 0.93, y2: 0.9 },
-      { type: 'general', count: 1, x1: 0.85, y1: 0.45, x2: 0.85, y2: 0.55 }
-    ]
-  },
-  {
-    id: 'flanking', name: '侧翼包围', icon: '🐴',
-    desc: '骑兵从上下两翼包抄。部署长矛兵保护后方炮兵阵地。',
-    terrainZones: [],
-    enemyGroups: [
-      { type: 'shield', count: 300, x1: 0.55, y1: 0.25, x2: 0.8, y2: 0.75 },
-      { type: 'spear', count: 250, x1: 0.6, y1: 0.3, x2: 0.88, y2: 0.7 },
-      { type: 'cavalry', count: 200, x1: 0.3, y1: 0.03, x2: 0.5, y2: 0.2 },
-      { type: 'cavalry', count: 200, x1: 0.3, y1: 0.8, x2: 0.5, y2: 0.97 },
-      { type: 'archer', count: 250, x1: 0.72, y1: 0.15, x2: 0.9, y2: 0.85 },
-      { type: 'general', count: 1, x1: 0.7, y1: 0.45, x2: 0.7, y2: 0.55 }
-    ]
-  },
-  {
-    id: 'fortress', name: '要塞攻防战', icon: '🏰',
-    desc: '左侧要塞提供减伤。敌军拥有炮兵，优先摧毁敌方远程。',
-    terrainZones: [
-      { x1: 0.02, y1: 0.22, x2: 0.26, y2: 0.78, type: 'fort', speedMul: 1.0, defenseBonus: true }
-    ],
-    enemyGroups: [
-      { type: 'shield', count: 600, x1: 0.55, y1: 0.05, x2: 0.85, y2: 0.95 },
-      { type: 'spear', count: 400, x1: 0.65, y1: 0.08, x2: 0.9, y2: 0.92 },
-      { type: 'archer', count: 400, x1: 0.75, y1: 0.1, x2: 0.93, y2: 0.9 },
-      { type: 'musketeer', count: 120, x1: 0.7, y1: 0.12, x2: 0.88, y2: 0.88 },
-      { type: 'artillery', count: 20, x1: 0.78, y1: 0.2, x2: 0.9, y2: 0.8 },
-      { type: 'general', count: 1, x1: 0.85, y1: 0.45, x2: 0.85, y2: 0.55 }
+      { type: 'spear', count: 380, x1: 0.62, y1: 0.1, x2: 0.9, y2: 0.9 },
+      { type: 'archer', count: 400, x1: 0.74, y1: 0.1, x2: 0.93, y2: 0.9 },
+      { type: 'cavalry', count: 150, x1: 0.48, y1: 0.02, x2: 0.6, y2: 0.2 },
+      { type: 'cavalry', count: 150, x1: 0.48, y1: 0.8, x2: 0.6, y2: 0.98 },
+      { type: 'musketeer', count: 120, x1: 0.66, y1: 0.15, x2: 0.84, y2: 0.85 },
+      { type: 'artillery', count: 22, x1: 0.82, y1: 0.2, x2: 0.92, y2: 0.8 },
+      { type: 'general', count: 1, x1: 0.88, y1: 0.45, x2: 0.88, y2: 0.55 }
     ]
   }
 ];
@@ -924,7 +924,7 @@ class Game {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.soundSystem = new SoundSystem();
-    this.selectedMissionIdx = 0; this.selectedDifficulty = 0;
+    this.selectedMissionIdx = 0;
     this.playerDeployedByType = {};
     this.resize();
     this.state = 'select';
@@ -1003,16 +1003,15 @@ class Game {
 
   createEnemyArmy() {
     const mission = MISSIONS[this.selectedMissionIdx];
-    const diff = DIFFICULTY_LEVELS[this.selectedDifficulty];
     const w = this.canvasWidth, h = this.canvasHeight;
     for (const group of mission.enemyGroups) {
       if (group.type === 'general') {
         const gx = group.x1 * w + (group.x2 - group.x1) * w * 0.5;
         const gy = group.y1 * h + (group.y2 - group.y1) * h * 0.5;
-        this.enemyUnits.push(new Unit('general', gx, gy, 1, true, diff.enemyStatMul));
+        this.enemyUnits.push(new Unit('general', gx, gy, 1, true, HELL_ENEMY_STAT_MUL));
       } else {
-        const count = Math.round(group.count * diff.enemyCountMul);
-        this.deployFormation(group.type, count, group.x1 * w, group.y1 * h, group.x2 * w, group.y2 * h, 1, false, diff.enemyStatMul);
+        const count = Math.round(group.count * HELL_ENEMY_COUNT_MUL);
+        this.deployFormation(group.type, count, group.x1 * w, group.y1 * h, group.x2 * w, group.y2 * h, 1, false, HELL_ENEMY_STAT_MUL);
       }
     }
   }
@@ -1245,9 +1244,9 @@ class Game {
     if (won) this.soundSystem.victory(); else this.soundSystem.defeat();
 
     const pc = this.countAliveByType(this.playerUnits), ec = this.countAliveByType(this.enemyUnits);
-    const mission = MISSIONS[this.selectedMissionIdx], diff = DIFFICULTY_LEVELS[this.selectedDifficulty];
+    const mission = MISSIONS[this.selectedMissionIdx];
     stats.innerHTML = `
-      关卡: <b>${mission.name}</b> | 难度: <b>${diff.emoji} ${diff.name}</b><br>
+      关卡: <b>${mission.name}</b> | 难度: <b>🔴 地狱</b><br>
       我方击杀: <b>${this.playerKills}</b> &nbsp; 敌方击杀: <b>${this.enemyKills}</b><br>
       <br>我方剩余:<br>
       盾兵: ${pc.shield}/${UNIT_CONFIG.shield.maxCount} | 矛兵: ${pc.spear}/${UNIT_CONFIG.spear.maxCount} | 骑兵: ${pc.cavalry}/${UNIT_CONFIG.cavalry.maxCount}<br>
@@ -1300,6 +1299,14 @@ class Game {
             ctx.beginPath(); ctx.arc(rx, ry, 2 + Math.random() * 4, 0, Math.PI * 2); ctx.fill();
           }
           break;
+        case 'mud':
+          ctx.fillStyle = 'rgba(100,80,40,0.2)'; ctx.fillRect(z.x1, z.y1, z.x2 - z.x1, z.y2 - z.y1);
+          ctx.fillStyle = 'rgba(80,60,30,0.08)';
+          for (let i = 0; i < 10; i++) {
+            const rx = z.x1 + Math.random() * (z.x2 - z.x1), ry = z.y1 + Math.random() * (z.y2 - z.y1);
+            ctx.beginPath(); ctx.ellipse(rx, ry, 6 + Math.random() * 10, 2 + Math.random() * 4, Math.random() * Math.PI, 0, Math.PI * 2); ctx.fill();
+          }
+          break;
         case 'highground':
           const g = ctx.createLinearGradient(z.x1, 0, z.x2, 0);
           g.addColorStop(0, 'rgba(100,140,80,0.18)'); g.addColorStop(1, 'rgba(100,140,80,0.04)');
@@ -1309,6 +1316,13 @@ class Game {
           ctx.strokeStyle = 'rgba(150,150,180,0.35)'; ctx.lineWidth = 3;
           ctx.strokeRect(z.x1, z.y1, z.x2 - z.x1, z.y2 - z.y1);
           ctx.fillStyle = 'rgba(100,120,160,0.06)'; ctx.fillRect(z.x1, z.y1, z.x2 - z.x1, z.y2 - z.y1);
+          break;
+        case 'trench':
+          ctx.fillStyle = 'rgba(60,50,40,0.25)'; ctx.fillRect(z.x1, z.y1, z.x2 - z.x1, z.y2 - z.y1);
+          ctx.strokeStyle = 'rgba(100,90,70,0.3)'; ctx.lineWidth = 1;
+          for (let ty = z.y1 + 8; ty < z.y2; ty += 14) {
+            ctx.beginPath(); ctx.moveTo(z.x1, ty); ctx.lineTo(z.x2, ty); ctx.stroke();
+          }
           break;
       }
     }
@@ -1364,12 +1378,8 @@ class Game {
     document.getElementById('player-count').textContent = pAlive;
     document.getElementById('enemy-count').textContent = eAlive;
 
-    const mission = MISSIONS[this.selectedMissionIdx], diff = DIFFICULTY_LEVELS[this.selectedDifficulty];
+    const mission = MISSIONS[this.selectedMissionIdx];
     document.getElementById('mission-name').textContent = mission.name;
-    const badge = document.getElementById('difficulty-badge');
-    badge.textContent = diff.emoji + ' ' + diff.name;
-    badge.style.background = ['#2d4a1f', '#7a5a00', '#6b2121'][this.selectedDifficulty];
-    badge.style.color = ['#95d5b2', '#ffcc44', '#f88'][this.selectedDifficulty];
 
     ['btn-shield','btn-spear','btn-cavalry','btn-archer','btn-maxim','btn-musketeer','btn-artillery'].forEach((bid, i) => {
       const types = ['shield','spear','cavalry','archer','maxim','musketeer','artillery'];
@@ -1446,11 +1456,6 @@ class Game {
       card.innerHTML = `<div class="m-icon">${m.icon}</div><div class="m-name">${m.name}</div><div class="m-desc">${m.desc}</div>`;
       card.addEventListener('click', () => { this.selectedMissionIdx = i; this.setupMissionSelectUI(); });
       grid.appendChild(card);
-    });
-    document.querySelectorAll('#mission-select .diff-btn').forEach(btn => {
-      const d = parseInt(btn.dataset.diff);
-      btn.classList.toggle('selected', d === this.selectedDifficulty);
-      btn.onclick = () => { this.selectedDifficulty = d; this.setupMissionSelectUI(); };
     });
     document.getElementById('btn-go').onclick = () => this.init();
   }
