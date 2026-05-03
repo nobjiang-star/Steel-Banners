@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>兵团决战</title>
+<title>钢铁战旗</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -22,13 +22,12 @@ body {
   height: 42px; background: linear-gradient(180deg, #16213e, #0f3460);
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 16px; color: #e0e0e0; font-size: 14px;
-  border-bottom: 2px solid #533483;
-  flex-shrink: 0;
+  border-bottom: 2px solid #533483; flex-shrink: 0; gap: 12px;
 }
-#top-bar .info-group { display: flex; gap: 20px; align-items: center; }
-#top-bar .label { color: #888; font-size: 12px; }
-#top-bar .value { color: #fff; font-weight: bold; font-size: 16px; }
-#top-bar .status { font-size: 15px; font-weight: bold; padding: 4px 12px; border-radius: 4px; }
+#top-bar .info-group { display: flex; gap: 6px; align-items: center; }
+#top-bar .label { color: #888; font-size: 11px; }
+#top-bar .value { color: #fff; font-weight: bold; font-size: 14px; }
+#top-bar .status { font-size: 13px; font-weight: bold; padding: 3px 10px; border-radius: 4px; }
 #top-bar .status.deploy { background: #2d6a4f; color: #95d5b2; }
 #top-bar .status.countdown { background: #e07c24; color: #fff; }
 #top-bar .status.battle { background: #c92a2a; color: #fff; }
@@ -39,30 +38,30 @@ body {
 canvas { display: block; width: 100%; height: 100%; }
 #bottom-bar {
   height: 58px; background: linear-gradient(180deg, #0f3460, #16213e);
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  padding: 0 12px; border-top: 2px solid #533483; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 0 10px; border-top: 2px solid #533483; flex-shrink: 0; flex-wrap: wrap;
 }
 #bottom-bar button {
-  padding: 8px 14px; border: 2px solid #444; border-radius: 6px;
-  background: #1a1a2e; color: #ccc; cursor: pointer; font-size: 13px;
+  padding: 6px 10px; border: 2px solid #444; border-radius: 6px;
+  background: #1a1a2e; color: #ccc; cursor: pointer; font-size: 12px;
   font-family: inherit; transition: all 0.15s; white-space: nowrap;
 }
 #bottom-bar button:hover { border-color: #888; color: #fff; }
 #bottom-bar button.active { border-color: #4da6ff; background: #1a3a5c; color: #4da6ff; box-shadow: 0 0 8px rgba(77,166,255,0.4); }
 #bottom-bar button:disabled { opacity: 0.4; cursor: not-allowed; border-color: #333; }
-#bottom-bar .btn-start { border-color: #2d6a4f; color: #95d5b2; font-weight: bold; }
+#bottom-bar button.limited { border-color: #c92a2a; color: #f88; }
+#bottom-bar .btn-start { border-color: #2d6a4f; color: #95d5b2; font-weight: bold; font-size: 13px; }
 #bottom-bar .btn-start:hover { background: #2d6a4f; color: #fff; }
 #bottom-bar .btn-reset { border-color: #8b4513; color: #d4a574; }
+#bottom-bar .btn-mission { border-color: #533483; color: #c9b8f0; font-size: 12px; }
 #bottom-bar .btn-skill { border-color: #ffcc00; color: #ffcc00; font-weight: bold; }
 #bottom-bar .btn-skill:hover:not(:disabled) { background: #4a3800; }
-#bottom-bar .count-badge {
-  background: #1a3a5c; color: #4da6ff; padding: 4px 10px;
-  border-radius: 10px; font-size: 12px; font-weight: bold;
-}
+#bottom-bar .unit-count { font-size: 9px; color: #888; display: block; }
+
 #stats-panel {
-  position: absolute; top: 8px; right: 8px; width: 180px;
-  background: rgba(0,0,0,0.8); border: 1px solid #444; border-radius: 8px;
-  padding: 10px; color: #ccc; font-size: 12px; display: none; z-index: 10;
+  position: absolute; top: 8px; right: 8px; width: 190px;
+  background: rgba(0,0,0,0.85); border: 1px solid #444; border-radius: 8px;
+  padding: 10px; color: #ccc; font-size: 11px; display: none; z-index: 10;
 }
 #stats-panel h3 { color: #fff; font-size: 13px; margin-bottom: 6px; border-bottom: 1px solid #444; padding-bottom: 4px; }
 #stats-panel .stat-row { display: flex; justify-content: space-between; margin: 2px 0; }
@@ -81,6 +80,12 @@ canvas { display: block; width: 100%; height: 100%; }
 #result-overlay .result-title.win { color: #ffcc00; }
 #result-overlay .result-title.lose { color: #c92a2a; }
 #result-overlay .result-stats { color: #ccc; font-size: 14px; line-height: 1.8; }
+#result-overlay button {
+  margin: 4px; padding: 10px 24px; border: 2px solid #888; border-radius: 8px;
+  background: #1a1a2e; color: #ccc; cursor: pointer; font-size: 14px;
+  font-family: inherit; transition: all 0.15s;
+}
+#result-overlay button:hover { border-color: #fff; color: #fff; }
 #skill-indicator {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
   color: #ffcc00; font-size: 28px; font-weight: bold; pointer-events: none;
@@ -92,6 +97,50 @@ canvas { display: block; width: 100%; height: 100%; }
   30% { opacity: 1; transform: translate(-50%,-50%) scale(1.2); }
   100% { opacity: 0; transform: translate(-50%,-50%) scale(1); }
 }
+
+/* Mission select overlay */
+#mission-select {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.9); display: flex;
+  justify-content: center; align-items: center; z-index: 30;
+}
+#mission-select .select-box {
+  background: #16213e; border: 2px solid #533483; border-radius: 16px;
+  padding: 30px; max-width: 750px; width: 95%;
+}
+#mission-select h2 {
+  text-align: center; color: #ffcc00; font-size: 28px; margin-bottom: 8px;
+}
+#mission-select .subtitle { text-align: center; color: #888; font-size: 13px; margin-bottom: 20px; }
+#mission-select .mission-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;
+}
+#mission-select .mission-card {
+  background: #1a1a2e; border: 2px solid #333; border-radius: 10px;
+  padding: 14px; cursor: pointer; transition: all 0.2s; text-align: center;
+}
+#mission-select .mission-card:hover { border-color: #888; }
+#mission-select .mission-card.selected { border-color: #ffcc00; background: #1a202e; box-shadow: 0 0 12px rgba(255,204,0,0.25); }
+#mission-select .mission-card .m-icon { font-size: 28px; margin-bottom: 4px; }
+#mission-select .mission-card .m-name { color: #fff; font-weight: bold; font-size: 14px; margin-bottom: 4px; }
+#mission-select .mission-card .m-desc { color: #888; font-size: 11px; line-height: 1.4; }
+#mission-select .m-info { color: #aaa; font-size: 11px; margin-bottom: 4px; }
+#mission-select .diff-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; }
+#mission-select .diff-row span { color: #888; font-size: 13px; }
+#mission-select .diff-btn {
+  padding: 6px 16px; border: 2px solid #444; border-radius: 6px;
+  background: #1a1a2e; color: #ccc; cursor: pointer; font-size: 13px;
+  font-family: inherit; transition: all 0.15s;
+}
+#mission-select .diff-btn:hover { border-color: #888; }
+#mission-select .diff-btn.selected { border-color: #ffcc00; color: #ffcc00; }
+#mission-select .btn-go {
+  display: block; margin: 0 auto; padding: 12px 48px;
+  border: 2px solid #2d6a4f; border-radius: 10px;
+  background: #1a3a2a; color: #95d5b2; cursor: pointer;
+  font-size: 18px; font-weight: bold; font-family: inherit; transition: all 0.2s;
+}
+#mission-select .btn-go:hover { background: #2d6a4f; color: #fff; }
 </style>
 </head>
 <body>
@@ -99,7 +148,8 @@ canvas { display: block; width: 100%; height: 100%; }
   <div id="top-bar">
     <div class="info-group">
       <span class="label">关卡</span>
-      <span id="difficulty-text" class="value" style="color:#ff3333;">平原遭遇战（地狱·3000敌）</span>
+      <span id="mission-name" class="value" style="color:#ffcc00;">--</span>
+      <span id="difficulty-badge" style="font-size:11px;padding:2px 8px;border-radius:3px;">--</span>
     </div>
     <div class="info-group">
       <span class="label">状态</span>
@@ -118,10 +168,6 @@ canvas { display: block; width: 100%; height: 100%; }
       <span id="enemy-count" class="value">0</span>
     </div>
     <div class="info-group">
-      <span class="label">已部署</span>
-      <span id="deployed-count" class="value">0 / 500</span>
-    </div>
-    <div class="info-group">
       <span class="label">技能</span>
       <span id="skill-status-text" class="value">就绪</span>
     </div>
@@ -133,73 +179,93 @@ canvas { display: block; width: 100%; height: 100%; }
       <div class="result-box">
         <div id="result-title" class="result-title"></div>
         <div id="result-stats" class="result-stats"></div>
+        <button id="btn-retry">🔄 重试本关</button>
+        <button id="btn-back">🗺 选择关卡</button>
       </div>
     </div>
     <div id="skill-indicator">⚔ 战鼓激励</div>
+    <div id="mission-select">
+      <div class="select-box">
+        <h2>⚔ 钢铁战旗</h2>
+        <div class="subtitle">选择关卡与难度</div>
+        <div class="mission-grid" id="mission-grid"></div>
+        <div class="diff-row">
+          <span>难度：</span>
+          <button class="diff-btn selected" data-diff="0">🟢 普通</button>
+          <button class="diff-btn" data-diff="1">🟡 困难</button>
+          <button class="diff-btn" data-diff="2">🔴 地狱</button>
+        </div>
+        <button class="btn-go" id="btn-go">⚡ 出征</button>
+      </div>
+    </div>
   </div>
   <div id="bottom-bar">
-    <button id="btn-shield" class="active" data-type="shield">🛡 盾兵</button>
-    <button id="btn-spear" data-type="spear">🔱 长矛兵</button>
-    <button id="btn-cavalry" data-type="cavalry">⚔ 骑兵</button>
-    <button id="btn-archer" data-type="archer">🏹 射手</button>
-    <button id="btn-maxim" data-type="maxim">🔫 马克沁</button>
-    <button id="btn-musketeer" data-type="musketeer">🎯 火枪手</button>
-    <button id="btn-artillery" data-type="artillery">💣 炮兵</button>
+    <button id="btn-shield" class="active" data-type="shield">🛡 盾兵<span class="unit-count">0/120</span></button>
+    <button id="btn-spear" data-type="spear">🔱 长矛兵<span class="unit-count">0/100</span></button>
+    <button id="btn-cavalry" data-type="cavalry">⚔ 骑兵<span class="unit-count">0/40</span></button>
+    <button id="btn-archer" data-type="archer">🏹 射手<span class="unit-count">0/60</span></button>
+    <button id="btn-maxim" data-type="maxim">🔫 马克沁<span class="unit-count">0/16</span></button>
+    <button id="btn-musketeer" data-type="musketeer">🎯 火枪手<span class="unit-count">0/50</span></button>
+    <button id="btn-artillery" data-type="artillery">💣 炮兵<span class="unit-count">0/10</span></button>
     <button id="btn-skill" class="btn-skill">📯 战鼓激励</button>
-    <span id="count-badge" class="count-badge">已部署: 0 / 500</span>
     <button id="btn-start" class="btn-start">⚡ 开始战斗</button>
     <button id="btn-reset" class="btn-reset">🔄 重置关卡</button>
+    <button id="btn-choose-mission" class="btn-mission">🗺 选关</button>
   </div>
 </div>
 
 <script>
 // ============================================================
-// CONFIGURATION
+// CONFIGURATION - Numerically rebalanced for realism
 // ============================================================
 const UNIT_CONFIG = {
   shield: {
-    name: '盾兵', hp: 160, attack: 8, range: 18, speed: 0.55,
+    name: '盾兵', hp: 180, attack: 12, range: 18, speed: 0.45,
     attackCooldown: 900, radius: 7, color: '#3366cc', colorDark: '#2244aa',
-    shape: 'square', category: 'shield'
+    shape: 'square', category: 'shield', maxCount: 120
   },
   spear: {
-    name: '长矛兵', hp: 100, attack: 14, range: 28, speed: 0.75,
+    name: '长矛兵', hp: 110, attack: 20, range: 34, speed: 0.65,
     attackCooldown: 850, radius: 6, color: '#3355aa', colorDark: '#223388',
-    shape: 'triangle', category: 'spear', bonusVs: 'cavalry', bonusMultiplier: 1.6
+    shape: 'triangle', category: 'spear', bonusVs: 'cavalry', bonusMultiplier: 2.2,
+    maxCount: 100
   },
   cavalry: {
-    name: '骑兵', hp: 130, attack: 22, range: 18, speed: 1.35,
-    attackCooldown: 1000, radius: 8, color: '#2244aa', colorDark: '#112266',
-    shape: 'diamond', category: 'cavalry', bonusVs: 'archer', bonusMultiplier: 1.7
+    name: '骑兵', hp: 150, attack: 32, range: 18, speed: 1.5,
+    attackCooldown: 1100, radius: 8, color: '#2244aa', colorDark: '#112266',
+    shape: 'diamond', category: 'cavalry', bonusVs: 'archer', bonusMultiplier: 2.0,
+    maxCount: 40
   },
   archer: {
-    name: '射手', hp: 70, attack: 12, range: 130, speed: 0.6,
-    attackCooldown: 1200, radius: 5, color: '#4488bb', colorDark: '#226699',
-    shape: 'circle', category: 'archer', projectile: true
+    name: '射手', hp: 60, attack: 16, range: 150, speed: 0.55,
+    attackCooldown: 1300, radius: 5, color: '#4488bb', colorDark: '#226699',
+    shape: 'circle', category: 'archer', projectile: true, maxCount: 60
   },
   general: {
-    name: '将军', hp: 500, attack: 35, range: 26, speed: 0.8,
+    name: '将军', hp: 600, attack: 45, range: 30, speed: 0.7,
     attackCooldown: 800, radius: 12, color: '#ffcc00', colorDark: '#cc9900',
-    shape: 'star', category: 'general'
+    shape: 'star', category: 'general', maxCount: 1
   },
   maxim: {
-    name: '马克沁', hp: 100, attack: 50, range: 250, speed: 0.2,
-    attackCooldown: 60, radius: 11, color: '#556677', colorDark: '#334455',
-    shape: 'maxim', category: 'maxim', projectile: true, crewCost: 2,
-    bonusVs: 'shield', bonusMultiplier: 1.8, splashRadius: 45, splashTargets: 4
+    name: '马克沁', hp: 120, attack: 65, range: 280, speed: 0.15,
+    attackCooldown: 50, radius: 11, color: '#556677', colorDark: '#334455',
+    shape: 'maxim', category: 'maxim', projectile: true,
+    bonusVs: 'shield', bonusMultiplier: 2.5, splashRadius: 50, splashTargets: 5,
+    maxCount: 16
   },
   musketeer: {
-    name: '火枪手', hp: 110, attack: 30, range: 110, speed: 0.7,
-    attackCooldown: 1400, radius: 7, color: '#336644', colorDark: '#224422',
+    name: '火枪手', hp: 90, attack: 38, range: 130, speed: 0.6,
+    attackCooldown: 1600, radius: 7, color: '#336644', colorDark: '#224422',
     shape: 'musketeer', category: 'musketeer', projectile: true,
-    bayonetAttack: 42, bayonetRange: 24, bayonetCooldown: 850,
-    bonusVs: 'cavalry', bonusMultiplier: 1.6
+    bayonetAttack: 55, bayonetRange: 22, bayonetCooldown: 800,
+    bonusVs: 'cavalry', bonusMultiplier: 1.7, maxCount: 50
   },
   artillery: {
-    name: '炮兵', hp: 80, attack: 180, range: 900, speed: 0.15,
-    attackCooldown: 3800, radius: 14, color: '#555533', colorDark: '#333311',
-    shape: 'artillery', category: 'artillery', projectile: true, crewCost: 3,
-    bonusVs: 'shield', bonusMultiplier: 2.0, splashRadius: 80, splashTargets: 10
+    name: '炮兵', hp: 70, attack: 250, range: 1000, speed: 0.1,
+    attackCooldown: 4500, radius: 14, color: '#555533', colorDark: '#333311',
+    shape: 'artillery', category: 'artillery', projectile: true,
+    bonusVs: 'shield', bonusMultiplier: 2.8, splashRadius: 100, splashTargets: 12,
+    maxCount: 10
   }
 };
 
@@ -214,41 +280,147 @@ const ENEMY_COLORS = {
   artillery:  { color: '#888833', colorDark: '#666611' }
 };
 
-const ENEMY_ARMY = [
-  { type: 'shield', count: 800, zone: 'front' },
-  { type: 'spear', count: 700, zone: 'mid' },
-  { type: 'cavalry', count: 500, zone: 'flank' },
-  { type: 'archer', count: 999, zone: 'back' },
-  { type: 'general', count: 1, zone: 'command' }
+// Difficulty levels
+const DIFFICULTY_LEVELS = [
+  { name: '普通', emoji: '🟢', enemyCountMul: 1.0, enemyStatMul: 1.0, cssClass: 'diff-normal' },
+  { name: '困难', emoji: '🟡', enemyCountMul: 1.6, enemyStatMul: 1.2, cssClass: 'diff-hard' },
+  { name: '地狱', emoji: '🔴', enemyCountMul: 2.5, enemyStatMul: 1.4, cssClass: 'diff-hell' }
 ];
 
-const MAX_PLAYER_UNITS = 500;
+// Mission definitions - different terrain & enemy deployment patterns
+const MISSIONS = [
+  {
+    id: 'plains',
+    name: '平原遭遇战',
+    icon: '🌾',
+    desc: '开阔平原上的正面交锋。敌我双方在平坦地形上列阵对战。',
+    terrainType: 'plains',
+    terrainZones: [],
+    enemyGroups: [
+      { type: 'shield', count: 400, x1: 0.55, y1: 0.05, x2: 0.85, y2: 0.95 },
+      { type: 'spear', count: 300, x1: 0.65, y1: 0.08, x2: 0.9, y2: 0.92 },
+      { type: 'cavalry', count: 150, x1: 0.5, y1: 0.05, x2: 0.6, y2: 0.3 },
+      { type: 'cavalry', count: 150, x1: 0.5, y1: 0.7, x2: 0.6, y2: 0.95 },
+      { type: 'archer', count: 350, x1: 0.75, y1: 0.1, x2: 0.92, y2: 0.9 },
+      { type: 'general', count: 1, x1: 0.7, y1: 0.45, x2: 0.7, y2: 0.55 }
+    ]
+  },
+  {
+    id: 'canyon',
+    name: '峡谷伏击战',
+    icon: '⛰',
+    desc: '狭窄峡谷中遭遇伏击。敌军从前方和侧翼同时进攻，地形限制骑兵机动。',
+    terrainType: 'canyon',
+    terrainZones: [
+      { x1: 0.15, y1: 0, x2: 0.85, y2: 0.15, type: 'rough', speedMul: 0.5 },
+      { x1: 0.15, y1: 0.85, x2: 0.85, y2: 1.0, type: 'rough', speedMul: 0.5 }
+    ],
+    enemyGroups: [
+      { type: 'shield', count: 300, x1: 0.55, y1: 0.18, x2: 0.85, y2: 0.82 },
+      { type: 'spear', count: 250, x1: 0.6, y1: 0.2, x2: 0.9, y2: 0.8 },
+      { type: 'cavalry', count: 80, x1: 0.5, y1: 0.2, x2: 0.6, y2: 0.45 },
+      { type: 'cavalry', count: 80, x1: 0.5, y1: 0.55, x2: 0.6, y2: 0.8 },
+      { type: 'archer', count: 250, x1: 0.75, y1: 0.2, x2: 0.92, y2: 0.8 },
+      { type: 'general', count: 1, x1: 0.72, y1: 0.45, x2: 0.72, y2: 0.55 }
+    ]
+  },
+  {
+    id: 'river',
+    name: '河流渡口防御',
+    icon: '🌊',
+    desc: '守卫河岸渡口。河流阻碍行军速度，但远程兵种可以在对岸输出。',
+    terrainType: 'river',
+    terrainZones: [
+      { x1: 0.38, y1: 0, x2: 0.5, y2: 1.0, type: 'river', speedMul: 0.3 }
+    ],
+    enemyGroups: [
+      { type: 'shield', count: 350, x1: 0.55, y1: 0.05, x2: 0.82, y2: 0.95 },
+      { type: 'spear', count: 350, x1: 0.65, y1: 0.08, x2: 0.9, y2: 0.92 },
+      { type: 'cavalry', count: 100, x1: 0.5, y1: 0.4, x2: 0.62, y2: 0.6 },
+      { type: 'archer', count: 450, x1: 0.78, y1: 0.1, x2: 0.93, y2: 0.9 },
+      { type: 'musketeer', count: 80, x1: 0.7, y1: 0.15, x2: 0.85, y2: 0.85 },
+      { type: 'general', count: 1, x1: 0.82, y1: 0.45, x2: 0.82, y2: 0.55 }
+    ]
+  },
+  {
+    id: 'highland',
+    name: '高地守卫战',
+    icon: '🏔',
+    desc: '据守高地阻击敌军。我方居高临下获得射程优势，但敌军兵力众多。',
+    terrainType: 'highland',
+    terrainZones: [
+      { x1: 0.02, y1: 0, x2: 0.3, y2: 1.0, type: 'highground', speedMul: 1.0, rangeBonus: 1.25 }
+    ],
+    enemyGroups: [
+      { type: 'shield', count: 500, x1: 0.55, y1: 0.05, x2: 0.85, y2: 0.95 },
+      { type: 'spear', count: 400, x1: 0.65, y1: 0.08, x2: 0.92, y2: 0.92 },
+      { type: 'cavalry', count: 250, x1: 0.5, y1: 0.05, x2: 0.6, y2: 0.3 },
+      { type: 'cavalry', count: 250, x1: 0.5, y1: 0.7, x2: 0.6, y2: 0.95 },
+      { type: 'archer', count: 500, x1: 0.75, y1: 0.1, x2: 0.93, y2: 0.9 },
+      { type: 'general', count: 1, x1: 0.85, y1: 0.45, x2: 0.85, y2: 0.55 }
+    ]
+  },
+  {
+    id: 'flanking',
+    name: '侧翼包围',
+    icon: '🐴',
+    desc: '敌军骑兵从侧翼迂回包抄。需同时防守正面和两侧，考验布阵智慧。',
+    terrainType: 'flanking',
+    terrainZones: [],
+    enemyGroups: [
+      { type: 'shield', count: 300, x1: 0.55, y1: 0.25, x2: 0.8, y2: 0.75 },
+      { type: 'spear', count: 250, x1: 0.6, y1: 0.3, x2: 0.88, y2: 0.7 },
+      { type: 'cavalry', count: 200, x1: 0.3, y1: 0.03, x2: 0.5, y2: 0.2 },
+      { type: 'cavalry', count: 200, x1: 0.3, y1: 0.8, x2: 0.5, y2: 0.97 },
+      { type: 'archer', count: 250, x1: 0.72, y1: 0.15, x2: 0.9, y2: 0.85 },
+      { type: 'general', count: 1, x1: 0.7, y1: 0.45, x2: 0.7, y2: 0.55 }
+    ]
+  },
+  {
+    id: 'fortress',
+    name: '要塞攻防战',
+    icon: '🏰',
+    desc: '依托要塞防御敌军重兵集团。敌军拥有大量攻城炮兵和步兵，坚守阵地！',
+    terrainType: 'fortress',
+    terrainZones: [
+      { x1: 0.02, y1: 0.25, x2: 0.25, y2: 0.75, type: 'fort', speedMul: 1.0, defenseBonus: true }
+    ],
+    enemyGroups: [
+      { type: 'shield', count: 600, x1: 0.55, y1: 0.05, x2: 0.85, y2: 0.95 },
+      { type: 'spear', count: 400, x1: 0.65, y1: 0.08, x2: 0.9, y2: 0.92 },
+      { type: 'archer', count: 400, x1: 0.75, y1: 0.1, x2: 0.93, y2: 0.9 },
+      { type: 'musketeer', count: 120, x1: 0.7, y1: 0.12, x2: 0.88, y2: 0.88 },
+      { type: 'artillery', count: 20, x1: 0.78, y1: 0.2, x2: 0.9, y2: 0.8 },
+      { type: 'general', count: 1, x1: 0.85, y1: 0.45, x2: 0.85, y2: 0.55 }
+    ]
+  }
+];
+
 const COUNTDOWN_SECONDS = 3;
-const DIFFICULTY_NAME = '平原遭遇战（地狱·3000敌）';
 
 const SKILL_CONFIG = {
   cooldown: 15000,
   duration: 5000,
-  attackBoost: 1.3,
-  speedBoost: 1.2
+  attackBoost: 1.35,
+  speedBoost: 1.25
 };
 
 const MORALE_CONFIG = {
-  generalAuraRadius: 150,
-  attackBoostNearGeneral: 1.1,
-  speedPenaltyGeneralDead: 0.9,
-  cooldownPenaltyGeneralDead: 1.1
+  generalAuraRadius: 160,
+  attackBoostNearGeneral: 1.12,
+  speedPenaltyGeneralDead: 0.88,
+  cooldownPenaltyGeneralDead: 1.12
 };
 
 const SPATIAL_CELL_SIZE = 100;
 const TARGET_UPDATE_INTERVAL = 20;
-const MAX_PROJECTILES = 1000;
+const MAX_PROJECTILES = 1200;
 const SEPARATION_RADIUS = 22;
 const SEPARATION_FORCE = 0.35;
 const SEPARATION_UPDATE_INTERVAL = 3;
 
 // ============================================================
-// SPATIAL GRID for performance optimization
+// SPATIAL GRID
 // ============================================================
 class SpatialGrid {
   constructor(width, height, cellSize) {
@@ -258,9 +430,7 @@ class SpatialGrid {
     this.cells = new Array(this.cols * this.rows);
     this.clear();
   }
-  clear() {
-    for (let i = 0; i < this.cells.length; i++) this.cells[i] = [];
-  }
+  clear() { for (let i = 0; i < this.cells.length; i++) this.cells[i] = []; }
   getIndex(x, y) {
     const cx = Math.floor(x / this.cellSize);
     const cy = Math.floor(y / this.cellSize);
@@ -293,11 +463,9 @@ class SpatialGrid {
 class Projectile {
   constructor(x, y, target, damage, team, isTracer = false) {
     this.x = x; this.y = y;
-    this.target = target;
-    this.damage = damage;
-    this.team = team;
-    this.isHeavy = damage >= 100; // Artillery cannonball
-    this.speed = this.isHeavy ? 3 : (isTracer ? 7 : 4);
+    this.target = target; this.damage = damage; this.team = team;
+    this.isHeavy = damage >= 120;
+    this.speed = this.isHeavy ? 3.5 : (isTracer ? 8 : 5);
     this.alive = true;
     this.radius = this.isHeavy ? 5 : (isTracer ? 1.5 : 2);
     this.vx = 0; this.vy = 0;
@@ -320,35 +488,21 @@ class Projectile {
   }
   draw(ctx) {
     if (this.isHeavy) {
-      // Cannonball with smoke trail
       ctx.fillStyle = 'rgba(80,80,80,0.4)';
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius + 3, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.radius + 3, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = '#333';
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = '#555';
-      ctx.beginPath();
-      ctx.arc(this.x - 1, this.y - 1, this.radius * 0.6, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(this.x - 1, this.y - 1, this.radius * 0.6, 0, Math.PI * 2); ctx.fill();
     } else if (this.isTracer) {
       ctx.strokeStyle = this.team === 0 ? '#ffdd44' : '#ff8844';
       ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(this.x, this.y);
-      ctx.lineTo(this.x - this.vx * 1.5, this.y - this.vy * 1.5);
-      ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(this.x, this.y); ctx.lineTo(this.x - this.vx * 1.5, this.y - this.vy * 1.5); ctx.stroke();
       ctx.fillStyle = this.team === 0 ? '#ffdd44' : '#ff8844';
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fill();
     } else {
       ctx.fillStyle = this.team === 0 ? '#88ccff' : '#ff8866';
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fill();
     }
   }
 }
@@ -357,18 +511,18 @@ class Projectile {
 // UNIT CLASS
 // ============================================================
 class Unit {
-  constructor(type, x, y, team, isGeneral = false) {
+  constructor(type, x, y, team, isGeneral = false, statMul = 1.0) {
     const cfg = UNIT_CONFIG[type];
     this.type = type;
     this.category = cfg.category;
     this.x = x; this.y = y;
-    this.team = team; // 0 = player, 1 = enemy
+    this.team = team;
     this.isGeneral = isGeneral;
     this.alive = true;
 
-    this.maxHp = cfg.hp;
-    this.hp = cfg.hp;
-    this.baseAttack = cfg.attack;
+    this.maxHp = Math.round(cfg.hp * statMul);
+    this.hp = this.maxHp;
+    this.baseAttack = Math.round(cfg.attack * statMul);
     this.baseRange = cfg.range;
     this.baseSpeed = cfg.speed;
     this.baseAttackCooldown = cfg.attackCooldown;
@@ -392,17 +546,16 @@ class Unit {
     this.targetUpdateCounter = Math.floor(Math.random() * TARGET_UPDATE_INTERVAL);
     this.separationCounter = Math.floor(Math.random() * SEPARATION_UPDATE_INTERVAL);
     this.vx = 0; this.vy = 0;
-
-    // For rendering
     this.flashTimer = 0;
     this.skillGlowTimer = 0;
+    this.terrainRangeBonus = null;
+    this.terrainSpeedMul = null;
+    this.terrainDefenseBonus = false;
   }
 
   getAttack() {
     let atk = this.baseAttack;
-    // Morale: general alive nearby boost
     if (this.moraleAttackBoost) atk *= this.moraleAttackBoost;
-    // General skill boost
     if (this.skillAttackBoost) atk *= this.skillAttackBoost;
     return atk;
   }
@@ -411,6 +564,7 @@ class Unit {
     let spd = this.baseSpeed;
     if (this.moraleSpeedPenalty) spd *= this.moraleSpeedPenalty;
     if (this.skillSpeedBoost) spd *= this.skillSpeedBoost;
+    if (this.terrainSpeedMul) spd *= this.terrainSpeedMul;
     return spd;
   }
 
@@ -420,15 +574,17 @@ class Unit {
     return cd;
   }
 
-  getRange() { return this.baseRange; }
+  getRange() {
+    let r = this.baseRange;
+    if (this.terrainRangeBonus) r *= this.terrainRangeBonus;
+    return r;
+  }
 
   takeDamage(amount) {
+    if (this.terrainDefenseBonus) amount *= 0.8;
     this.hp -= amount;
     this.flashTimer = 6;
-    if (this.hp <= 0) {
-      this.hp = 0;
-      this.alive = false;
-    }
+    if (this.hp <= 0) { this.hp = 0; this.alive = false; }
   }
 
   distanceTo(other) {
@@ -438,7 +594,6 @@ class Unit {
   }
 
   findTarget(game) {
-    // Search radius wide enough to find enemies in adjacent formations
     const SEARCH_RADIUS = 400;
     let bestDist = SEARCH_RADIUS;
     let bestTarget = null;
@@ -446,14 +601,9 @@ class Unit {
     for (let i = 0; i < enemies.length; i++) {
       const e = enemies[i];
       if (e.team === this.team || !e.alive) continue;
-      // Cavalry prefers archers
       let priorityDist = this.distanceTo(e);
-      if (this.bonusVs === 'archer' && e.category === 'archer') priorityDist *= 0.5;
-      if (this.bonusVs === 'shield' && e.category === 'shield') priorityDist *= 0.5;
-      if (priorityDist < bestDist) {
-        bestDist = priorityDist;
-        bestTarget = e;
-      }
+      if (this.bonusVs === e.category) priorityDist *= 0.4;
+      if (priorityDist < bestDist) { bestDist = priorityDist; bestTarget = e; }
     }
     this.target = bestTarget;
   }
@@ -463,13 +613,11 @@ class Unit {
     if (this.flashTimer > 0) this.flashTimer--;
     if (this.skillGlowTimer > 0) this.skillGlowTimer--;
 
-    // Update morale effects
     this.updateMorale(game);
+    this.updateTerrain(game);
 
-    // Cooldown tick
     if (this.attackCooldownTimer > 0) this.attackCooldownTimer -= dt;
 
-    // Update target periodically
     this.targetUpdateCounter--;
     if (this.targetUpdateCounter <= 0) {
       this.targetUpdateCounter = TARGET_UPDATE_INTERVAL;
@@ -480,14 +628,9 @@ class Unit {
     if (this.target) {
       const dist = this.distanceTo(this.target);
       if (dist <= this.getRange()) {
-        // In range: attack
-        if (this.attackCooldownTimer <= 0) {
-          this.attackTarget(game);
-        }
-        // Stop moving
+        if (this.attackCooldownTimer <= 0) this.attackTarget(game);
         this.vx = 0; this.vy = 0;
       } else {
-        // Move toward target
         const dx = this.target.x - this.x;
         const dy = this.target.y - this.y;
         const d = Math.sqrt(dx * dx + dy * dy);
@@ -498,24 +641,20 @@ class Unit {
         }
       }
     } else {
-      // No target: advance toward enemy side
       const dir = this.team === 0 ? 1 : -1;
       this.vx = dir * this.getSpeed() * 0.8;
       this.vy = (Math.random() - 0.5) * this.getSpeed() * 0.4;
     }
 
-    // Apply separation from nearby allies (throttled)
     this.separationCounter--;
     if (this.separationCounter <= 0) {
       this.separationCounter = SEPARATION_UPDATE_INTERVAL;
       this.applySeparation(game);
     }
 
-    // Move
     this.x += this.vx * dt * 0.06;
     this.y += this.vy * dt * 0.06;
 
-    // Clamp to battlefield
     const margin = this.radius + 2;
     if (this.x < margin) this.x = margin;
     if (this.y < margin) this.y = margin;
@@ -529,8 +668,7 @@ class Unit {
     for (let i = 0; i < nearby.length; i++) {
       const u = nearby[i];
       if (u === this || !u.alive || u.team !== this.team) continue;
-      const dx = this.x - u.x;
-      const dy = this.y - u.y;
+      const dx = this.x - u.x, dy = this.y - u.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
       const minDist = this.radius + u.radius + 2;
       if (dist < minDist && dist > 0.01) {
@@ -549,10 +687,7 @@ class Unit {
     this.moraleAttackBoost = null;
     this.moraleSpeedPenalty = null;
     this.moraleCooldownPenalty = null;
-
-    // Use cached general references from Game (set once per frame in Game.update)
     const general = this.team === 0 ? game.playerGeneral : game.enemyGeneral;
-
     if (general) {
       if (this !== general) {
         const distToGeneral = this.distanceTo(general);
@@ -566,17 +701,28 @@ class Unit {
     }
   }
 
+  updateTerrain(game) {
+    this.terrainRangeBonus = null;
+    this.terrainSpeedMul = null;
+    this.terrainDefenseBonus = false;
+    for (const zone of game.terrainZones) {
+      if (this.x >= zone.x1 && this.x <= zone.x2 && this.y >= zone.y1 && this.y <= zone.y2) {
+        if (zone.speedMul !== undefined && zone.speedMul !== 1.0) this.terrainSpeedMul = zone.speedMul;
+        if (zone.rangeBonus) this.terrainRangeBonus = zone.rangeBonus;
+        if (zone.defenseBonus) this.terrainDefenseBonus = true;
+        break;
+      }
+    }
+  }
+
   attackTarget(game) {
     const target = this.target;
     if (!target || !target.alive) return;
-
     const cfg = UNIT_CONFIG[this.type];
 
-    // Musketeer: bayonet charge when enemy is close
     if (cfg.bayonetRange !== undefined) {
       const dist = this.distanceTo(target);
       if (dist <= cfg.bayonetRange) {
-        // Bayonet melee strike
         let dmg = cfg.bayonetAttack;
         if (this.bonusVs && target.category === this.bonusVs) dmg *= this.bonusMultiplier;
         target.takeDamage(dmg);
@@ -586,18 +732,11 @@ class Unit {
     }
 
     let dmg = this.getAttack();
-
-    // Bonus vs specific unit type
-    if (this.bonusVs && target.category === this.bonusVs) {
-      dmg *= this.bonusMultiplier;
-    }
+    if (this.bonusVs && target.category === this.bonusVs) dmg *= this.bonusMultiplier;
 
     if (this.isRanged) {
-      // Spawn projectile at primary target
       const isTracer = this.category === 'maxim' || this.category === 'artillery';
       game.addProjectile(this.x, this.y, target, dmg, this.team, isTracer);
-
-      // Splash damage (Maxim / Artillery)
       if (cfg.splashRadius && cfg.splashTargets) {
         const nearby = game.spatialGrid.getNearby(target.x, target.y, cfg.splashRadius);
         let splashed = 0;
@@ -616,7 +755,6 @@ class Unit {
     } else {
       target.takeDamage(dmg);
     }
-
     this.attackCooldownTimer = this.getAttackCooldown();
   }
 
@@ -625,30 +763,26 @@ class Unit {
     ctx.save();
     ctx.translate(this.x, this.y);
 
-    // Skill glow ring
     if (this.skillGlowTimer > 0) {
-      ctx.beginPath();
-      ctx.arc(0, 0, this.radius + 6, 0, Math.PI * 2);
+      ctx.beginPath(); ctx.arc(0, 0, this.radius + 6, 0, Math.PI * 2);
       ctx.strokeStyle = `rgba(255,204,0,${this.skillGlowTimer / 30})`;
-      ctx.lineWidth = 2;
-      ctx.stroke();
+      ctx.lineWidth = 2; ctx.stroke();
     }
 
-    // Flash on damage
     const baseColor = this.flashTimer > 0 ? '#ffffff' : this.color;
 
-    // General gold border
     if (this.isGeneral) {
-      ctx.beginPath();
-      ctx.arc(0, 0, this.radius + 3, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,200,0,0.6)';
-      ctx.fill();
-      ctx.strokeStyle = '#ffcc00';
-      ctx.lineWidth = 2;
-      ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, 0, this.radius + 3, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,200,0,0.6)'; ctx.fill();
+      ctx.strokeStyle = '#ffcc00'; ctx.lineWidth = 2; ctx.stroke();
     }
 
-    // Draw shape
+    // Defense bonus shield indicator
+    if (this.terrainDefenseBonus) {
+      ctx.beginPath(); ctx.arc(0, 0, this.radius + 5, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(100,200,255,0.5)'; ctx.lineWidth = 2; ctx.stroke();
+    }
+
     ctx.fillStyle = baseColor;
     ctx.strokeStyle = this.colorDark;
     ctx.lineWidth = 1;
@@ -656,61 +790,35 @@ class Unit {
 
     switch (this.shape) {
       case 'square':
-        ctx.rect(-this.radius, -this.radius, this.radius * 2, this.radius * 2);
-        break;
+        ctx.rect(-this.radius, -this.radius, this.radius * 2, this.radius * 2); break;
       case 'triangle':
-        ctx.moveTo(0, -this.radius);
-        ctx.lineTo(-this.radius, this.radius);
-        ctx.lineTo(this.radius, this.radius);
-        ctx.closePath();
-        break;
+        ctx.moveTo(0, -this.radius); ctx.lineTo(-this.radius, this.radius);
+        ctx.lineTo(this.radius, this.radius); ctx.closePath(); break;
       case 'diamond':
-        ctx.moveTo(0, -this.radius);
-        ctx.lineTo(this.radius, 0);
-        ctx.lineTo(0, this.radius);
-        ctx.lineTo(-this.radius, 0);
-        ctx.closePath();
-        break;
+        ctx.moveTo(0, -this.radius); ctx.lineTo(this.radius, 0);
+        ctx.lineTo(0, this.radius); ctx.lineTo(-this.radius, 0); ctx.closePath(); break;
       case 'star':
-        this.drawStar(ctx, 0, 0, this.radius, this.radius * 0.45, 5);
-        break;
-      case 'maxim':
-        this.drawMaxim(ctx);
-        break;
-      case 'musketeer':
-        this.drawMusketeer(ctx);
-        break;
-      case 'artillery':
-        this.drawArtillery(ctx);
-        break;
+        this.drawStar(ctx, 0, 0, this.radius, this.radius * 0.45, 5); break;
+      case 'maxim': this.drawMaxim(ctx); break;
+      case 'musketeer': this.drawMusketeer(ctx); break;
+      case 'artillery': this.drawArtillery(ctx); break;
       case 'circle':
-      default:
-        ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
-        break;
+      default: ctx.arc(0, 0, this.radius, 0, Math.PI * 2); break;
     }
-    ctx.fill();
-    ctx.stroke();
+    ctx.fill(); ctx.stroke();
 
-    // Health bar
     if (this.hp < this.maxHp) {
-      const barW = this.radius * 2.2;
-      const barH = 3;
-      const barY = -this.radius - 8;
+      const barW = this.radius * 2.2, barH = 3, barY = -this.radius - 8;
       const hpRatio = this.hp / this.maxHp;
-      ctx.fillStyle = '#400000';
-      ctx.fillRect(-barW / 2, barY, barW, barH);
+      ctx.fillStyle = '#400000'; ctx.fillRect(-barW / 2, barY, barW, barH);
       ctx.fillStyle = hpRatio > 0.5 ? '#44cc44' : hpRatio > 0.25 ? '#cccc44' : '#cc4444';
       ctx.fillRect(-barW / 2, barY, barW * hpRatio, barH);
     }
 
-    // General indicator
     if (this.isGeneral) {
-      ctx.fillStyle = '#fff';
-      ctx.font = `${this.radius}px sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.fillText('★', 0, this.radius * 0.35);
+      ctx.fillStyle = '#fff'; ctx.font = `${this.radius}px sans-serif`;
+      ctx.textAlign = 'center'; ctx.fillText('★', 0, this.radius * 0.35);
     }
-
     ctx.restore();
   }
 
@@ -719,160 +827,82 @@ class Unit {
     for (let i = 0; i < points * 2; i++) {
       const r = i % 2 === 0 ? outerR : innerR;
       const angle = i * step - Math.PI / 2;
-      const x = cx + Math.cos(angle) * r;
-      const y = cy + Math.sin(angle) * r;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+      const x = cx + Math.cos(angle) * r, y = cy + Math.sin(angle) * r;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
     }
     ctx.closePath();
   }
 
   drawMaxim(ctx) {
     const r = this.radius;
-    // Gun body (water-cooled barrel jacket) - horizontal rectangle
-    ctx.fillStyle = '#3a4045';
-    ctx.fillRect(-r * 0.9, -r * 0.35, r * 1.8, r * 0.7);
-    ctx.strokeStyle = '#222';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(-r * 0.9, -r * 0.35, r * 1.8, r * 0.7);
-    // Barrel
-    ctx.fillStyle = '#2a2a2a';
-    ctx.fillRect(-r * 1.3, -r * 0.15, r * 0.5, r * 0.3);
-    // Water jacket rings
-    ctx.strokeStyle = '#555';
-    ctx.lineWidth = 0.5;
+    ctx.fillStyle = '#3a4045'; ctx.fillRect(-r * 0.9, -r * 0.35, r * 1.8, r * 0.7);
+    ctx.strokeStyle = '#222'; ctx.lineWidth = 1; ctx.strokeRect(-r * 0.9, -r * 0.35, r * 1.8, r * 0.7);
+    ctx.fillStyle = '#2a2a2a'; ctx.fillRect(-r * 1.3, -r * 0.15, r * 0.5, r * 0.3);
+    ctx.strokeStyle = '#555'; ctx.lineWidth = 0.5;
     for (let i = 0; i < 3; i++) {
       const sx = -r * 0.5 + i * r * 0.5;
-      ctx.beginPath();
-      ctx.moveTo(sx, -r * 0.35);
-      ctx.lineTo(sx, r * 0.35);
-      ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(sx, -r * 0.35); ctx.lineTo(sx, r * 0.35); ctx.stroke();
     }
-    // Tripod legs
-    ctx.strokeStyle = '#3a3025';
-    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = '#3a3025'; ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.moveTo(-r * 0.3, r * 0.35);
-    ctx.lineTo(-r * 0.5, r * 0.85);
-    ctx.moveTo(r * 0.3, r * 0.35);
-    ctx.lineTo(r * 0.5, r * 0.85);
-    ctx.moveTo(0, r * 0.35);
-    ctx.lineTo(0, r * 0.9);
-    ctx.stroke();
-    // Two crew dots behind gun
+    ctx.moveTo(-r * 0.3, r * 0.35); ctx.lineTo(-r * 0.5, r * 0.85);
+    ctx.moveTo(r * 0.3, r * 0.35); ctx.lineTo(r * 0.5, r * 0.85);
+    ctx.moveTo(0, r * 0.35); ctx.lineTo(0, r * 0.9); ctx.stroke();
     ctx.fillStyle = this.colorDark;
-    ctx.beginPath();
-    ctx.arc(-r * 0.4, -r * 0.9, r * 0.3, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(r * 0.5, -r * 0.8, r * 0.3, 0, Math.PI * 2);
-    ctx.fill();
-    // Muzzle flash when recently fired
+    ctx.beginPath(); ctx.arc(-r * 0.4, -r * 0.9, r * 0.3, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(r * 0.5, -r * 0.8, r * 0.3, 0, Math.PI * 2); ctx.fill();
     if (this.flashTimer > 0) {
       ctx.fillStyle = '#ffcc00';
-      ctx.beginPath();
-      ctx.arc(-r * 1.3, 0, r * 0.4, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(-r * 1.3, 0, r * 0.4, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.beginPath();
-      ctx.arc(-r * 1.3, 0, r * 0.2, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(-r * 1.3, 0, r * 0.2, 0, Math.PI * 2); ctx.fill();
     }
   }
 
   drawMusketeer(ctx) {
     const r = this.radius;
-    // Body - rectangle
-    ctx.fillStyle = this.colorDark;
-    ctx.fillRect(-r * 0.5, -r * 0.6, r, r * 1.2);
-    ctx.strokeStyle = '#111';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(-r * 0.5, -r * 0.6, r, r * 1.2);
-    // Hat
-    ctx.fillStyle = '#1a1a1a';
-    ctx.fillRect(-r * 0.7, -r * 1.1, r * 1.4, r * 0.5);
-    // Musket barrel - long thin line pointing forward-right
-    ctx.strokeStyle = '#4a3a2a';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(r * 0.5, -r * 0.2);
-    ctx.lineTo(r * 2.0, -r * 0.8);
-    ctx.stroke();
-    // Bayonet tip (triangle)
+    ctx.fillStyle = this.colorDark; ctx.fillRect(-r * 0.5, -r * 0.6, r, r * 1.2);
+    ctx.strokeStyle = '#111'; ctx.lineWidth = 1; ctx.strokeRect(-r * 0.5, -r * 0.6, r, r * 1.2);
+    ctx.fillStyle = '#1a1a1a'; ctx.fillRect(-r * 0.7, -r * 1.1, r * 1.4, r * 0.5);
+    ctx.strokeStyle = '#4a3a2a'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(r * 0.5, -r * 0.2); ctx.lineTo(r * 2.0, -r * 0.8); ctx.stroke();
     ctx.fillStyle = '#ccc';
-    ctx.beginPath();
-    ctx.moveTo(r * 2.0, -r * 0.8);
-    ctx.lineTo(r * 2.3, -r * 0.95);
-    ctx.lineTo(r * 1.9, -r * 1.05);
-    ctx.closePath();
-    ctx.fill();
-    // Musket stock
-    ctx.fillStyle = '#6b4a2a';
-    ctx.fillRect(-r * 1.0, -r * 0.3, r * 0.6, r * 0.2);
-    // Muzzle flash
+    ctx.beginPath(); ctx.moveTo(r * 2.0, -r * 0.8); ctx.lineTo(r * 2.3, -r * 0.95); ctx.lineTo(r * 1.9, -r * 1.05); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#6b4a2a'; ctx.fillRect(-r * 1.0, -r * 0.3, r * 0.6, r * 0.2);
     if (this.flashTimer > 2) {
       ctx.fillStyle = '#ffdd66';
-      ctx.beginPath();
-      ctx.arc(r * 2.0, -r * 0.8, r * 0.5, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(r * 2.0, -r * 0.8, r * 0.5, 0, Math.PI * 2); ctx.fill();
     }
   }
 
   drawArtillery(ctx) {
     const r = this.radius;
-    // Cannon wheels
-    ctx.strokeStyle = '#3a3020';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(-r * 0.6, r * 0.6, r * 0.45, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(r * 0.6, r * 0.6, r * 0.45, 0, Math.PI * 2);
-    ctx.stroke();
-    // Spokes
+    ctx.strokeStyle = '#3a3020'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(-r * 0.6, r * 0.6, r * 0.45, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(r * 0.6, r * 0.6, r * 0.45, 0, Math.PI * 2); ctx.stroke();
     ctx.lineWidth = 1;
     for (let w = -1; w <= 1; w += 2) {
       for (let a = 0; a < 4; a++) {
         const angle = a * Math.PI / 2;
         ctx.beginPath();
         ctx.moveTo(w * r * 0.6 + Math.cos(angle) * r * 0.15, r * 0.6 + Math.sin(angle) * r * 0.15);
-        ctx.lineTo(w * r * 0.6 + Math.cos(angle) * r * 0.4, r * 0.6 + Math.sin(angle) * r * 0.4);
-        ctx.stroke();
+        ctx.lineTo(w * r * 0.6 + Math.cos(angle) * r * 0.4, r * 0.6 + Math.sin(angle) * r * 0.4); ctx.stroke();
       }
     }
-    // Cannon barrel
-    ctx.strokeStyle = '#333';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.moveTo(-r * 0.3, -r * 0.1);
-    ctx.lineTo(-r * 1.5, -r * 0.5);
-    ctx.stroke();
-    // Barrel thicker part
-    ctx.fillStyle = '#444';
-    ctx.fillRect(-r * 1.3, -r * 0.7, r * 0.7, r * 0.6);
-    // Gun body
-    ctx.fillStyle = '#4a4a3a';
-    ctx.fillRect(-r * 0.7, -r * 0.3, r * 1.4, r * 0.8);
-    ctx.strokeStyle = '#222';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(-r * 0.7, -r * 0.3, r * 1.4, r * 0.8);
-    // Three crew dots
+    ctx.strokeStyle = '#333'; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(-r * 0.3, -r * 0.1); ctx.lineTo(-r * 1.5, -r * 0.5); ctx.stroke();
+    ctx.fillStyle = '#444'; ctx.fillRect(-r * 1.3, -r * 0.7, r * 0.7, r * 0.6);
+    ctx.fillStyle = '#4a4a3a'; ctx.fillRect(-r * 0.7, -r * 0.3, r * 1.4, r * 0.8);
+    ctx.strokeStyle = '#222'; ctx.lineWidth = 1; ctx.strokeRect(-r * 0.7, -r * 0.3, r * 1.4, r * 0.8);
     ctx.fillStyle = this.colorDark;
     for (let i = 0; i < 3; i++) {
-      ctx.beginPath();
-      ctx.arc(-r * 0.5 + i * r * 0.5, -r * 0.9, r * 0.25, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(-r * 0.5 + i * r * 0.5, -r * 0.9, r * 0.25, 0, Math.PI * 2); ctx.fill();
     }
-    // Muzzle flash
     if (this.flashTimer > 2) {
       ctx.fillStyle = '#ff8800';
-      ctx.beginPath();
-      ctx.arc(-r * 1.8, -r * 0.5, r * 0.7, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(-r * 1.8, -r * 0.5, r * 0.7, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = '#ffdd44';
-      ctx.beginPath();
-      ctx.arc(-r * 1.8, -r * 0.5, r * 0.35, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(-r * 1.8, -r * 0.5, r * 0.35, 0, Math.PI * 2); ctx.fill();
     }
   }
 }
@@ -884,53 +914,34 @@ class Game {
   constructor(canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
+    this.selectedMissionIdx = 0;
+    this.selectedDifficulty = 0;
+    this.playerDeployedByType = {};
     this.resize();
-
-    this.state = 'deploy'; // deploy | countdown | battle | win | lose
+    this.state = 'select';
     this.playerUnits = [];
     this.enemyUnits = [];
     this.projectiles = [];
-    this.playerDeployedCount = 0;
     this.selectedType = 'shield';
-
-    // Battle stats
     this.playerKills = 0;
     this.enemyKills = 0;
     this.initialPlayerCounts = {};
     this.initialEnemyCounts = {};
-
-    // Countdown
     this.countdownRemaining = 0;
-
-    // Skill
     this.skillCooldownRemaining = 0;
     this.skillActive = false;
     this.skillTimer = 0;
-
-    // Drag deployment
     this.isDragging = false;
-    this.dragStartX = 0;
-    this.dragStartY = 0;
-    this.dragEndX = 0;
-    this.dragEndY = 0;
-    this.mouseX = 0;
-    this.mouseY = 0;
-    this.mouseOnCanvas = false;
-
-    // Frame counter
+    this.dragStartX = 0; this.dragStartY = 0; this.dragEndX = 0; this.dragEndY = 0;
+    this.mouseX = 0; this.mouseY = 0; this.mouseOnCanvas = false;
     this.frameCount = 0;
-
-    // Cached general references for morale system
     this.playerGeneral = null;
     this.enemyGeneral = null;
-
-    // Spatial grid
     this.spatialGrid = null;
-
-    // Last time
+    this.terrainZones = [];
     this.lastTime = performance.now();
 
-    this.init();
+    this.setupMissionSelectUI();
     this.setupEvents();
     this.loop();
   }
@@ -943,8 +954,8 @@ class Game {
     this.canvas.height = this.canvasHeight;
     this.midline = this.canvasWidth / 2;
     this.spatialGrid = new SpatialGrid(this.canvasWidth, this.canvasHeight, SPATIAL_CELL_SIZE);
-    // Rebuild spatial grid with current units
     if (this.playerUnits && this.enemyUnits) this.rebuildSpatialGrid();
+    this.recalcTerrainZones();
   }
 
   rebuildSpatialGrid() {
@@ -954,11 +965,27 @@ class Game {
     for (const u of this.enemyUnits) if (u.alive) this.spatialGrid.insert(u);
   }
 
+  recalcTerrainZones() {
+    const mission = MISSIONS[this.selectedMissionIdx];
+    this.terrainZones = [];
+    for (const tz of mission.terrainZones) {
+      this.terrainZones.push({
+        x1: tz.x1 * this.canvasWidth,
+        y1: tz.y1 * this.canvasHeight,
+        x2: tz.x2 * this.canvasWidth,
+        y2: tz.y2 * this.canvasHeight,
+        type: tz.type,
+        speedMul: tz.speedMul,
+        rangeBonus: tz.rangeBonus,
+        defenseBonus: tz.defenseBonus || false
+      });
+    }
+  }
+
   init() {
     this.playerUnits = [];
     this.enemyUnits = [];
     this.projectiles = [];
-    this.playerDeployedCount = 0;
     this.playerKills = 0;
     this.enemyKills = 0;
     this.state = 'deploy';
@@ -967,108 +994,92 @@ class Game {
     this.skillTimer = 0;
     this.playerGeneral = null;
     this.enemyGeneral = null;
+    this.playerDeployedByType = {};
+    for (const key of Object.keys(UNIT_CONFIG)) {
+      this.playerDeployedByType[key] = 0;
+    }
 
-    // Deploy player general (free, doesn't count toward 500)
     const genX = this.midline * 0.35;
     const genY = this.canvasHeight / 2;
     this.playerUnits.push(new Unit('general', genX, genY, 0, true));
 
-    // Deploy enemy army
     this.createEnemyArmy();
+    this.recalcTerrainZones();
 
-    // Record initial counts
     this.initialPlayerCounts = this.countByType(this.playerUnits);
     this.initialEnemyCounts = this.countByType(this.enemyUnits);
 
     this.spatialGrid = new SpatialGrid(this.canvasWidth, this.canvasHeight, SPATIAL_CELL_SIZE);
+    document.getElementById('stats-panel').style.display = 'none';
+    document.getElementById('result-overlay').style.display = 'none';
+    document.getElementById('mission-select').style.display = 'none';
     this.updateUI();
   }
 
   countByType(units) {
     const counts = {};
-    for (const u of units) {
-      if (!u.alive) continue;
-      counts[u.category] = (counts[u.category] || 0) + 1;
-    }
+    for (const u of units) { if (!u.alive) continue; counts[u.category] = (counts[u.category] || 0) + 1; }
     return counts;
   }
 
-  countAlive(units) {
-    let c = 0;
-    for (const u of units) if (u.alive) c++;
-    return c;
-  }
+  countAlive(units) { let c = 0; for (const u of units) if (u.alive) c++; return c; }
 
   countAliveByType(units) {
-    const counts = { shield: 0, spear: 0, cavalry: 0, archer: 0, general: 0, maxim: 0, musketeer: 0, artillery: 0 };
-    for (const u of units) {
-      if (u.alive) counts[u.category] = (counts[u.category] || 0) + 1;
-    }
+    const counts = {};
+    for (const key of Object.keys(UNIT_CONFIG)) counts[key] = 0;
+    for (const u of units) { if (u.alive) counts[u.category] = (counts[u.category] || 0) + 1; }
     return counts;
   }
 
   createEnemyArmy() {
-    const h = this.canvasHeight;
-    const ml = this.midline;
-    const margin = 15;
+    const mission = MISSIONS[this.selectedMissionIdx];
+    const diff = DIFFICULTY_LEVELS[this.selectedDifficulty];
+    const w = this.canvasWidth, h = this.canvasHeight;
 
-    // Shield: 800 front wall
-    this.deployFormation('shield', 800, ml + 40, margin, ml + 240, h - margin, 1, true);
-
-    // Spear: 700 mid line
-    this.deployFormation('spear', 700, ml + 250, margin + 10, ml + 420, h - margin - 10, 1, true);
-
-    // Cavalry: 500 split across top and bottom flanks (250 each)
-    const flankHeight = h * 0.24;
-    this.deployFormation('cavalry', 250, ml + 50, margin, ml + 230, margin + flankHeight, 1, true);
-    this.deployFormation('cavalry', 250, ml + 50, h - margin - flankHeight, ml + 230, h - margin, 1, true);
-
-    // Archer: 999 back line
-    this.deployFormation('archer', 999, ml + 430, margin, ml + 620, h - margin, 1, true);
-
-    // General: center back
-    const genX = ml + 350;
-    const genY = h / 2;
-    this.enemyUnits.push(new Unit('general', genX, genY, 1, true));
+    for (const group of mission.enemyGroups) {
+      if (group.type === 'general') {
+        const gx = group.x1 * w + (group.x2 - group.x1) * w * 0.5;
+        const gy = group.y1 * h + (group.y2 - group.y1) * h * 0.5;
+        this.enemyUnits.push(new Unit('general', gx, gy, 1, true, diff.enemyStatMul));
+      } else {
+        const count = Math.round(group.count * diff.enemyCountMul);
+        this.deployFormation(group.type, count,
+          group.x1 * w, group.y1 * h, group.x2 * w, group.y2 * h, 1, false, diff.enemyStatMul);
+      }
+    }
   }
 
-  deployFormation(type, count, x1, y1, x2, y2, team, compact = false) {
+  deployFormation(type, count, x1, y1, x2, y2, team, compact = false, statMul = 1.0) {
     const cfg = UNIT_CONFIG[type];
     const spacing = cfg.radius * (compact ? 2.0 : 2.8);
-    const availWidth = x2 - x1;
-    const availHeight = y2 - y1;
+    const availWidth = x2 - x1, availHeight = y2 - y1;
     const cols = Math.max(1, Math.floor(availHeight / spacing));
     const rows = Math.ceil(count / cols);
 
     for (let i = 0; i < count; i++) {
-      const row = Math.floor(i / cols);
-      const col = i % cols;
+      const row = Math.floor(i / cols), col = i % cols;
       const rowCount = Math.min(cols, count - row * cols);
-      const jitterX = compact ? 0.15 : 0.3;
-      const jitterY = compact ? 0.15 : 0.3;
-      const x = x1 + (row / Math.max(1, rows - 1)) * availWidth + (Math.random() - 0.5) * spacing * jitterX;
-      const y = y1 + (col / Math.max(1, rowCount - 1)) * availHeight + (Math.random() - 0.5) * spacing * jitterY;
+      const jx = compact ? 0.15 : 0.35;
+      const x = x1 + (row / Math.max(1, rows - 1)) * availWidth + (Math.random() - 0.5) * spacing * jx;
+      const y = y1 + (col / Math.max(1, rowCount - 1)) * availHeight + (Math.random() - 0.5) * spacing * jx;
       this.enemyUnits.push(new Unit(type,
-        Math.max(x1, Math.min(x2, x)),
-        Math.max(y1, Math.min(y2, y)),
-        team, false));
+        Math.max(x1, Math.min(x2, x)), Math.max(y1, Math.min(y2, y)), team, false, statMul));
     }
   }
 
-  getCrewCost(type) {
-    const cfg = UNIT_CONFIG[type];
-    return cfg.crewCost || 1;
-  }
+  getMaxForType(type) { return UNIT_CONFIG[type].maxCount || 999; }
+  getDeployedForType(type) { return this.playerDeployedByType[type] || 0; }
 
   deployPlayerUnit(x, y) {
     if (this.state !== 'deploy') return false;
     if (x > this.midline - 10) return false;
     if (this.selectedType === 'general') return false;
-    const cost = this.getCrewCost(this.selectedType);
-    if (this.playerDeployedCount + cost > MAX_PLAYER_UNITS) return false;
+    const max = this.getMaxForType(this.selectedType);
+    const current = this.getDeployedForType(this.selectedType);
+    if (current >= max) return false;
 
     this.playerUnits.push(new Unit(this.selectedType, x, y, 0, false));
-    this.playerDeployedCount += cost;
+    this.playerDeployedByType[this.selectedType] = (this.playerDeployedByType[this.selectedType] || 0) + 1;
     this.updateUI();
     return true;
   }
@@ -1078,28 +1089,22 @@ class Game {
     if (this.selectedType === 'general') return 0;
 
     const cfg = UNIT_CONFIG[this.selectedType];
-    const cost = cfg.crewCost || 1;
     const spacing = cfg.radius * 2.8;
-    const dx = x2 - x1;
-    const dy = y2 - y1;
+    const dx = x2 - x1, dy = y2 - y1;
     const lineLen = Math.sqrt(dx * dx + dy * dy);
-    if (lineLen < 1) {
-      return this.deployPlayerUnit(x1, y1) ? 1 : 0;
-    }
+    if (lineLen < 1) return this.deployPlayerUnit(x1, y1) ? 1 : 0;
 
     const maxFit = Math.floor(lineLen / spacing) + 1;
-    const remaining = MAX_PLAYER_UNITS - this.playerDeployedCount;
-    const maxBySlots = Math.floor(remaining / cost);
-    const count = Math.min(maxFit, maxBySlots);
+    const remaining = this.getMaxForType(this.selectedType) - this.getDeployedForType(this.selectedType);
+    const count = Math.min(maxFit, remaining);
     if (count <= 0) return 0;
 
     for (let i = 0; i < count; i++) {
       const t = count === 1 ? 0.5 : i / (count - 1);
-      const px = x1 + dx * t;
-      const py = y1 + dy * t;
+      const px = x1 + dx * t, py = y1 + dy * t;
       if (px < this.midline - 10 && px > 5 && py > 5 && py < this.canvasHeight - 5) {
         this.playerUnits.push(new Unit(this.selectedType, px, py, 0, false));
-        this.playerDeployedCount += cost;
+        this.playerDeployedByType[this.selectedType] = (this.playerDeployedByType[this.selectedType] || 0) + 1;
       }
     }
     this.updateUI();
@@ -1121,6 +1126,17 @@ class Game {
     document.getElementById('result-overlay').style.display = 'none';
   }
 
+  showMissionSelect() {
+    this.state = 'select';
+    this.playerUnits = [];
+    this.enemyUnits = [];
+    this.projectiles = [];
+    document.getElementById('mission-select').style.display = 'flex';
+    document.getElementById('result-overlay').style.display = 'none';
+    document.getElementById('stats-panel').style.display = 'none';
+    this.updateUI();
+  }
+
   activateSkill() {
     if (this.state !== 'battle') return;
     if (this.skillCooldownRemaining > 0 || this.skillActive) return;
@@ -1130,7 +1146,6 @@ class Game {
     this.skillTimer = SKILL_CONFIG.duration;
     this.skillCooldownRemaining = SKILL_CONFIG.cooldown;
 
-    // Apply skill to all player units
     for (const u of this.playerUnits) {
       if (!u.alive) continue;
       u.skillAttackBoost = SKILL_CONFIG.attackBoost;
@@ -1138,7 +1153,6 @@ class Game {
       u.skillGlowTimer = 30;
     }
 
-    // Show indicator
     const indicator = document.getElementById('skill-indicator');
     indicator.style.display = 'block';
     indicator.style.animation = 'none';
@@ -1149,16 +1163,12 @@ class Game {
   }
 
   isPlayerGeneralAlive() {
-    for (const u of this.playerUnits) {
-      if (u.isGeneral && u.alive) return true;
-    }
+    for (const u of this.playerUnits) { if (u.isGeneral && u.alive) return true; }
     return false;
   }
 
   isEnemyGeneralAlive() {
-    for (const u of this.enemyUnits) {
-      if (u.isGeneral && u.alive) return true;
-    }
+    for (const u of this.enemyUnits) { if (u.isGeneral && u.alive) return true; }
     return false;
   }
 
@@ -1168,12 +1178,10 @@ class Game {
   }
 
   update(dt) {
-    if (this.state === 'win' || this.state === 'lose') return;
+    if (this.state === 'win' || this.state === 'lose' || this.state === 'select') return;
 
-    // Cap dt
     const cappedDt = Math.min(dt, 33);
 
-    // Update countdown
     if (this.state === 'countdown') {
       this.countdownRemaining -= cappedDt / 1000;
       if (this.countdownRemaining <= 0) {
@@ -1183,17 +1191,11 @@ class Game {
       }
     }
 
-    // Update skill
     if (this.skillActive) {
       this.skillTimer -= cappedDt;
       if (this.skillTimer <= 0) {
-        this.skillActive = false;
-        this.skillTimer = 0;
-        // Remove skill effects
-        for (const u of this.playerUnits) {
-          u.skillAttackBoost = null;
-          u.skillSpeedBoost = null;
-        }
+        this.skillActive = false; this.skillTimer = 0;
+        for (const u of this.playerUnits) { u.skillAttackBoost = null; u.skillSpeedBoost = null; }
       }
     }
     if (this.skillCooldownRemaining > 0 && !this.skillActive) {
@@ -1201,58 +1203,36 @@ class Game {
       if (this.skillCooldownRemaining < 0) this.skillCooldownRemaining = 0;
     }
 
-    // Update spatial grid
     this.spatialGrid.clear();
     for (const u of this.playerUnits) if (u.alive) this.spatialGrid.insert(u);
     for (const u of this.enemyUnits) if (u.alive) this.spatialGrid.insert(u);
 
-    // Cache general references for morale (avoid O(n) per unit)
     this.playerGeneral = null;
     this.enemyGeneral = null;
-    for (const u of this.playerUnits) {
-      if (u.isGeneral && u.alive) { this.playerGeneral = u; break; }
-    }
-    for (const u of this.enemyUnits) {
-      if (u.isGeneral && u.alive) { this.enemyGeneral = u; break; }
-    }
+    for (const u of this.playerUnits) { if (u.isGeneral && u.alive) { this.playerGeneral = u; break; } }
+    for (const u of this.enemyUnits) { if (u.isGeneral && u.alive) { this.enemyGeneral = u; break; } }
 
-    // Update units (only in battle)
     if (this.state === 'battle') {
-      for (const u of this.playerUnits) {
-        if (u.alive) u.update(cappedDt, this);
-      }
-      for (const u of this.enemyUnits) {
-        if (u.alive) u.update(cappedDt, this);
-      }
+      for (const u of this.playerUnits) { if (u.alive) u.update(cappedDt, this); }
+      for (const u of this.enemyUnits) { if (u.alive) u.update(cappedDt, this); }
     }
 
-    // Track kills
     this.trackKills();
 
-    // Update projectiles
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
       this.projectiles[i].update();
       if (!this.projectiles[i].alive) this.projectiles.splice(i, 1);
     }
 
-    // Check win/lose
-    if (this.state === 'battle') {
-      this.checkWinLose();
-    }
+    if (this.state === 'battle') this.checkWinLose();
 
-    // Update UI periodically
     this.frameCount++;
-    if (this.frameCount % 30 === 0) {
-      this.updateUI();
-    }
+    if (this.frameCount % 30 === 0) this.updateUI();
   }
 
   trackKills() {
-    // Player losses = initial player total - currently alive
     const initialPTotal = Object.values(this.initialPlayerCounts).reduce((a, b) => a + b, 0);
     this.enemyKills = initialPTotal - this.countAlive(this.playerUnits);
-
-    // Enemy losses = initial enemy total - currently alive
     const initialETotal = Object.values(this.initialEnemyCounts).reduce((a, b) => a + b, 0);
     this.playerKills = initialETotal - this.countAlive(this.enemyUnits);
   }
@@ -1260,13 +1240,8 @@ class Game {
   checkWinLose() {
     const pAlive = this.countAlive(this.playerUnits);
     const eAlive = this.countAlive(this.enemyUnits);
-    if (eAlive === 0) {
-      this.state = 'win';
-      this.showResult(true);
-    } else if (pAlive === 0) {
-      this.state = 'lose';
-      this.showResult(false);
-    }
+    if (eAlive === 0) { this.state = 'win'; this.showResult(true); }
+    else if (pAlive === 0) { this.state = 'lose'; this.showResult(false); }
   }
 
   showResult(won) {
@@ -1279,56 +1254,97 @@ class Game {
 
     const pCounts = this.countAliveByType(this.playerUnits);
     const eCounts = this.countAliveByType(this.enemyUnits);
+    const mission = MISSIONS[this.selectedMissionIdx];
+    const diff = DIFFICULTY_LEVELS[this.selectedDifficulty];
 
     stats.innerHTML = `
+      关卡: <b>${mission.name}</b> | 难度: <b>${diff.emoji} ${diff.name}</b><br>
       我方击杀: <b>${this.playerKills}</b> &nbsp; 敌方击杀: <b>${this.enemyKills}</b><br>
       <br>我方剩余:<br>
-      盾兵: ${pCounts.shield} | 长矛兵: ${pCounts.spear} | 骑兵: ${pCounts.cavalry}<br>
-      射手: ${pCounts.archer} | 马克沁: ${pCounts.maxim || 0} | 火枪手: ${pCounts.musketeer || 0}<br>
-      炮兵: ${pCounts.artillery || 0} | 将军: ${pCounts.general ? '存活' : '阵亡'}<br>
+      盾兵: ${pCounts.shield}/${UNIT_CONFIG.shield.maxCount} | 长矛兵: ${pCounts.spear}/${UNIT_CONFIG.spear.maxCount}<br>
+      骑兵: ${pCounts.cavalry}/${UNIT_CONFIG.cavalry.maxCount} | 射手: ${pCounts.archer}/${UNIT_CONFIG.archer.maxCount}<br>
+      马克沁: ${pCounts.maxim || 0}/${UNIT_CONFIG.maxim.maxCount} | 火枪手: ${pCounts.musketeer || 0}/${UNIT_CONFIG.musketeer.maxCount}<br>
+      炮兵: ${pCounts.artillery || 0}/${UNIT_CONFIG.artillery.maxCount} | 将军: ${pCounts.general ? '存活' : '阵亡'}<br>
       <br>敌方剩余:<br>
       盾兵: ${eCounts.shield} | 长矛兵: ${eCounts.spear} | 骑兵: ${eCounts.cavalry}<br>
-      射手: ${eCounts.archer} | 将军: ${eCounts.general ? '存活' : '阵亡'}
+      射手: ${eCounts.archer} | 火枪手: ${eCounts.musketeer || 0} | 炮兵: ${eCounts.artillery || 0}<br>
+      马克沁: ${eCounts.maxim || 0} | 将军: ${eCounts.general ? '存活' : '阵亡'}
     `;
     this.updateUI();
   }
 
   render() {
     const ctx = this.ctx;
-    const w = this.canvasWidth;
-    const h = this.canvasHeight;
+    const w = this.canvasWidth, h = this.canvasHeight;
 
-    // Clear
     ctx.fillStyle = '#1a1a2e';
     ctx.fillRect(0, 0, w, h);
 
-    // Draw grid lines (subtle)
-    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
-    ctx.lineWidth = 1;
+    // Grid lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.03)'; ctx.lineWidth = 1;
     for (let x = 0; x < w; x += 80) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
     for (let y = 0; y < h; y += 80) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
 
     // Midline
-    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 2;
     ctx.setLineDash([8, 12]);
-    ctx.beginPath();
-    ctx.moveTo(this.midline, 0);
-    ctx.lineTo(this.midline, h);
-    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(this.midline, 0); ctx.lineTo(this.midline, h); ctx.stroke();
     ctx.setLineDash([]);
 
     // Team zone labels
-    ctx.fillStyle = 'rgba(50,80,180,0.06)';
-    ctx.fillRect(0, 0, this.midline, h);
-    ctx.fillStyle = 'rgba(180,50,50,0.06)';
-    ctx.fillRect(this.midline, 0, w - this.midline, h);
+    ctx.fillStyle = 'rgba(50,80,180,0.06)'; ctx.fillRect(0, 0, this.midline, h);
+    ctx.fillStyle = 'rgba(180,50,50,0.06)'; ctx.fillRect(this.midline, 0, w - this.midline, h);
 
-    ctx.fillStyle = 'rgba(100,140,220,0.15)';
-    ctx.font = '24px sans-serif';
-    ctx.textAlign = 'center';
+    // Draw terrain zones
+    for (const zone of this.terrainZones) {
+      switch (zone.type) {
+        case 'river':
+          ctx.fillStyle = 'rgba(30,80,180,0.15)';
+          ctx.fillRect(zone.x1, zone.y1, zone.x2 - zone.x1, zone.y2 - zone.y1);
+          ctx.strokeStyle = 'rgba(60,120,220,0.3)'; ctx.lineWidth = 2;
+          ctx.setLineDash([4, 8]);
+          ctx.strokeRect(zone.x1, zone.y1, zone.x2 - zone.x1, zone.y2 - zone.y1);
+          ctx.setLineDash([]);
+          ctx.fillStyle = 'rgba(100,160,240,0.1)';
+          ctx.font = '18px sans-serif'; ctx.textAlign = 'center';
+          ctx.fillText('～ 河流 ～', (zone.x1 + zone.x2) / 2, (zone.y1 + zone.y2) / 2);
+          break;
+        case 'rough':
+          ctx.fillStyle = 'rgba(100,80,50,0.2)';
+          ctx.fillRect(zone.x1, zone.y1, zone.x2 - zone.x1, zone.y2 - zone.y1);
+          ctx.fillStyle = 'rgba(140,120,80,0.15)';
+          for (let i = 0; i < 20; i++) {
+            const rx = zone.x1 + Math.random() * (zone.x2 - zone.x1);
+            const ry = zone.y1 + Math.random() * (zone.y2 - zone.y1);
+            ctx.beginPath(); ctx.arc(rx, ry, 3 + Math.random() * 5, 0, Math.PI * 2); ctx.fill();
+          }
+          break;
+        case 'highground':
+          const grad = ctx.createLinearGradient(zone.x1, 0, zone.x2, 0);
+          grad.addColorStop(0, 'rgba(100,140,80,0.18)');
+          grad.addColorStop(1, 'rgba(100,140,80,0.05)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(zone.x1, zone.y1, zone.x2 - zone.x1, zone.y2 - zone.y1);
+          ctx.fillStyle = 'rgba(255,255,255,0.06)';
+          ctx.font = '16px sans-serif'; ctx.textAlign = 'center';
+          ctx.fillText('▲ 高地 ▲', (zone.x1 + zone.x2) / 2, zone.y1 + 30);
+          break;
+        case 'fort':
+          ctx.strokeStyle = 'rgba(150,150,180,0.4)'; ctx.lineWidth = 3;
+          ctx.strokeRect(zone.x1, zone.y1, zone.x2 - zone.x1, zone.y2 - zone.y1);
+          ctx.fillStyle = 'rgba(100,120,160,0.08)';
+          ctx.fillRect(zone.x1, zone.y1, zone.x2 - zone.x1, zone.y2 - zone.y1);
+          ctx.fillStyle = 'rgba(255,255,255,0.08)';
+          ctx.font = '16px sans-serif'; ctx.textAlign = 'center';
+          ctx.fillText('█ 要塞 █', (zone.x1 + zone.x2) / 2, zone.y1 + 30);
+          break;
+      }
+    }
+
+    ctx.fillStyle = 'rgba(100,140,220,0.12)';
+    ctx.font = '22px sans-serif'; ctx.textAlign = 'center';
     ctx.fillText('我方阵地', this.midline / 2, h / 2);
-    ctx.fillStyle = 'rgba(220,120,100,0.15)';
+    ctx.fillStyle = 'rgba(220,120,100,0.12)';
     ctx.fillText('敌方阵地', this.midline + (w - this.midline) / 2, h / 2);
 
     // Draw units
@@ -1338,76 +1354,58 @@ class Game {
     // Draw projectiles
     for (const p of this.projectiles) p.draw(ctx);
 
-    // Draw drag preview line
+    // Drag preview
     if (this.isDragging && this.state === 'deploy' && this.selectedType !== 'general') {
       const cfg = UNIT_CONFIG[this.selectedType];
-      ctx.strokeStyle = 'rgba(255,255,255,0.7)';
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 2;
       ctx.setLineDash([4, 6]);
-      ctx.beginPath();
-      ctx.moveTo(this.dragStartX, this.dragStartY);
-      ctx.lineTo(this.dragEndX, this.dragEndY);
-      ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(this.dragStartX, this.dragStartY); ctx.lineTo(this.dragEndX, this.dragEndY); ctx.stroke();
       ctx.setLineDash([]);
 
-      // Preview units along line
       const spacing = cfg.radius * 2.8;
-      const dx = this.dragEndX - this.dragStartX;
-      const dy = this.dragEndY - this.dragStartY;
-      const lineLen = Math.sqrt(dx * dx + dy * dy);
+      const ldx = this.dragEndX - this.dragStartX, ldy = this.dragEndY - this.dragStartY;
+      const lineLen = Math.sqrt(ldx * ldx + ldy * ldy);
       const maxFit = Math.floor(lineLen / spacing) + 1;
-      const remaining = MAX_PLAYER_UNITS - this.playerDeployedCount;
+      const remaining = this.getMaxForType(this.selectedType) - this.getDeployedForType(this.selectedType);
       const count = Math.min(maxFit, remaining);
 
       for (let i = 0; i < count; i++) {
         const t = count === 1 ? 0.5 : i / (count - 1);
-        const px = this.dragStartX + dx * t;
-        const py = this.dragStartY + dy * t;
+        const px = this.dragStartX + ldx * t, py = this.dragStartY + ldy * t;
         if (px < this.midline - 5 && px > 5 && py > 5 && py < h - 5) {
-          ctx.globalAlpha = 0.5;
-          ctx.fillStyle = cfg.color;
+          ctx.globalAlpha = 0.5; ctx.fillStyle = cfg.color;
           if (cfg.shape === 'maxim' || cfg.shape === 'artillery') {
             ctx.fillRect(px - cfg.radius, py - cfg.radius * 0.35, cfg.radius * 2, cfg.radius * 0.7);
           } else if (cfg.shape === 'musketeer') {
             ctx.fillRect(px - cfg.radius * 0.5, py - cfg.radius * 0.6, cfg.radius, cfg.radius * 1.2);
           } else {
-            ctx.beginPath();
-            ctx.arc(px, py, cfg.radius, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.beginPath(); ctx.arc(px, py, cfg.radius, 0, Math.PI * 2); ctx.fill();
           }
           ctx.globalAlpha = 1;
         }
       }
     }
 
-    // Draw mouse preview (single unit ghost)
+    // Mouse ghost
     if (!this.isDragging && this.mouseOnCanvas && this.state === 'deploy' &&
         this.mouseX < this.midline - 5 && this.selectedType !== 'general') {
       const cfg = UNIT_CONFIG[this.selectedType];
-      ctx.globalAlpha = 0.4;
+      ctx.globalAlpha = 0.4; ctx.fillStyle = cfg.color;
       if (cfg.shape === 'maxim' || cfg.shape === 'artillery') {
-        ctx.fillStyle = cfg.color;
         ctx.fillRect(this.mouseX - cfg.radius, this.mouseY - cfg.radius * 0.35, cfg.radius * 2, cfg.radius * 0.7);
       } else if (cfg.shape === 'musketeer') {
-        ctx.fillStyle = cfg.color;
         ctx.fillRect(this.mouseX - cfg.radius * 0.5, this.mouseY - cfg.radius * 0.6, cfg.radius, cfg.radius * 1.2);
       } else {
-        ctx.fillStyle = cfg.color;
-        ctx.beginPath();
-        ctx.arc(this.mouseX, this.mouseY, cfg.radius, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(this.mouseX, this.mouseY, cfg.radius, 0, Math.PI * 2); ctx.fill();
       }
       ctx.globalAlpha = 1;
     }
 
-    // Draw countdown overlay
+    // Countdown overlay
     if (this.state === 'countdown') {
       const sec = Math.ceil(this.countdownRemaining);
-      ctx.fillStyle = 'rgba(0,0,0,0.4)';
-      ctx.fillRect(0, 0, w, h);
-      ctx.fillStyle = '#ffcc00';
-      ctx.font = 'bold 80px sans-serif';
-      ctx.textAlign = 'center';
+      ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = '#ffcc00'; ctx.font = 'bold 80px sans-serif'; ctx.textAlign = 'center';
       ctx.fillText(sec > 0 ? sec : '开始！', w / 2, h / 2 + 20);
     }
   }
@@ -1418,22 +1416,47 @@ class Game {
 
     document.getElementById('player-count').textContent = pAlive;
     document.getElementById('enemy-count').textContent = eAlive;
-    document.getElementById('deployed-count').textContent = `${this.playerDeployedCount} / ${MAX_PLAYER_UNITS}`;
-    document.getElementById('count-badge').textContent = `已部署: ${this.playerDeployedCount} / ${MAX_PLAYER_UNITS}`;
+
+    const mission = MISSIONS[this.selectedMissionIdx];
+    const diff = DIFFICULTY_LEVELS[this.selectedDifficulty];
+    document.getElementById('mission-name').textContent = mission.name;
+    const diffBadge = document.getElementById('difficulty-badge');
+    diffBadge.textContent = diff.emoji + ' ' + diff.name;
+    diffBadge.style.background = ['#2d4a1f', '#7a5a00', '#6b2121'][this.selectedDifficulty];
+    diffBadge.style.color = ['#95d5b2', '#ffcc44', '#f88'][this.selectedDifficulty];
+
+    // Per-type button text
+    const buttonTypes = [
+      ['btn-shield', 'shield'], ['btn-spear', 'spear'], ['btn-cavalry', 'cavalry'],
+      ['btn-archer', 'archer'], ['btn-maxim', 'maxim'], ['btn-musketeer', 'musketeer'],
+      ['btn-artillery', 'artillery']
+    ];
+    buttonTypes.forEach(([btnId, type]) => {
+      const btn = document.getElementById(btnId);
+      const cfg = UNIT_CONFIG[type];
+      const deployed = this.getDeployedForType(type);
+      const max = this.getMaxForType(type);
+      const countSpan = btn.querySelector('.unit-count');
+      if (countSpan) {
+        countSpan.textContent = `${deployed}/${max}`;
+        countSpan.style.color = deployed >= max ? '#f88' : '#888';
+      }
+      btn.classList.toggle('active', btn.dataset.type === this.selectedType);
+      btn.classList.toggle('limited', deployed >= max);
+      btn.disabled = this.state !== 'deploy';
+    });
 
     const statusEl = document.getElementById('status-text');
     statusEl.className = 'status ' + this.state;
-    const statusMap = { deploy: '部署阶段', countdown: '倒计时', battle: '战斗中', win: '胜利！', lose: '失败！' };
+    const statusMap = { deploy: '部署阶段', countdown: '倒计时', battle: '战斗中', win: '胜利！', lose: '失败！', select: '选择关卡' };
     statusEl.textContent = statusMap[this.state] || '';
 
-    // Countdown
     if (this.state === 'countdown') {
       document.getElementById('countdown-text').textContent = Math.ceil(this.countdownRemaining) + 's';
     } else {
       document.getElementById('countdown-text').textContent = '--';
     }
 
-    // Skill status
     const skillStatus = document.getElementById('skill-status-text');
     const btnSkill = document.getElementById('btn-skill');
     if (this.skillActive) {
@@ -1450,19 +1473,8 @@ class Game {
       btnSkill.textContent = '📯 战鼓激励';
     }
 
-    // Start button
-    const btnStart = document.getElementById('btn-start');
-    btnStart.disabled = this.state !== 'deploy';
+    document.getElementById('btn-start').disabled = this.state !== 'deploy';
 
-    // Unit buttons
-    const btns = ['btn-shield', 'btn-spear', 'btn-cavalry', 'btn-archer', 'btn-maxim', 'btn-musketeer', 'btn-artillery'];
-    btns.forEach(id => {
-      const btn = document.getElementById(id);
-      btn.classList.toggle('active', btn.dataset.type === this.selectedType);
-      btn.disabled = this.state !== 'deploy';
-    });
-
-    // Stats panel
     this.updateStatsPanel();
   }
 
@@ -1481,13 +1493,13 @@ class Game {
       <h3>📊 战斗统计</h3>
       <div style="color:#8f8;margin-bottom:4px;">━ 我方 ━</div>
       <div class="stat-row"><span>击杀</span><span class="my-kills">${this.playerKills}</span></div>
-      <div class="stat-row"><span>🛡 盾兵</span><span>${pCounts.shield}</span></div>
-      <div class="stat-row"><span>🔱 长矛兵</span><span>${pCounts.spear}</span></div>
-      <div class="stat-row"><span>⚔ 骑兵</span><span>${pCounts.cavalry}</span></div>
-      <div class="stat-row"><span>🏹 射手</span><span>${pCounts.archer}</span></div>
-      <div class="stat-row"><span>🔫 马克沁</span><span>${pCounts.maxim || 0}</span></div>
-      <div class="stat-row"><span>🎯 火枪手</span><span>${pCounts.musketeer || 0}</span></div>
-      <div class="stat-row"><span>💣 炮兵</span><span>${pCounts.artillery || 0}</span></div>
+      <div class="stat-row"><span>🛡 盾兵</span><span>${pCounts.shield}/${UNIT_CONFIG.shield.maxCount}</span></div>
+      <div class="stat-row"><span>🔱 长矛兵</span><span>${pCounts.spear}/${UNIT_CONFIG.spear.maxCount}</span></div>
+      <div class="stat-row"><span>⚔ 骑兵</span><span>${pCounts.cavalry}/${UNIT_CONFIG.cavalry.maxCount}</span></div>
+      <div class="stat-row"><span>🏹 射手</span><span>${pCounts.archer}/${UNIT_CONFIG.archer.maxCount}</span></div>
+      <div class="stat-row"><span>🔫 马克沁</span><span>${pCounts.maxim || 0}/${UNIT_CONFIG.maxim.maxCount}</span></div>
+      <div class="stat-row"><span>🎯 火枪手</span><span>${pCounts.musketeer || 0}/${UNIT_CONFIG.musketeer.maxCount}</span></div>
+      <div class="stat-row"><span>💣 炮兵</span><span>${pCounts.artillery || 0}/${UNIT_CONFIG.artillery.maxCount}</span></div>
       <div class="stat-row"><span>⭐ 将军</span><span>${pCounts.general ? '存活' : '<span style="color:#f44">阵亡</span>'}</span></div>
       <div style="color:#f88;margin:6px 0 4px;">━ 敌方 ━</div>
       <div class="stat-row"><span>击杀</span><span class="kills">${this.enemyKills}</span></div>
@@ -1495,28 +1507,62 @@ class Game {
       <div class="stat-row"><span>🔱 长矛兵</span><span>${eCounts.spear}</span></div>
       <div class="stat-row"><span>⚔ 骑兵</span><span>${eCounts.cavalry}</span></div>
       <div class="stat-row"><span>🏹 射手</span><span>${eCounts.archer}</span></div>
+      <div class="stat-row"><span>🔫 马克沁</span><span>${eCounts.maxim || 0}</span></div>
+      <div class="stat-row"><span>🎯 火枪手</span><span>${eCounts.musketeer || 0}</span></div>
+      <div class="stat-row"><span>💣 炮兵</span><span>${eCounts.artillery || 0}</span></div>
       <div class="stat-row"><span>⭐ 将军</span><span>${eCounts.general ? '存活' : '<span style="color:#f44">阵亡</span>'}</span></div>
     `;
   }
 
+  setupMissionSelectUI() {
+    const grid = document.getElementById('mission-grid');
+    grid.innerHTML = '';
+    MISSIONS.forEach((m, i) => {
+      const card = document.createElement('div');
+      card.className = 'mission-card' + (i === this.selectedMissionIdx ? ' selected' : '');
+      card.innerHTML = `
+        <div class="m-icon">${m.icon}</div>
+        <div class="m-name">${m.name}</div>
+        <div class="m-desc">${m.desc}</div>
+      `;
+      card.addEventListener('click', () => {
+        this.selectedMissionIdx = i;
+        this.setupMissionSelectUI();
+      });
+      grid.appendChild(card);
+    });
+
+    // Difficulty buttons
+    document.querySelectorAll('#mission-select .diff-btn').forEach(btn => {
+      const d = parseInt(btn.dataset.diff);
+      btn.classList.toggle('selected', d === this.selectedDifficulty);
+      btn.onclick = () => {
+        this.selectedDifficulty = d;
+        this.setupMissionSelectUI();
+      };
+    });
+
+    document.getElementById('btn-go').onclick = () => this.init();
+  }
+
   setupEvents() {
-    // Unit selection buttons
+    // Unit selection
     ['btn-shield', 'btn-spear', 'btn-cavalry', 'btn-archer', 'btn-maxim', 'btn-musketeer', 'btn-artillery'].forEach(id => {
       document.getElementById(id).addEventListener('click', (e) => {
         if (this.state !== 'deploy') return;
-        this.selectedType = e.target.dataset.type;
+        this.selectedType = e.currentTarget.dataset.type;
         this.updateUI();
       });
     });
 
-    // Start battle
     document.getElementById('btn-start').addEventListener('click', () => this.startBattle());
-
-    // Reset
     document.getElementById('btn-reset').addEventListener('click', () => this.reset());
-
-    // Skill
+    document.getElementById('btn-choose-mission').addEventListener('click', () => this.showMissionSelect());
     document.getElementById('btn-skill').addEventListener('click', () => this.activateSkill());
+
+    // Result overlay buttons
+    document.getElementById('btn-retry').addEventListener('click', () => this.reset());
+    document.getElementById('btn-back').addEventListener('click', () => this.showMissionSelect());
 
     // Canvas mouse events
     this.canvas.addEventListener('mousedown', (e) => this.onMouseDown(e));
@@ -1537,20 +1583,18 @@ class Game {
     });
     this.canvas.addEventListener('touchend', (e) => {
       e.preventDefault();
-      // onMouseUp uses stored dragStart/End, not the event position
       this.onMouseUp(e);
     });
 
-    // Window resize
-    window.addEventListener('resize', () => {
-      this.resize();
-      // Re-deploy enemies on resize (simplified: just adjust positions proportionally)
-      this.repositionOnResize();
-    });
+    window.addEventListener('resize', () => this.resize());
 
     // Keyboard shortcuts
     window.addEventListener('keydown', (e) => {
-      if (this.state !== 'deploy') return;
+      if (this.state === 'select') return;
+      if (this.state !== 'deploy') {
+        if (e.key === 'r' || e.key === 'R') { this.reset(); return; }
+        return;
+      }
       switch (e.key) {
         case '1': this.selectedType = 'shield'; break;
         case '2': this.selectedType = 'spear'; break;
@@ -1571,30 +1615,25 @@ class Game {
     const rect = this.canvas.getBoundingClientRect();
     const scaleX = this.canvasWidth / rect.width;
     const scaleY = this.canvasHeight / rect.height;
-    return {
-      x: (e.clientX - rect.left) * scaleX,
-      y: (e.clientY - rect.top) * scaleY
-    };
+    return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
   }
 
   onMouseDown(e) {
     if (this.state !== 'deploy') return;
     const pos = this.getCanvasPos(e);
     if (pos.x >= this.midline - 5 || this.selectedType === 'general') return;
+    const max = this.getMaxForType(this.selectedType);
+    if (this.getDeployedForType(this.selectedType) >= max) return;
     this.isDragging = true;
-    this.dragStartX = pos.x;
-    this.dragStartY = pos.y;
-    this.dragEndX = pos.x;
-    this.dragEndY = pos.y;
+    this.dragStartX = pos.x; this.dragStartY = pos.y;
+    this.dragEndX = pos.x; this.dragEndY = pos.y;
   }
 
   onMouseMove(e) {
     const pos = this.getCanvasPos(e);
-    this.mouseX = pos.x;
-    this.mouseY = pos.y;
+    this.mouseX = pos.x; this.mouseY = pos.y;
     this.mouseOnCanvas = true;
     if (this.isDragging) {
-      // Clamp to left half
       this.dragEndX = Math.min(pos.x, this.midline - 8);
       this.dragEndY = Math.max(8, Math.min(pos.y, this.canvasHeight - 8));
     }
@@ -1607,27 +1646,15 @@ class Game {
     const dy = this.dragEndY - this.dragStartY;
     const dist = Math.sqrt(dx * dx + dy * dy);
     if (dist < 3) {
-      // Single click deploy
       this.deployPlayerUnit(this.dragStartX, this.dragStartY);
     } else {
-      // Line deploy
       this.deployLine(this.dragStartX, this.dragStartY, this.dragEndX, this.dragEndY);
     }
   }
 
   onMouseLeave(e) {
     this.mouseOnCanvas = false;
-    if (this.isDragging) {
-      // Finalize drag on leave
-      this.onMouseUp(e);
-    }
-  }
-
-  repositionOnResize() {
-    if (this.state === 'deploy' || this.state === 'countdown') {
-      this.init();
-    }
-    // During battle/win/lose, units keep their coordinates (clamped in update)
+    if (this.isDragging) this.onMouseUp(e);
   }
 
   loop() {
@@ -1638,17 +1665,14 @@ class Game {
     this.update(dt);
     this.render();
 
-    // Update UI every frame during countdown
-    if (this.state === 'countdown') {
-      this.updateUI();
-    }
+    if (this.state === 'countdown') this.updateUI();
 
     requestAnimationFrame(() => this.loop());
   }
 }
 
 // ============================================================
-// INITIALIZATION
+// INIT
 // ============================================================
 window.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('gameCanvas');
