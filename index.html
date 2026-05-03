@@ -21,13 +21,13 @@ body {
 #top-bar {
   height: 42px; background: linear-gradient(180deg, #16213e, #0f3460);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 16px; color: #e0e0e0; font-size: 14px;
-  border-bottom: 2px solid #533483; flex-shrink: 0; gap: 12px;
+  padding: 0 14px; color: #e0e0e0; font-size: 13px;
+  border-bottom: 2px solid #533483; flex-shrink: 0; gap: 8px;
 }
-#top-bar .info-group { display: flex; gap: 6px; align-items: center; }
-#top-bar .label { color: #888; font-size: 11px; }
-#top-bar .value { color: #fff; font-weight: bold; font-size: 14px; }
-#top-bar .status { font-size: 13px; font-weight: bold; padding: 3px 10px; border-radius: 4px; }
+#top-bar .info-group { display: flex; gap: 5px; align-items: center; }
+#top-bar .label { color: #888; font-size: 10px; }
+#top-bar .value { color: #fff; font-weight: bold; font-size: 13px; }
+#top-bar .status { font-size: 12px; font-weight: bold; padding: 2px 8px; border-radius: 4px; }
 #top-bar .status.deploy { background: #2d6a4f; color: #95d5b2; }
 #top-bar .status.countdown { background: #e07c24; color: #fff; }
 #top-bar .status.battle { background: #c92a2a; color: #fff; }
@@ -37,34 +37,33 @@ body {
 #canvas-wrap { flex: 1; position: relative; overflow: hidden; background: #1a1a2e; }
 canvas { display: block; width: 100%; height: 100%; }
 #bottom-bar {
-  height: 58px; background: linear-gradient(180deg, #0f3460, #16213e);
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 0 10px; border-top: 2px solid #533483; flex-shrink: 0; flex-wrap: wrap;
+  height: 56px; background: linear-gradient(180deg, #0f3460, #16213e);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 0 8px; border-top: 2px solid #533483; flex-shrink: 0; flex-wrap: wrap;
 }
 #bottom-bar button {
-  padding: 6px 10px; border: 2px solid #444; border-radius: 6px;
-  background: #1a1a2e; color: #ccc; cursor: pointer; font-size: 12px;
+  padding: 5px 8px; border: 2px solid #444; border-radius: 5px;
+  background: #1a1a2e; color: #ccc; cursor: pointer; font-size: 11px;
   font-family: inherit; transition: all 0.15s; white-space: nowrap;
 }
 #bottom-bar button:hover { border-color: #888; color: #fff; }
-#bottom-bar button.active { border-color: #4da6ff; background: #1a3a5c; color: #4da6ff; box-shadow: 0 0 8px rgba(77,166,255,0.4); }
+#bottom-bar button.active { border-color: #4da6ff; background: #1a3a5c; color: #4da6ff; box-shadow: 0 0 6px rgba(77,166,255,0.35); }
 #bottom-bar button:disabled { opacity: 0.4; cursor: not-allowed; border-color: #333; }
 #bottom-bar button.limited { border-color: #c92a2a; color: #f88; }
-#bottom-bar .btn-start { border-color: #2d6a4f; color: #95d5b2; font-weight: bold; font-size: 13px; }
+#bottom-bar .btn-start { border-color: #2d6a4f; color: #95d5b2; font-weight: bold; font-size: 12px; }
 #bottom-bar .btn-start:hover { background: #2d6a4f; color: #fff; }
 #bottom-bar .btn-reset { border-color: #8b4513; color: #d4a574; }
-#bottom-bar .btn-mission { border-color: #533483; color: #c9b8f0; font-size: 12px; }
+#bottom-bar .btn-mission { border-color: #533483; color: #c9b8f0; }
 #bottom-bar .btn-skill { border-color: #ffcc00; color: #ffcc00; font-weight: bold; }
 #bottom-bar .btn-skill:hover:not(:disabled) { background: #4a3800; }
-#bottom-bar .unit-count { font-size: 9px; color: #888; display: block; }
-
+#bottom-bar .unit-count { font-size: 8px; color: #888; display: block; }
 #stats-panel {
-  position: absolute; top: 8px; right: 8px; width: 190px;
+  position: absolute; top: 8px; right: 8px; width: 185px;
   background: rgba(0,0,0,0.85); border: 1px solid #444; border-radius: 8px;
-  padding: 10px; color: #ccc; font-size: 11px; display: none; z-index: 10;
+  padding: 10px; color: #ccc; font-size: 10px; display: none; z-index: 10;
 }
-#stats-panel h3 { color: #fff; font-size: 13px; margin-bottom: 6px; border-bottom: 1px solid #444; padding-bottom: 4px; }
-#stats-panel .stat-row { display: flex; justify-content: space-between; margin: 2px 0; }
+#stats-panel h3 { color: #fff; font-size: 12px; margin-bottom: 4px; border-bottom: 1px solid #444; padding-bottom: 3px; }
+#stats-panel .stat-row { display: flex; justify-content: space-between; margin: 1px 0; }
 #stats-panel .stat-row .kills { color: #f88; }
 #stats-panel .stat-row .my-kills { color: #8f8; }
 #result-overlay {
@@ -73,16 +72,16 @@ canvas { display: block; width: 100%; height: 100%; }
   justify-content: center; align-items: center; z-index: 20;
 }
 #result-overlay .result-box {
-  text-align: center; padding: 40px 60px;
+  text-align: center; padding: 36px 56px;
   background: #1a1a2e; border: 3px solid #533483; border-radius: 16px;
 }
-#result-overlay .result-title { font-size: 48px; font-weight: bold; margin-bottom: 16px; }
+#result-overlay .result-title { font-size: 44px; font-weight: bold; margin-bottom: 12px; }
 #result-overlay .result-title.win { color: #ffcc00; }
 #result-overlay .result-title.lose { color: #c92a2a; }
-#result-overlay .result-stats { color: #ccc; font-size: 14px; line-height: 1.8; }
+#result-overlay .result-stats { color: #ccc; font-size: 13px; line-height: 1.7; }
 #result-overlay button {
-  margin: 4px; padding: 10px 24px; border: 2px solid #888; border-radius: 8px;
-  background: #1a1a2e; color: #ccc; cursor: pointer; font-size: 14px;
+  margin: 4px; padding: 9px 22px; border: 2px solid #888; border-radius: 8px;
+  background: #1a1a2e; color: #ccc; cursor: pointer; font-size: 13px;
   font-family: inherit; transition: all 0.15s;
 }
 #result-overlay button:hover { border-color: #fff; color: #fff; }
@@ -97,8 +96,6 @@ canvas { display: block; width: 100%; height: 100%; }
   30% { opacity: 1; transform: translate(-50%,-50%) scale(1.2); }
   100% { opacity: 0; transform: translate(-50%,-50%) scale(1); }
 }
-
-/* Mission select overlay */
 #mission-select {
   position: absolute; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.9); display: flex;
@@ -106,39 +103,36 @@ canvas { display: block; width: 100%; height: 100%; }
 }
 #mission-select .select-box {
   background: #16213e; border: 2px solid #533483; border-radius: 16px;
-  padding: 30px; max-width: 750px; width: 95%;
+  padding: 28px; max-width: 720px; width: 95%;
 }
-#mission-select h2 {
-  text-align: center; color: #ffcc00; font-size: 28px; margin-bottom: 8px;
-}
-#mission-select .subtitle { text-align: center; color: #888; font-size: 13px; margin-bottom: 20px; }
+#mission-select h2 { text-align: center; color: #ffcc00; font-size: 26px; margin-bottom: 6px; }
+#mission-select .subtitle { text-align: center; color: #888; font-size: 12px; margin-bottom: 18px; }
 #mission-select .mission-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px;
 }
 #mission-select .mission-card {
-  background: #1a1a2e; border: 2px solid #333; border-radius: 10px;
-  padding: 14px; cursor: pointer; transition: all 0.2s; text-align: center;
+  background: #1a1a2e; border: 2px solid #333; border-radius: 8px;
+  padding: 12px; cursor: pointer; transition: all 0.2s; text-align: center;
 }
 #mission-select .mission-card:hover { border-color: #888; }
-#mission-select .mission-card.selected { border-color: #ffcc00; background: #1a202e; box-shadow: 0 0 12px rgba(255,204,0,0.25); }
-#mission-select .mission-card .m-icon { font-size: 28px; margin-bottom: 4px; }
-#mission-select .mission-card .m-name { color: #fff; font-weight: bold; font-size: 14px; margin-bottom: 4px; }
-#mission-select .mission-card .m-desc { color: #888; font-size: 11px; line-height: 1.4; }
-#mission-select .m-info { color: #aaa; font-size: 11px; margin-bottom: 4px; }
-#mission-select .diff-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; }
-#mission-select .diff-row span { color: #888; font-size: 13px; }
+#mission-select .mission-card.selected { border-color: #ffcc00; background: #1a202e; box-shadow: 0 0 10px rgba(255,204,0,0.2); }
+#mission-select .mission-card .m-icon { font-size: 24px; margin-bottom: 3px; }
+#mission-select .mission-card .m-name { color: #fff; font-weight: bold; font-size: 13px; margin-bottom: 3px; }
+#mission-select .mission-card .m-desc { color: #888; font-size: 10px; line-height: 1.3; }
+#mission-select .diff-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 14px; }
+#mission-select .diff-row span { color: #888; font-size: 12px; }
 #mission-select .diff-btn {
-  padding: 6px 16px; border: 2px solid #444; border-radius: 6px;
-  background: #1a1a2e; color: #ccc; cursor: pointer; font-size: 13px;
+  padding: 5px 14px; border: 2px solid #444; border-radius: 5px;
+  background: #1a1a2e; color: #ccc; cursor: pointer; font-size: 12px;
   font-family: inherit; transition: all 0.15s;
 }
 #mission-select .diff-btn:hover { border-color: #888; }
 #mission-select .diff-btn.selected { border-color: #ffcc00; color: #ffcc00; }
 #mission-select .btn-go {
-  display: block; margin: 0 auto; padding: 12px 48px;
-  border: 2px solid #2d6a4f; border-radius: 10px;
+  display: block; margin: 0 auto; padding: 10px 44px;
+  border: 2px solid #2d6a4f; border-radius: 8px;
   background: #1a3a2a; color: #95d5b2; cursor: pointer;
-  font-size: 18px; font-weight: bold; font-family: inherit; transition: all 0.2s;
+  font-size: 17px; font-weight: bold; font-family: inherit; transition: all 0.2s;
 }
 #mission-select .btn-go:hover { background: #2d6a4f; color: #fff; }
 </style>
@@ -149,7 +143,7 @@ canvas { display: block; width: 100%; height: 100%; }
     <div class="info-group">
       <span class="label">关卡</span>
       <span id="mission-name" class="value" style="color:#ffcc00;">--</span>
-      <span id="difficulty-badge" style="font-size:11px;padding:2px 8px;border-radius:3px;">--</span>
+      <span id="difficulty-badge" style="font-size:10px;padding:2px 6px;border-radius:3px;">--</span>
     </div>
     <div class="info-group">
       <span class="label">状态</span>
@@ -200,23 +194,114 @@ canvas { display: block; width: 100%; height: 100%; }
     </div>
   </div>
   <div id="bottom-bar">
-    <button id="btn-shield" class="active" data-type="shield">🛡 盾兵<span class="unit-count">0/120</span></button>
-    <button id="btn-spear" data-type="spear">🔱 长矛兵<span class="unit-count">0/100</span></button>
-    <button id="btn-cavalry" data-type="cavalry">⚔ 骑兵<span class="unit-count">0/40</span></button>
-    <button id="btn-archer" data-type="archer">🏹 射手<span class="unit-count">0/60</span></button>
-    <button id="btn-maxim" data-type="maxim">🔫 马克沁<span class="unit-count">0/16</span></button>
-    <button id="btn-musketeer" data-type="musketeer">🎯 火枪手<span class="unit-count">0/50</span></button>
-    <button id="btn-artillery" data-type="artillery">💣 炮兵<span class="unit-count">0/10</span></button>
-    <button id="btn-skill" class="btn-skill">📯 战鼓激励</button>
-    <button id="btn-start" class="btn-start">⚡ 开始战斗</button>
-    <button id="btn-reset" class="btn-reset">🔄 重置关卡</button>
+    <button id="btn-shield" class="active" data-type="shield">🛡 盾<span class="unit-count">0/120</span></button>
+    <button id="btn-spear" data-type="spear">🔱 矛<span class="unit-count">0/100</span></button>
+    <button id="btn-cavalry" data-type="cavalry">⚔ 骑<span class="unit-count">0/40</span></button>
+    <button id="btn-archer" data-type="archer">🏹 弓<span class="unit-count">0/60</span></button>
+    <button id="btn-maxim" data-type="maxim">🔫 机枪<span class="unit-count">0/16</span></button>
+    <button id="btn-musketeer" data-type="musketeer">🎯 火枪<span class="unit-count">0/50</span></button>
+    <button id="btn-artillery" data-type="artillery">💣 炮<span class="unit-count">0/10</span></button>
+    <button id="btn-skill" class="btn-skill">📯 战鼓</button>
+    <button id="btn-start" class="btn-start">⚡ 开战</button>
+    <button id="btn-reset" class="btn-reset">🔄 重置</button>
     <button id="btn-choose-mission" class="btn-mission">🗺 选关</button>
   </div>
 </div>
 
 <script>
 // ============================================================
-// CONFIGURATION - Numerically rebalanced for realism
+// SOUND SYSTEM (Web Audio API - synthesized)
+// ============================================================
+class SoundSystem {
+  constructor() {
+    this.ctx = null;
+    this.enabled = true;
+    this.lastMaximSound = 0;
+  }
+  init() {
+    if (this.ctx) return;
+    try {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch(e) { this.enabled = false; }
+  }
+  play(freq, type, duration, vol = 0.08, sweep = null) {
+    if (!this.ctx || !this.enabled) return;
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, now);
+    if (sweep) osc.frequency.linearRampToValueAtTime(sweep, now + duration);
+    gain.gain.setValueAtTime(vol, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+    osc.connect(gain); gain.connect(this.ctx.destination);
+    osc.start(now); osc.stop(now + duration);
+  }
+  noise(duration, vol = 0.04) {
+    if (!this.ctx || !this.enabled) return;
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+    const now = this.ctx.currentTime;
+    const buf = this.ctx.createBuffer(1, this.ctx.sampleRate * duration, this.ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+    const src = this.ctx.createBufferSource();
+    src.buffer = buf;
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(vol, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass'; filter.frequency.setValueAtTime(400, now);
+    src.connect(filter); filter.connect(gain); gain.connect(this.ctx.destination);
+    src.start(now); src.stop(now + duration);
+  }
+  cannon() { this.play(45, 'sawtooth', 0.5, 0.12); this.noise(0.3, 0.06); }
+  maxim() {
+    const now = this.ctx ? this.ctx.currentTime : 0;
+    if (now - this.lastMaximSound < 0.12) return;
+    this.lastMaximSound = now;
+    this.play(180, 'square', 0.03, 0.03);
+  }
+  musket() { this.play(250, 'square', 0.1, 0.05); this.noise(0.06, 0.02); }
+  arrow() { this.play(800, 'sine', 0.1, 0.02, 400); }
+  melee() { this.play(150, 'triangle', 0.06, 0.03); this.noise(0.04, 0.01); }
+  explosion() { this.play(30, 'sawtooth', 0.7, 0.14); this.noise(0.4, 0.08); }
+  victory() {
+    [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => this.play(f, 'triangle', 0.22, 0.07), i * 140));
+  }
+  defeat() {
+    [400, 340, 280, 180].forEach((f, i) => setTimeout(() => this.play(f, 'triangle', 0.28, 0.06), i * 190));
+  }
+  battleStart() { this.play(330, 'triangle', 0.7, 0.06); setTimeout(() => this.play(520, 'triangle', 0.5, 0.05), 150); }
+  skill() { for (let i = 0; i < 3; i++) setTimeout(() => this.play(180 + i * 40, 'sawtooth', 0.12, 0.04), i * 100); }
+}
+
+// ============================================================
+// PARTICLE CLASS
+// ============================================================
+class Particle {
+  constructor(x, y, vx, vy, color, life, size, gravity = 0) {
+    this.x = x; this.y = y; this.vx = vx; this.vy = vy;
+    this.color = color; this.life = life; this.maxLife = life;
+    this.size = size; this.gravity = gravity; this.alive = true;
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    this.vy += this.gravity; this.life--;
+    this.size *= 0.97;
+    if (this.life <= 0 || this.size < 0.3) this.alive = false;
+  }
+  draw(ctx) {
+    const alpha = Math.max(0, this.life / this.maxLife);
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = this.color;
+    ctx.beginPath(); ctx.arc(this.x, this.y, Math.max(0.5, this.size), 0, Math.PI * 2); ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+}
+
+// ============================================================
+// CONFIGURATION
 // ============================================================
 const UNIT_CONFIG = {
   shield: {
@@ -261,7 +346,7 @@ const UNIT_CONFIG = {
     bonusVs: 'cavalry', bonusMultiplier: 1.7, maxCount: 50
   },
   artillery: {
-    name: '炮兵', hp: 70, attack: 250, range: 1000, speed: 0.1,
+    name: '炮兵', hp: 70, attack: 250, range: 9999, speed: 0,
     attackCooldown: 4500, radius: 14, color: '#555533', colorDark: '#333311',
     shape: 'artillery', category: 'artillery', projectile: true,
     bonusVs: 'shield', bonusMultiplier: 2.8, splashRadius: 100, splashTargets: 12,
@@ -280,21 +365,16 @@ const ENEMY_COLORS = {
   artillery:  { color: '#888833', colorDark: '#666611' }
 };
 
-// Difficulty levels
 const DIFFICULTY_LEVELS = [
-  { name: '普通', emoji: '🟢', enemyCountMul: 1.0, enemyStatMul: 1.0, cssClass: 'diff-normal' },
-  { name: '困难', emoji: '🟡', enemyCountMul: 1.6, enemyStatMul: 1.2, cssClass: 'diff-hard' },
-  { name: '地狱', emoji: '🔴', enemyCountMul: 2.5, enemyStatMul: 1.4, cssClass: 'diff-hell' }
+  { name: '普通', emoji: '🟢', enemyCountMul: 1.0, enemyStatMul: 1.0 },
+  { name: '困难', emoji: '🟡', enemyCountMul: 1.6, enemyStatMul: 1.2 },
+  { name: '地狱', emoji: '🔴', enemyCountMul: 2.5, enemyStatMul: 1.4 }
 ];
 
-// Mission definitions - different terrain & enemy deployment patterns
 const MISSIONS = [
   {
-    id: 'plains',
-    name: '平原遭遇战',
-    icon: '🌾',
-    desc: '开阔平原上的正面交锋。敌我双方在平坦地形上列阵对战。',
-    terrainType: 'plains',
+    id: 'plains', name: '平原遭遇战', icon: '🌾',
+    desc: '开阔平原正面交锋。炮兵可覆盖全图，优先部署远程单位。',
     terrainZones: [],
     enemyGroups: [
       { type: 'shield', count: 400, x1: 0.55, y1: 0.05, x2: 0.85, y2: 0.95 },
@@ -306,14 +386,11 @@ const MISSIONS = [
     ]
   },
   {
-    id: 'canyon',
-    name: '峡谷伏击战',
-    icon: '⛰',
-    desc: '狭窄峡谷中遭遇伏击。敌军从前方和侧翼同时进攻，地形限制骑兵机动。',
-    terrainType: 'canyon',
+    id: 'canyon', name: '峡谷伏击战', icon: '⛰',
+    desc: '狭窄峡谷，两侧峭壁阻碍骑兵。守住中央通道即可克敌。',
     terrainZones: [
-      { x1: 0.15, y1: 0, x2: 0.85, y2: 0.15, type: 'rough', speedMul: 0.5 },
-      { x1: 0.15, y1: 0.85, x2: 0.85, y2: 1.0, type: 'rough', speedMul: 0.5 }
+      { x1: 0.15, y1: 0, x2: 0.85, y2: 0.14, type: 'rough', speedMul: 0.5 },
+      { x1: 0.15, y1: 0.86, x2: 0.85, y2: 1.0, type: 'rough', speedMul: 0.5 }
     ],
     enemyGroups: [
       { type: 'shield', count: 300, x1: 0.55, y1: 0.18, x2: 0.85, y2: 0.82 },
@@ -325,11 +402,8 @@ const MISSIONS = [
     ]
   },
   {
-    id: 'river',
-    name: '河流渡口防御',
-    icon: '🌊',
-    desc: '守卫河岸渡口。河流阻碍行军速度，但远程兵种可以在对岸输出。',
-    terrainType: 'river',
+    id: 'river', name: '河流渡口防御', icon: '🌊',
+    desc: '中央河流大幅减速。炮兵和射手在后方全力输出。',
     terrainZones: [
       { x1: 0.38, y1: 0, x2: 0.5, y2: 1.0, type: 'river', speedMul: 0.3 }
     ],
@@ -343,13 +417,10 @@ const MISSIONS = [
     ]
   },
   {
-    id: 'highland',
-    name: '高地守卫战',
-    icon: '🏔',
-    desc: '据守高地阻击敌军。我方居高临下获得射程优势，但敌军兵力众多。',
-    terrainType: 'highland',
+    id: 'highland', name: '高地守卫战', icon: '🏔',
+    desc: '左侧高地提供射程加成。在坡上部署炮兵和射手获取优势。',
     terrainZones: [
-      { x1: 0.02, y1: 0, x2: 0.3, y2: 1.0, type: 'highground', speedMul: 1.0, rangeBonus: 1.25 }
+      { x1: 0.02, y1: 0, x2: 0.32, y2: 1.0, type: 'highground', speedMul: 1.0, rangeBonus: 1.25 }
     ],
     enemyGroups: [
       { type: 'shield', count: 500, x1: 0.55, y1: 0.05, x2: 0.85, y2: 0.95 },
@@ -361,11 +432,8 @@ const MISSIONS = [
     ]
   },
   {
-    id: 'flanking',
-    name: '侧翼包围',
-    icon: '🐴',
-    desc: '敌军骑兵从侧翼迂回包抄。需同时防守正面和两侧，考验布阵智慧。',
-    terrainType: 'flanking',
+    id: 'flanking', name: '侧翼包围', icon: '🐴',
+    desc: '骑兵从上下两翼包抄。部署长矛兵保护后方炮兵阵地。',
     terrainZones: [],
     enemyGroups: [
       { type: 'shield', count: 300, x1: 0.55, y1: 0.25, x2: 0.8, y2: 0.75 },
@@ -377,13 +445,10 @@ const MISSIONS = [
     ]
   },
   {
-    id: 'fortress',
-    name: '要塞攻防战',
-    icon: '🏰',
-    desc: '依托要塞防御敌军重兵集团。敌军拥有大量攻城炮兵和步兵，坚守阵地！',
-    terrainType: 'fortress',
+    id: 'fortress', name: '要塞攻防战', icon: '🏰',
+    desc: '左侧要塞提供减伤。敌军拥有炮兵，优先摧毁敌方远程。',
     terrainZones: [
-      { x1: 0.02, y1: 0.25, x2: 0.25, y2: 0.75, type: 'fort', speedMul: 1.0, defenseBonus: true }
+      { x1: 0.02, y1: 0.22, x2: 0.26, y2: 0.78, type: 'fort', speedMul: 1.0, defenseBonus: true }
     ],
     enemyGroups: [
       { type: 'shield', count: 600, x1: 0.55, y1: 0.05, x2: 0.85, y2: 0.95 },
@@ -397,21 +462,8 @@ const MISSIONS = [
 ];
 
 const COUNTDOWN_SECONDS = 3;
-
-const SKILL_CONFIG = {
-  cooldown: 15000,
-  duration: 5000,
-  attackBoost: 1.35,
-  speedBoost: 1.25
-};
-
-const MORALE_CONFIG = {
-  generalAuraRadius: 160,
-  attackBoostNearGeneral: 1.12,
-  speedPenaltyGeneralDead: 0.88,
-  cooldownPenaltyGeneralDead: 1.12
-};
-
+const SKILL_CONFIG = { cooldown: 15000, duration: 5000, attackBoost: 1.35, speedBoost: 1.25 };
+const MORALE_CONFIG = { generalAuraRadius: 160, attackBoostNearGeneral: 1.12, speedPenaltyGeneralDead: 0.88, cooldownPenaltyGeneralDead: 1.12 };
 const SPATIAL_CELL_SIZE = 100;
 const TARGET_UPDATE_INTERVAL = 20;
 const MAX_PROJECTILES = 1200;
@@ -432,27 +484,21 @@ class SpatialGrid {
   }
   clear() { for (let i = 0; i < this.cells.length; i++) this.cells[i] = []; }
   getIndex(x, y) {
-    const cx = Math.floor(x / this.cellSize);
-    const cy = Math.floor(y / this.cellSize);
+    const cx = Math.floor(x / this.cellSize), cy = Math.floor(y / this.cellSize);
     if (cx < 0 || cy < 0 || cx >= this.cols || cy >= this.rows) return -1;
     return cy * this.cols + cx;
   }
-  insert(unit) {
-    const idx = this.getIndex(unit.x, unit.y);
-    if (idx >= 0) this.cells[idx].push(unit);
-  }
+  insert(unit) { const idx = this.getIndex(unit.x, unit.y); if (idx >= 0) this.cells[idx].push(unit); }
   getNearby(x, y, range) {
     const result = [];
     const minCX = Math.max(0, Math.floor((x - range) / this.cellSize));
     const maxCX = Math.min(this.cols - 1, Math.floor((x + range) / this.cellSize));
     const minCY = Math.max(0, Math.floor((y - range) / this.cellSize));
     const maxCY = Math.min(this.rows - 1, Math.floor((y + range) / this.cellSize));
-    for (let cy = minCY; cy <= maxCY; cy++) {
-      for (let cx = minCX; cx <= maxCX; cx++) {
-        const cell = this.cells[cy * this.cols + cx];
-        for (let i = 0; i < cell.length; i++) result.push(cell[i]);
-      }
-    }
+    for (let cy = minCY; cy <= maxCY; cy++)
+      for (let cx = minCX; cx <= maxCX; cx++)
+        for (let i = 0; i < this.cells[cy * this.cols + cx].length; i++)
+          result.push(this.cells[cy * this.cols + cx][i]);
     return result;
   }
 }
@@ -461,30 +507,26 @@ class SpatialGrid {
 // PROJECTILE CLASS
 // ============================================================
 class Projectile {
-  constructor(x, y, target, damage, team, isTracer = false) {
-    this.x = x; this.y = y;
-    this.target = target; this.damage = damage; this.team = team;
-    this.isHeavy = damage >= 120;
-    this.speed = this.isHeavy ? 3.5 : (isTracer ? 8 : 5);
-    this.alive = true;
-    this.radius = this.isHeavy ? 5 : (isTracer ? 1.5 : 2);
+  constructor(x, y, target, damage, team, isHeavy = false, isTracer = false) {
+    this.x = x; this.y = y; this.target = target; this.damage = damage; this.team = team;
+    this.isHeavy = isHeavy; this.isTracer = isTracer;
+    this.speed = isHeavy ? 9 : (isTracer ? 8 : 5);
+    this.alive = true; this.hitX = null; this.hitY = null;
+    this.radius = isHeavy ? 5 : (isTracer ? 1.5 : 2);
     this.vx = 0; this.vy = 0;
-    this.isTracer = isTracer;
   }
   update() {
     if (!this.target || !this.target.alive) { this.alive = false; return; }
-    const dx = this.target.x - this.x;
-    const dy = this.target.y - this.y;
+    const dx = this.target.x - this.x, dy = this.target.y - this.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
     if (dist < this.speed + this.target.radius) {
       this.target.takeDamage(this.damage);
+      this.hitX = this.target.x; this.hitY = this.target.y;
       this.alive = false;
       return;
     }
-    this.vx = (dx / dist) * this.speed;
-    this.vy = (dy / dist) * this.speed;
-    this.x += this.vx;
-    this.y += this.vy;
+    this.vx = (dx / dist) * this.speed; this.vy = (dy / dist) * this.speed;
+    this.x += this.vx; this.y += this.vy;
   }
   draw(ctx) {
     if (this.isHeavy) {
@@ -495,8 +537,7 @@ class Projectile {
       ctx.fillStyle = '#555';
       ctx.beginPath(); ctx.arc(this.x - 1, this.y - 1, this.radius * 0.6, 0, Math.PI * 2); ctx.fill();
     } else if (this.isTracer) {
-      ctx.strokeStyle = this.team === 0 ? '#ffdd44' : '#ff8844';
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = this.team === 0 ? '#ffdd44' : '#ff8844'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(this.x, this.y); ctx.lineTo(this.x - this.vx * 1.5, this.y - this.vy * 1.5); ctx.stroke();
       ctx.fillStyle = this.team === 0 ? '#ffdd44' : '#ff8844';
       ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fill();
@@ -513,44 +554,29 @@ class Projectile {
 class Unit {
   constructor(type, x, y, team, isGeneral = false, statMul = 1.0) {
     const cfg = UNIT_CONFIG[type];
-    this.type = type;
-    this.category = cfg.category;
-    this.x = x; this.y = y;
-    this.team = team;
-    this.isGeneral = isGeneral;
+    this.type = type; this.category = cfg.category;
+    this.x = x; this.y = y; this.team = team; this.isGeneral = isGeneral;
     this.alive = true;
-
-    this.maxHp = Math.round(cfg.hp * statMul);
-    this.hp = this.maxHp;
+    this.maxHp = Math.round(cfg.hp * statMul); this.hp = this.maxHp;
     this.baseAttack = Math.round(cfg.attack * statMul);
-    this.baseRange = cfg.range;
-    this.baseSpeed = cfg.speed;
+    this.baseRange = cfg.range; this.baseSpeed = cfg.speed;
     this.baseAttackCooldown = cfg.attackCooldown;
-    this.radius = cfg.radius;
-    this.shape = cfg.shape;
+    this.radius = cfg.radius; this.shape = cfg.shape;
     this.bonusVs = cfg.bonusVs || null;
     this.bonusMultiplier = cfg.bonusMultiplier || 1;
     this.isRanged = cfg.projectile === true;
+    this.isImmobile = cfg.speed === 0;
 
-    if (team === 0) {
-      this.color = cfg.color;
-      this.colorDark = cfg.colorDark;
-    } else {
-      const ec = ENEMY_COLORS[type];
-      this.color = ec.color;
-      this.colorDark = ec.colorDark;
-    }
+    if (team === 0) { this.color = cfg.color; this.colorDark = cfg.colorDark; }
+    else { const ec = ENEMY_COLORS[type]; this.color = ec.color; this.colorDark = ec.colorDark; }
 
-    this.attackCooldownTimer = 0;
-    this.target = null;
+    this.attackCooldownTimer = 0; this.target = null;
     this.targetUpdateCounter = Math.floor(Math.random() * TARGET_UPDATE_INTERVAL);
     this.separationCounter = Math.floor(Math.random() * SEPARATION_UPDATE_INTERVAL);
     this.vx = 0; this.vy = 0;
-    this.flashTimer = 0;
-    this.skillGlowTimer = 0;
-    this.terrainRangeBonus = null;
-    this.terrainSpeedMul = null;
-    this.terrainDefenseBonus = false;
+    this.flashTimer = 0; this.skillGlowTimer = 0;
+    this.terrainRangeBonus = null; this.terrainSpeedMul = null; this.terrainDefenseBonus = false;
+    this.shotCounter = 0;
   }
 
   getAttack() {
@@ -559,51 +585,57 @@ class Unit {
     if (this.skillAttackBoost) atk *= this.skillAttackBoost;
     return atk;
   }
-
   getSpeed() {
+    if (this.isImmobile) return 0;
     let spd = this.baseSpeed;
     if (this.moraleSpeedPenalty) spd *= this.moraleSpeedPenalty;
     if (this.skillSpeedBoost) spd *= this.skillSpeedBoost;
     if (this.terrainSpeedMul) spd *= this.terrainSpeedMul;
     return spd;
   }
-
   getAttackCooldown() {
     let cd = this.baseAttackCooldown;
     if (this.moraleCooldownPenalty) cd *= this.moraleCooldownPenalty;
     return cd;
   }
-
   getRange() {
     let r = this.baseRange;
     if (this.terrainRangeBonus) r *= this.terrainRangeBonus;
     return r;
   }
-
   takeDamage(amount) {
     if (this.terrainDefenseBonus) amount *= 0.8;
     this.hp -= amount;
     this.flashTimer = 6;
     if (this.hp <= 0) { this.hp = 0; this.alive = false; }
   }
-
   distanceTo(other) {
-    const dx = this.x - other.x;
-    const dy = this.y - other.y;
+    const dx = this.x - other.x, dy = this.y - other.y;
     return Math.sqrt(dx * dx + dy * dy);
   }
 
   findTarget(game) {
-    const SEARCH_RADIUS = 400;
-    let bestDist = SEARCH_RADIUS;
+    const searchRadius = this.category === 'artillery' ? 9999 : 400;
+    let bestScore = -Infinity;
     let bestTarget = null;
-    const enemies = game.spatialGrid.getNearby(this.x, this.y, SEARCH_RADIUS);
+    const enemies = game.spatialGrid.getNearby(this.x, this.y, searchRadius);
+
     for (let i = 0; i < enemies.length; i++) {
       const e = enemies[i];
       if (e.team === this.team || !e.alive) continue;
-      let priorityDist = this.distanceTo(e);
-      if (this.bonusVs === e.category) priorityDist *= 0.4;
-      if (priorityDist < bestDist) { bestDist = priorityDist; bestTarget = e; }
+
+      // Score calculation: closer is better by default
+      let score = 2000 - this.distanceTo(e);
+
+      // Artillery smart targeting: prefer high-value targets
+      if (this.category === 'artillery') {
+        if (e.isGeneral) score += 8000;
+        if (e.category === 'artillery') score += 4000;
+        if (e.category === 'archer' || e.category === 'musketeer') score += 1500;
+      }
+
+      if (this.bonusVs && e.category === this.bonusVs) score += 3000;
+      if (score > bestScore) { bestScore = score; bestTarget = e; }
     }
     this.target = bestTarget;
   }
@@ -612,10 +644,8 @@ class Unit {
     if (!this.alive) return;
     if (this.flashTimer > 0) this.flashTimer--;
     if (this.skillGlowTimer > 0) this.skillGlowTimer--;
-
     this.updateMorale(game);
     this.updateTerrain(game);
-
     if (this.attackCooldownTimer > 0) this.attackCooldownTimer -= dt;
 
     this.targetUpdateCounter--;
@@ -630,39 +660,32 @@ class Unit {
       if (dist <= this.getRange()) {
         if (this.attackCooldownTimer <= 0) this.attackTarget(game);
         this.vx = 0; this.vy = 0;
-      } else {
-        const dx = this.target.x - this.x;
-        const dy = this.target.y - this.y;
+      } else if (!this.isImmobile) {
+        const dx = this.target.x - this.x, dy = this.target.y - this.y;
         const d = Math.sqrt(dx * dx + dy * dy);
-        if (d > 0) {
-          const spd = this.getSpeed();
-          this.vx = (dx / d) * spd;
-          this.vy = (dy / d) * spd;
-        }
+        if (d > 0) { const spd = this.getSpeed(); this.vx = (dx / d) * spd; this.vy = (dy / d) * spd; }
       }
-    } else {
+    } else if (!this.isImmobile) {
       const dir = this.team === 0 ? 1 : -1;
       this.vx = dir * this.getSpeed() * 0.8;
       this.vy = (Math.random() - 0.5) * this.getSpeed() * 0.4;
     }
 
-    this.separationCounter--;
-    if (this.separationCounter <= 0) {
-      this.separationCounter = SEPARATION_UPDATE_INTERVAL;
-      this.applySeparation(game);
+    if (!this.isImmobile) {
+      this.separationCounter--;
+      if (this.separationCounter <= 0) { this.separationCounter = SEPARATION_UPDATE_INTERVAL; this.applySeparation(game); }
     }
 
     this.x += this.vx * dt * 0.06;
     this.y += this.vy * dt * 0.06;
 
     const margin = this.radius + 2;
-    if (this.x < margin) this.x = margin;
-    if (this.y < margin) this.y = margin;
-    if (this.x > game.canvasWidth - margin) this.x = game.canvasWidth - margin;
-    if (this.y > game.canvasHeight - margin) this.y = game.canvasHeight - margin;
+    this.x = Math.max(margin, Math.min(game.canvasWidth - margin, this.x));
+    this.y = Math.max(margin, Math.min(game.canvasHeight - margin, this.y));
   }
 
   applySeparation(game) {
+    if (this.isImmobile) return;
     const nearby = game.spatialGrid.getNearby(this.x, this.y, SEPARATION_RADIUS);
     let sepX = 0, sepY = 0, count = 0;
     for (let i = 0; i < nearby.length; i++) {
@@ -672,28 +695,18 @@ class Unit {
       const dist = Math.sqrt(dx * dx + dy * dy);
       const minDist = this.radius + u.radius + 2;
       if (dist < minDist && dist > 0.01) {
-        sepX += (dx / dist) * (minDist - dist);
-        sepY += (dy / dist) * (minDist - dist);
-        count++;
+        sepX += (dx / dist) * (minDist - dist); sepY += (dy / dist) * (minDist - dist); count++;
       }
     }
-    if (count > 0) {
-      this.vx += (sepX / count) * SEPARATION_FORCE;
-      this.vy += (sepY / count) * SEPARATION_FORCE;
-    }
+    if (count > 0) { this.vx += (sepX / count) * SEPARATION_FORCE; this.vy += (sepY / count) * SEPARATION_FORCE; }
   }
 
   updateMorale(game) {
-    this.moraleAttackBoost = null;
-    this.moraleSpeedPenalty = null;
-    this.moraleCooldownPenalty = null;
+    this.moraleAttackBoost = null; this.moraleSpeedPenalty = null; this.moraleCooldownPenalty = null;
     const general = this.team === 0 ? game.playerGeneral : game.enemyGeneral;
     if (general) {
       if (this !== general) {
-        const distToGeneral = this.distanceTo(general);
-        if (distToGeneral <= MORALE_CONFIG.generalAuraRadius) {
-          this.moraleAttackBoost = MORALE_CONFIG.attackBoostNearGeneral;
-        }
+        if (this.distanceTo(general) <= MORALE_CONFIG.generalAuraRadius) this.moraleAttackBoost = MORALE_CONFIG.attackBoostNearGeneral;
       }
     } else {
       this.moraleSpeedPenalty = MORALE_CONFIG.speedPenaltyGeneralDead;
@@ -702,9 +715,7 @@ class Unit {
   }
 
   updateTerrain(game) {
-    this.terrainRangeBonus = null;
-    this.terrainSpeedMul = null;
-    this.terrainDefenseBonus = false;
+    this.terrainRangeBonus = null; this.terrainSpeedMul = null; this.terrainDefenseBonus = false;
     for (const zone of game.terrainZones) {
       if (this.x >= zone.x1 && this.x <= zone.x2 && this.y >= zone.y1 && this.y <= zone.y2) {
         if (zone.speedMul !== undefined && zone.speedMul !== 1.0) this.terrainSpeedMul = zone.speedMul;
@@ -721,12 +732,13 @@ class Unit {
     const cfg = UNIT_CONFIG[this.type];
 
     if (cfg.bayonetRange !== undefined) {
-      const dist = this.distanceTo(target);
-      if (dist <= cfg.bayonetRange) {
+      if (this.distanceTo(target) <= cfg.bayonetRange) {
         let dmg = cfg.bayonetAttack;
         if (this.bonusVs && target.category === this.bonusVs) dmg *= this.bonusMultiplier;
         target.takeDamage(dmg);
         this.attackCooldownTimer = cfg.bayonetCooldown;
+        game.soundSystem.melee();
+        game.addSparks(target.x, target.y, '#ffdd88', 4);
         return;
       }
     }
@@ -735,38 +747,51 @@ class Unit {
     if (this.bonusVs && target.category === this.bonusVs) dmg *= this.bonusMultiplier;
 
     if (this.isRanged) {
-      const isTracer = this.category === 'maxim' || this.category === 'artillery';
-      game.addProjectile(this.x, this.y, target, dmg, this.team, isTracer);
+      const isHeavy = this.category === 'artillery';
+      const isTracer = this.category === 'maxim';
+      game.addProjectile(this.x, this.y, target, dmg, this.team, isHeavy, isTracer);
+
+      // Sound throttling
+      if (isHeavy) { game.soundSystem.cannon(); }
+      else if (isTracer) {
+        this.shotCounter++;
+        if (this.shotCounter % 8 === 0) game.soundSystem.maxim();
+      } else if (this.category === 'musketeer') { game.soundSystem.musket(); }
+      else { game.soundSystem.arrow(); }
+
+      // Muzzle flash particles
+      const muzzleX = this.x + (this.team === 0 ? 1 : -1) * this.radius;
+      game.addSparks(muzzleX, this.y, this.color, isHeavy ? 5 : 2);
+
+      // Splash damage
       if (cfg.splashRadius && cfg.splashTargets) {
         const nearby = game.spatialGrid.getNearby(target.x, target.y, cfg.splashRadius);
         let splashed = 0;
         for (let i = 0; i < nearby.length && splashed < cfg.splashTargets; i++) {
           const e = nearby[i];
           if (e === target || e.team === this.team || !e.alive) continue;
-          const dist = Math.sqrt((e.x - target.x) ** 2 + (e.y - target.y) ** 2);
-          if (dist <= cfg.splashRadius) {
-            let splashDmg = this.getAttack();
-            if (this.bonusVs && e.category === this.bonusVs) splashDmg *= this.bonusMultiplier;
-            e.takeDamage(splashDmg);
-            splashed++;
+          if (Math.sqrt((e.x - target.x) ** 2 + (e.y - target.y) ** 2) <= cfg.splashRadius) {
+            let sdmg = this.getAttack();
+            if (this.bonusVs && e.category === this.bonusVs) sdmg *= this.bonusMultiplier;
+            e.takeDamage(sdmg); splashed++;
           }
         }
       }
     } else {
       target.takeDamage(dmg);
+      game.soundSystem.melee();
+      game.addSparks(target.x, target.y, '#ffffff', 3);
     }
     this.attackCooldownTimer = this.getAttackCooldown();
   }
 
   draw(ctx) {
     if (!this.alive) return;
-    ctx.save();
-    ctx.translate(this.x, this.y);
+    ctx.save(); ctx.translate(this.x, this.y);
 
     if (this.skillGlowTimer > 0) {
       ctx.beginPath(); ctx.arc(0, 0, this.radius + 6, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(255,204,0,${this.skillGlowTimer / 30})`;
-      ctx.lineWidth = 2; ctx.stroke();
+      ctx.strokeStyle = `rgba(255,204,0,${this.skillGlowTimer / 30})`; ctx.lineWidth = 2; ctx.stroke();
     }
 
     const baseColor = this.flashTimer > 0 ? '#ffffff' : this.color;
@@ -777,42 +802,38 @@ class Unit {
       ctx.strokeStyle = '#ffcc00'; ctx.lineWidth = 2; ctx.stroke();
     }
 
-    // Defense bonus shield indicator
     if (this.terrainDefenseBonus) {
       ctx.beginPath(); ctx.arc(0, 0, this.radius + 5, 0, Math.PI * 2);
       ctx.strokeStyle = 'rgba(100,200,255,0.5)'; ctx.lineWidth = 2; ctx.stroke();
     }
 
-    ctx.fillStyle = baseColor;
-    ctx.strokeStyle = this.colorDark;
-    ctx.lineWidth = 1;
-    ctx.beginPath();
+    // Immobile indicator (anchor ring)
+    if (this.isImmobile) {
+      ctx.beginPath(); ctx.arc(0, 0, this.radius + 4, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(180,180,180,0.4)'; ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]); ctx.stroke(); ctx.setLineDash([]);
+    }
 
+    ctx.fillStyle = baseColor; ctx.strokeStyle = this.colorDark; ctx.lineWidth = 1;
+    ctx.beginPath();
     switch (this.shape) {
-      case 'square':
-        ctx.rect(-this.radius, -this.radius, this.radius * 2, this.radius * 2); break;
-      case 'triangle':
-        ctx.moveTo(0, -this.radius); ctx.lineTo(-this.radius, this.radius);
-        ctx.lineTo(this.radius, this.radius); ctx.closePath(); break;
-      case 'diamond':
-        ctx.moveTo(0, -this.radius); ctx.lineTo(this.radius, 0);
-        ctx.lineTo(0, this.radius); ctx.lineTo(-this.radius, 0); ctx.closePath(); break;
-      case 'star':
-        this.drawStar(ctx, 0, 0, this.radius, this.radius * 0.45, 5); break;
+      case 'square': ctx.rect(-this.radius, -this.radius, this.radius * 2, this.radius * 2); break;
+      case 'triangle': ctx.moveTo(0, -this.radius); ctx.lineTo(-this.radius, this.radius); ctx.lineTo(this.radius, this.radius); ctx.closePath(); break;
+      case 'diamond': ctx.moveTo(0, -this.radius); ctx.lineTo(this.radius, 0); ctx.lineTo(0, this.radius); ctx.lineTo(-this.radius, 0); ctx.closePath(); break;
+      case 'star': this.drawStar(ctx, 0, 0, this.radius, this.radius * 0.45, 5); break;
       case 'maxim': this.drawMaxim(ctx); break;
       case 'musketeer': this.drawMusketeer(ctx); break;
       case 'artillery': this.drawArtillery(ctx); break;
-      case 'circle':
       default: ctx.arc(0, 0, this.radius, 0, Math.PI * 2); break;
     }
     ctx.fill(); ctx.stroke();
 
     if (this.hp < this.maxHp) {
       const barW = this.radius * 2.2, barH = 3, barY = -this.radius - 8;
-      const hpRatio = this.hp / this.maxHp;
       ctx.fillStyle = '#400000'; ctx.fillRect(-barW / 2, barY, barW, barH);
-      ctx.fillStyle = hpRatio > 0.5 ? '#44cc44' : hpRatio > 0.25 ? '#cccc44' : '#cc4444';
-      ctx.fillRect(-barW / 2, barY, barW * hpRatio, barH);
+      const ratio = this.hp / this.maxHp;
+      ctx.fillStyle = ratio > 0.5 ? '#44cc44' : ratio > 0.25 ? '#cccc44' : '#cc4444';
+      ctx.fillRect(-barW / 2, barY, barW * ratio, barH);
     }
 
     if (this.isGeneral) {
@@ -826,9 +847,9 @@ class Unit {
     const step = Math.PI / points;
     for (let i = 0; i < points * 2; i++) {
       const r = i % 2 === 0 ? outerR : innerR;
-      const angle = i * step - Math.PI / 2;
-      const x = cx + Math.cos(angle) * r, y = cy + Math.sin(angle) * r;
-      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      const a = i * step - Math.PI / 2;
+      if (i === 0) ctx.moveTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+      else ctx.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
     }
     ctx.closePath();
   }
@@ -839,10 +860,7 @@ class Unit {
     ctx.strokeStyle = '#222'; ctx.lineWidth = 1; ctx.strokeRect(-r * 0.9, -r * 0.35, r * 1.8, r * 0.7);
     ctx.fillStyle = '#2a2a2a'; ctx.fillRect(-r * 1.3, -r * 0.15, r * 0.5, r * 0.3);
     ctx.strokeStyle = '#555'; ctx.lineWidth = 0.5;
-    for (let i = 0; i < 3; i++) {
-      const sx = -r * 0.5 + i * r * 0.5;
-      ctx.beginPath(); ctx.moveTo(sx, -r * 0.35); ctx.lineTo(sx, r * 0.35); ctx.stroke();
-    }
+    for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.moveTo(-r * 0.5 + i * r * 0.5, -r * 0.35); ctx.lineTo(-r * 0.5 + i * r * 0.5, r * 0.35); ctx.stroke(); }
     ctx.strokeStyle = '#3a3025'; ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(-r * 0.3, r * 0.35); ctx.lineTo(-r * 0.5, r * 0.85);
@@ -852,10 +870,8 @@ class Unit {
     ctx.beginPath(); ctx.arc(-r * 0.4, -r * 0.9, r * 0.3, 0, Math.PI * 2); ctx.fill();
     ctx.beginPath(); ctx.arc(r * 0.5, -r * 0.8, r * 0.3, 0, Math.PI * 2); ctx.fill();
     if (this.flashTimer > 0) {
-      ctx.fillStyle = '#ffcc00';
-      ctx.beginPath(); ctx.arc(-r * 1.3, 0, r * 0.4, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#fff';
-      ctx.beginPath(); ctx.arc(-r * 1.3, 0, r * 0.2, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ffcc00'; ctx.beginPath(); ctx.arc(-r * 1.3, 0, r * 0.4, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-r * 1.3, 0, r * 0.2, 0, Math.PI * 2); ctx.fill();
     }
   }
 
@@ -870,8 +886,7 @@ class Unit {
     ctx.beginPath(); ctx.moveTo(r * 2.0, -r * 0.8); ctx.lineTo(r * 2.3, -r * 0.95); ctx.lineTo(r * 1.9, -r * 1.05); ctx.closePath(); ctx.fill();
     ctx.fillStyle = '#6b4a2a'; ctx.fillRect(-r * 1.0, -r * 0.3, r * 0.6, r * 0.2);
     if (this.flashTimer > 2) {
-      ctx.fillStyle = '#ffdd66';
-      ctx.beginPath(); ctx.arc(r * 2.0, -r * 0.8, r * 0.5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ffdd66'; ctx.beginPath(); ctx.arc(r * 2.0, -r * 0.8, r * 0.5, 0, Math.PI * 2); ctx.fill();
     }
   }
 
@@ -881,28 +896,22 @@ class Unit {
     ctx.beginPath(); ctx.arc(-r * 0.6, r * 0.6, r * 0.45, 0, Math.PI * 2); ctx.stroke();
     ctx.beginPath(); ctx.arc(r * 0.6, r * 0.6, r * 0.45, 0, Math.PI * 2); ctx.stroke();
     ctx.lineWidth = 1;
-    for (let w = -1; w <= 1; w += 2) {
+    for (let w = -1; w <= 1; w += 2)
       for (let a = 0; a < 4; a++) {
-        const angle = a * Math.PI / 2;
         ctx.beginPath();
-        ctx.moveTo(w * r * 0.6 + Math.cos(angle) * r * 0.15, r * 0.6 + Math.sin(angle) * r * 0.15);
-        ctx.lineTo(w * r * 0.6 + Math.cos(angle) * r * 0.4, r * 0.6 + Math.sin(angle) * r * 0.4); ctx.stroke();
+        ctx.moveTo(w * r * 0.6 + Math.cos(a * Math.PI / 2) * r * 0.15, r * 0.6 + Math.sin(a * Math.PI / 2) * r * 0.15);
+        ctx.lineTo(w * r * 0.6 + Math.cos(a * Math.PI / 2) * r * 0.4, r * 0.6 + Math.sin(a * Math.PI / 2) * r * 0.4); ctx.stroke();
       }
-    }
     ctx.strokeStyle = '#333'; ctx.lineWidth = 4;
     ctx.beginPath(); ctx.moveTo(-r * 0.3, -r * 0.1); ctx.lineTo(-r * 1.5, -r * 0.5); ctx.stroke();
     ctx.fillStyle = '#444'; ctx.fillRect(-r * 1.3, -r * 0.7, r * 0.7, r * 0.6);
     ctx.fillStyle = '#4a4a3a'; ctx.fillRect(-r * 0.7, -r * 0.3, r * 1.4, r * 0.8);
     ctx.strokeStyle = '#222'; ctx.lineWidth = 1; ctx.strokeRect(-r * 0.7, -r * 0.3, r * 1.4, r * 0.8);
     ctx.fillStyle = this.colorDark;
-    for (let i = 0; i < 3; i++) {
-      ctx.beginPath(); ctx.arc(-r * 0.5 + i * r * 0.5, -r * 0.9, r * 0.25, 0, Math.PI * 2); ctx.fill();
-    }
+    for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.arc(-r * 0.5 + i * r * 0.5, -r * 0.9, r * 0.25, 0, Math.PI * 2); ctx.fill(); }
     if (this.flashTimer > 2) {
-      ctx.fillStyle = '#ff8800';
-      ctx.beginPath(); ctx.arc(-r * 1.8, -r * 0.5, r * 0.7, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#ffdd44';
-      ctx.beginPath(); ctx.arc(-r * 1.8, -r * 0.5, r * 0.35, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ff8800'; ctx.beginPath(); ctx.arc(-r * 1.8, -r * 0.5, r * 0.7, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ffdd44'; ctx.beginPath(); ctx.arc(-r * 1.8, -r * 0.5, r * 0.35, 0, Math.PI * 2); ctx.fill();
     }
   }
 }
@@ -914,33 +923,23 @@ class Game {
   constructor(canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
-    this.selectedMissionIdx = 0;
-    this.selectedDifficulty = 0;
+    this.soundSystem = new SoundSystem();
+    this.selectedMissionIdx = 0; this.selectedDifficulty = 0;
     this.playerDeployedByType = {};
     this.resize();
     this.state = 'select';
-    this.playerUnits = [];
-    this.enemyUnits = [];
-    this.projectiles = [];
+    this.playerUnits = []; this.enemyUnits = []; this.projectiles = []; this.particles = [];
     this.selectedType = 'shield';
-    this.playerKills = 0;
-    this.enemyKills = 0;
-    this.initialPlayerCounts = {};
-    this.initialEnemyCounts = {};
-    this.countdownRemaining = 0;
-    this.skillCooldownRemaining = 0;
-    this.skillActive = false;
-    this.skillTimer = 0;
+    this.playerKills = 0; this.enemyKills = 0;
+    this.initialPlayerCounts = {}; this.initialEnemyCounts = {};
+    this.countdownRemaining = 0; this.skillCooldownRemaining = 0; this.skillActive = false; this.skillTimer = 0;
     this.isDragging = false;
     this.dragStartX = 0; this.dragStartY = 0; this.dragEndX = 0; this.dragEndY = 0;
     this.mouseX = 0; this.mouseY = 0; this.mouseOnCanvas = false;
-    this.frameCount = 0;
-    this.playerGeneral = null;
-    this.enemyGeneral = null;
-    this.spatialGrid = null;
-    this.terrainZones = [];
+    this.frameCount = 0; this.playerGeneral = null; this.enemyGeneral = null;
+    this.spatialGrid = null; this.terrainZones = [];
+    this.screenShake = 0;
     this.lastTime = performance.now();
-
     this.setupMissionSelectUI();
     this.setupEvents();
     this.loop();
@@ -948,10 +947,8 @@ class Game {
 
   resize() {
     const wrap = this.canvas.parentElement;
-    this.canvasWidth = wrap.clientWidth;
-    this.canvasHeight = wrap.clientHeight;
-    this.canvas.width = this.canvasWidth;
-    this.canvas.height = this.canvasHeight;
+    this.canvasWidth = wrap.clientWidth; this.canvasHeight = wrap.clientHeight;
+    this.canvas.width = this.canvasWidth; this.canvas.height = this.canvasHeight;
     this.midline = this.canvasWidth / 2;
     this.spatialGrid = new SpatialGrid(this.canvasWidth, this.canvasHeight, SPATIAL_CELL_SIZE);
     if (this.playerUnits && this.enemyUnits) this.rebuildSpatialGrid();
@@ -970,45 +967,29 @@ class Game {
     this.terrainZones = [];
     for (const tz of mission.terrainZones) {
       this.terrainZones.push({
-        x1: tz.x1 * this.canvasWidth,
-        y1: tz.y1 * this.canvasHeight,
-        x2: tz.x2 * this.canvasWidth,
-        y2: tz.y2 * this.canvasHeight,
-        type: tz.type,
-        speedMul: tz.speedMul,
-        rangeBonus: tz.rangeBonus,
+        x1: tz.x1 * this.canvasWidth, y1: tz.y1 * this.canvasHeight,
+        x2: tz.x2 * this.canvasWidth, y2: tz.y2 * this.canvasHeight,
+        type: tz.type, speedMul: tz.speedMul, rangeBonus: tz.rangeBonus,
         defenseBonus: tz.defenseBonus || false
       });
     }
   }
 
   init() {
-    this.playerUnits = [];
-    this.enemyUnits = [];
-    this.projectiles = [];
-    this.playerKills = 0;
-    this.enemyKills = 0;
-    this.state = 'deploy';
-    this.skillCooldownRemaining = 0;
-    this.skillActive = false;
-    this.skillTimer = 0;
-    this.playerGeneral = null;
-    this.enemyGeneral = null;
+    this.soundSystem.init();
+    this.playerUnits = []; this.enemyUnits = []; this.projectiles = []; this.particles = [];
+    this.playerKills = 0; this.enemyKills = 0; this.screenShake = 0;
+    this.state = 'deploy'; this.skillCooldownRemaining = 0; this.skillActive = false; this.skillTimer = 0;
+    this.playerGeneral = null; this.enemyGeneral = null;
     this.playerDeployedByType = {};
-    for (const key of Object.keys(UNIT_CONFIG)) {
-      this.playerDeployedByType[key] = 0;
-    }
+    for (const key of Object.keys(UNIT_CONFIG)) this.playerDeployedByType[key] = 0;
 
-    const genX = this.midline * 0.35;
-    const genY = this.canvasHeight / 2;
+    const genX = this.midline * 0.35, genY = this.canvasHeight / 2;
     this.playerUnits.push(new Unit('general', genX, genY, 0, true));
-
     this.createEnemyArmy();
     this.recalcTerrainZones();
-
     this.initialPlayerCounts = this.countByType(this.playerUnits);
     this.initialEnemyCounts = this.countByType(this.enemyUnits);
-
     this.spatialGrid = new SpatialGrid(this.canvasWidth, this.canvasHeight, SPATIAL_CELL_SIZE);
     document.getElementById('stats-panel').style.display = 'none';
     document.getElementById('result-overlay').style.display = 'none';
@@ -1016,26 +997,14 @@ class Game {
     this.updateUI();
   }
 
-  countByType(units) {
-    const counts = {};
-    for (const u of units) { if (!u.alive) continue; counts[u.category] = (counts[u.category] || 0) + 1; }
-    return counts;
-  }
-
+  countByType(units) { const c = {}; for (const u of units) { if (!u.alive) continue; c[u.category] = (c[u.category] || 0) + 1; } return c; }
   countAlive(units) { let c = 0; for (const u of units) if (u.alive) c++; return c; }
-
-  countAliveByType(units) {
-    const counts = {};
-    for (const key of Object.keys(UNIT_CONFIG)) counts[key] = 0;
-    for (const u of units) { if (u.alive) counts[u.category] = (counts[u.category] || 0) + 1; }
-    return counts;
-  }
+  countAliveByType(units) { const c = {}; for (const k of Object.keys(UNIT_CONFIG)) c[k] = 0; for (const u of units) { if (u.alive) c[u.category] = (c[u.category] || 0) + 1; } return c; }
 
   createEnemyArmy() {
     const mission = MISSIONS[this.selectedMissionIdx];
     const diff = DIFFICULTY_LEVELS[this.selectedDifficulty];
     const w = this.canvasWidth, h = this.canvasHeight;
-
     for (const group of mission.enemyGroups) {
       if (group.type === 'general') {
         const gx = group.x1 * w + (group.x2 - group.x1) * w * 0.5;
@@ -1043,8 +1012,7 @@ class Game {
         this.enemyUnits.push(new Unit('general', gx, gy, 1, true, diff.enemyStatMul));
       } else {
         const count = Math.round(group.count * diff.enemyCountMul);
-        this.deployFormation(group.type, count,
-          group.x1 * w, group.y1 * h, group.x2 * w, group.y2 * h, 1, false, diff.enemyStatMul);
+        this.deployFormation(group.type, count, group.x1 * w, group.y1 * h, group.x2 * w, group.y2 * h, 1, false, diff.enemyStatMul);
       }
     }
   }
@@ -1052,18 +1020,16 @@ class Game {
   deployFormation(type, count, x1, y1, x2, y2, team, compact = false, statMul = 1.0) {
     const cfg = UNIT_CONFIG[type];
     const spacing = cfg.radius * (compact ? 2.0 : 2.8);
-    const availWidth = x2 - x1, availHeight = y2 - y1;
-    const cols = Math.max(1, Math.floor(availHeight / spacing));
+    const aw = x2 - x1, ah = y2 - y1;
+    const cols = Math.max(1, Math.floor(ah / spacing));
     const rows = Math.ceil(count / cols);
-
     for (let i = 0; i < count; i++) {
       const row = Math.floor(i / cols), col = i % cols;
-      const rowCount = Math.min(cols, count - row * cols);
-      const jx = compact ? 0.15 : 0.35;
-      const x = x1 + (row / Math.max(1, rows - 1)) * availWidth + (Math.random() - 0.5) * spacing * jx;
-      const y = y1 + (col / Math.max(1, rowCount - 1)) * availHeight + (Math.random() - 0.5) * spacing * jx;
-      this.enemyUnits.push(new Unit(type,
-        Math.max(x1, Math.min(x2, x)), Math.max(y1, Math.min(y2, y)), team, false, statMul));
+      const rc = Math.min(cols, count - row * cols);
+      const j = compact ? 0.15 : 0.35;
+      const x = x1 + (row / Math.max(1, rows - 1)) * aw + (Math.random() - 0.5) * spacing * j;
+      const y = y1 + (col / Math.max(1, rc - 1)) * ah + (Math.random() - 0.5) * spacing * j;
+      this.enemyUnits.push(new Unit(type, Math.max(x1, Math.min(x2, x)), Math.max(y1, Math.min(y2, y)), team, false, statMul));
     }
   }
 
@@ -1074,39 +1040,34 @@ class Game {
     if (this.state !== 'deploy') return false;
     if (x > this.midline - 10) return false;
     if (this.selectedType === 'general') return false;
-    const max = this.getMaxForType(this.selectedType);
-    const current = this.getDeployedForType(this.selectedType);
-    if (current >= max) return false;
-
+    if (this.getDeployedForType(this.selectedType) >= this.getMaxForType(this.selectedType)) return false;
     this.playerUnits.push(new Unit(this.selectedType, x, y, 0, false));
-    this.playerDeployedByType[this.selectedType] = (this.playerDeployedByType[this.selectedType] || 0) + 1;
+    this.playerDeployedByType[this.selectedType]++;
+    this.soundSystem.play(600, 'sine', 0.06, 0.03);
     this.updateUI();
     return true;
   }
 
   deployLine(x1, y1, x2, y2) {
-    if (this.state !== 'deploy') return 0;
-    if (this.selectedType === 'general') return 0;
-
+    if (this.state !== 'deploy' || this.selectedType === 'general') return 0;
     const cfg = UNIT_CONFIG[this.selectedType];
     const spacing = cfg.radius * 2.8;
     const dx = x2 - x1, dy = y2 - y1;
     const lineLen = Math.sqrt(dx * dx + dy * dy);
     if (lineLen < 1) return this.deployPlayerUnit(x1, y1) ? 1 : 0;
-
     const maxFit = Math.floor(lineLen / spacing) + 1;
     const remaining = this.getMaxForType(this.selectedType) - this.getDeployedForType(this.selectedType);
     const count = Math.min(maxFit, remaining);
     if (count <= 0) return 0;
-
     for (let i = 0; i < count; i++) {
       const t = count === 1 ? 0.5 : i / (count - 1);
       const px = x1 + dx * t, py = y1 + dy * t;
       if (px < this.midline - 10 && px > 5 && py > 5 && py < this.canvasHeight - 5) {
         this.playerUnits.push(new Unit(this.selectedType, px, py, 0, false));
-        this.playerDeployedByType[this.selectedType] = (this.playerDeployedByType[this.selectedType] || 0) + 1;
+        this.playerDeployedByType[this.selectedType]++;
       }
     }
+    if (count > 0) this.soundSystem.play(500, 'sine', 0.08, 0.03);
     this.updateUI();
     return count;
   }
@@ -1115,22 +1076,16 @@ class Game {
     if (this.state !== 'deploy') return;
     this.state = 'countdown';
     this.countdownRemaining = COUNTDOWN_SECONDS;
+    this.soundSystem.battleStart();
     document.getElementById('stats-panel').style.display = 'block';
     this.updateUI();
   }
 
-  reset() {
-    this.init();
-    this.updateUI();
-    document.getElementById('stats-panel').style.display = 'none';
-    document.getElementById('result-overlay').style.display = 'none';
-  }
+  reset() { this.init(); this.updateUI(); }
 
   showMissionSelect() {
     this.state = 'select';
-    this.playerUnits = [];
-    this.enemyUnits = [];
-    this.projectiles = [];
+    this.playerUnits = []; this.enemyUnits = []; this.projectiles = []; this.particles = [];
     document.getElementById('mission-select').style.display = 'flex';
     document.getElementById('result-overlay').style.display = 'none';
     document.getElementById('stats-panel').style.display = 'none';
@@ -1138,110 +1093,145 @@ class Game {
   }
 
   activateSkill() {
-    if (this.state !== 'battle') return;
-    if (this.skillCooldownRemaining > 0 || this.skillActive) return;
+    if (this.state !== 'battle' || this.skillCooldownRemaining > 0 || this.skillActive) return;
     if (!this.isPlayerGeneralAlive()) return;
-
-    this.skillActive = true;
-    this.skillTimer = SKILL_CONFIG.duration;
-    this.skillCooldownRemaining = SKILL_CONFIG.cooldown;
-
+    this.skillActive = true; this.skillTimer = SKILL_CONFIG.duration; this.skillCooldownRemaining = SKILL_CONFIG.cooldown;
     for (const u of this.playerUnits) {
       if (!u.alive) continue;
-      u.skillAttackBoost = SKILL_CONFIG.attackBoost;
-      u.skillSpeedBoost = SKILL_CONFIG.speedBoost;
-      u.skillGlowTimer = 30;
+      u.skillAttackBoost = SKILL_CONFIG.attackBoost; u.skillSpeedBoost = SKILL_CONFIG.speedBoost; u.skillGlowTimer = 30;
     }
-
+    this.soundSystem.skill();
     const indicator = document.getElementById('skill-indicator');
-    indicator.style.display = 'block';
-    indicator.style.animation = 'none';
-    indicator.offsetHeight;
-    indicator.style.animation = 'skillFade 1.5s forwards';
-
+    indicator.style.display = 'block'; indicator.style.animation = 'none';
+    indicator.offsetHeight; indicator.style.animation = 'skillFade 1.5s forwards';
     this.updateUI();
   }
 
-  isPlayerGeneralAlive() {
-    for (const u of this.playerUnits) { if (u.isGeneral && u.alive) return true; }
-    return false;
-  }
+  isPlayerGeneralAlive() { for (const u of this.playerUnits) if (u.isGeneral && u.alive) return true; return false; }
 
-  isEnemyGeneralAlive() {
-    for (const u of this.enemyUnits) { if (u.isGeneral && u.alive) return true; }
-    return false;
-  }
-
-  addProjectile(x, y, target, damage, team, isTracer = false) {
+  addProjectile(x, y, target, damage, team, isHeavy, isTracer) {
     if (this.projectiles.length >= MAX_PROJECTILES) return;
-    this.projectiles.push(new Projectile(x, y, target, damage, team, isTracer));
+    this.projectiles.push(new Projectile(x, y, target, damage, team, isHeavy, isTracer));
+  }
+
+  addExplosion(x, y, count = 15) {
+    for (let i = 0; i < count; i++) {
+      const a = Math.random() * Math.PI * 2, s = 1 + Math.random() * 4;
+      this.particles.push(new Particle(x, y, Math.cos(a) * s, Math.sin(a) * s, Math.random() < 0.5 ? '#ff8800' : '#ffcc00', 18 + Math.random() * 28, 2 + Math.random() * 4, 0.06));
+    }
+    for (let i = 0; i < 8; i++)
+      this.particles.push(new Particle(x, y, (Math.random() - 0.5) * 1.5, -1 - Math.random() * 2, '#555', 35 + Math.random() * 35, 3 + Math.random() * 5, -0.02));
+  }
+
+  addSparks(x, y, color = '#ffdd88', count = 5) {
+    for (let i = 0; i < count; i++) {
+      const a = Math.random() * Math.PI * 2, s = 0.8 + Math.random() * 2;
+      this.particles.push(new Particle(x, y, Math.cos(a) * s, Math.sin(a) * s, color, 6 + Math.random() * 10, 1 + Math.random() * 2));
+    }
+  }
+
+  addDeathParticles(x, y, color) {
+    for (let i = 0; i < 8; i++) {
+      const a = Math.random() * Math.PI * 2, s = 0.5 + Math.random() * 2;
+      this.particles.push(new Particle(x, y, Math.cos(a) * s, Math.sin(a) * s, color, 12 + Math.random() * 18, 1.5 + Math.random() * 2.5, 0.04));
+    }
   }
 
   update(dt) {
     if (this.state === 'win' || this.state === 'lose' || this.state === 'select') return;
-
     const cappedDt = Math.min(dt, 33);
 
     if (this.state === 'countdown') {
       this.countdownRemaining -= cappedDt / 1000;
-      if (this.countdownRemaining <= 0) {
-        this.countdownRemaining = 0;
-        this.state = 'battle';
-        this.updateUI();
-      }
+      if (this.countdownRemaining <= 0) { this.countdownRemaining = 0; this.state = 'battle'; this.updateUI(); }
     }
 
     if (this.skillActive) {
       this.skillTimer -= cappedDt;
-      if (this.skillTimer <= 0) {
-        this.skillActive = false; this.skillTimer = 0;
-        for (const u of this.playerUnits) { u.skillAttackBoost = null; u.skillSpeedBoost = null; }
-      }
+      if (this.skillTimer <= 0) { this.skillActive = false; this.skillTimer = 0; for (const u of this.playerUnits) { u.skillAttackBoost = null; u.skillSpeedBoost = null; } }
     }
-    if (this.skillCooldownRemaining > 0 && !this.skillActive) {
-      this.skillCooldownRemaining -= cappedDt;
-      if (this.skillCooldownRemaining < 0) this.skillCooldownRemaining = 0;
-    }
+    if (this.skillCooldownRemaining > 0 && !this.skillActive) { this.skillCooldownRemaining -= cappedDt; if (this.skillCooldownRemaining < 0) this.skillCooldownRemaining = 0; }
 
+    // Update spatial grid
     this.spatialGrid.clear();
     for (const u of this.playerUnits) if (u.alive) this.spatialGrid.insert(u);
     for (const u of this.enemyUnits) if (u.alive) this.spatialGrid.insert(u);
 
-    this.playerGeneral = null;
-    this.enemyGeneral = null;
+    this.playerGeneral = null; this.enemyGeneral = null;
     for (const u of this.playerUnits) { if (u.isGeneral && u.alive) { this.playerGeneral = u; break; } }
     for (const u of this.enemyUnits) { if (u.isGeneral && u.alive) { this.enemyGeneral = u; break; } }
+
+    // Track alive units before update (for death detection)
+    const wasAlive = new Set();
+    if (this.state === 'battle') {
+      for (const u of this.playerUnits) if (u.alive) wasAlive.add(u);
+      for (const u of this.enemyUnits) if (u.alive) wasAlive.add(u);
+    }
 
     if (this.state === 'battle') {
       for (const u of this.playerUnits) { if (u.alive) u.update(cappedDt, this); }
       for (const u of this.enemyUnits) { if (u.alive) u.update(cappedDt, this); }
     }
 
-    this.trackKills();
-
-    for (let i = this.projectiles.length - 1; i >= 0; i--) {
-      this.projectiles[i].update();
-      if (!this.projectiles[i].alive) this.projectiles.splice(i, 1);
+    // Death effects
+    if (this.state === 'battle') {
+      for (const u of this.playerUnits) {
+        if (!u.alive && wasAlive.has(u)) {
+          this.addDeathParticles(u.x, u.y, u.color);
+          if (u.isGeneral) { this.soundSystem.play(70, 'sawtooth', 0.9, 0.12); this.addScreenShake(8); }
+        }
+      }
+      for (const u of this.enemyUnits) {
+        if (!u.alive && wasAlive.has(u)) {
+          this.addDeathParticles(u.x, u.y, u.color);
+          if (u.isGeneral) { this.soundSystem.play(70, 'sawtooth', 0.9, 0.12); this.addScreenShake(8); }
+        }
+      }
     }
 
-    if (this.state === 'battle') this.checkWinLose();
+    this.trackKills();
 
+    // Update projectiles + impact effects
+    for (let i = this.projectiles.length - 1; i >= 0; i--) {
+      const p = this.projectiles[i];
+      const wasAliveP = p.alive;
+      p.update();
+      if (!p.alive && wasAliveP && p.hitX !== null) {
+        if (p.isHeavy) { this.addExplosion(p.hitX, p.hitY, 18); this.soundSystem.explosion(); this.addScreenShake(6); }
+        else if (p.isTracer) this.addSparks(p.hitX, p.hitY, '#ffaa44', 3);
+        else this.addSparks(p.hitX, p.hitY, '#ffcc88', 2);
+      }
+      if (!p.alive) this.projectiles.splice(i, 1);
+    }
+
+    // Update particles
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      this.particles[i].update();
+      if (!this.particles[i].alive) this.particles.splice(i, 1);
+    }
+
+    // Decay screen shake
+    if (this.screenShake > 0.2) this.screenShake *= 0.88;
+    else this.screenShake = 0;
+
+    if (this.state === 'battle') this.checkWinLose();
     this.frameCount++;
     if (this.frameCount % 30 === 0) this.updateUI();
   }
 
+  addScreenShake(amount) { this.screenShake = Math.max(this.screenShake, amount); }
+
   trackKills() {
-    const initialPTotal = Object.values(this.initialPlayerCounts).reduce((a, b) => a + b, 0);
-    this.enemyKills = initialPTotal - this.countAlive(this.playerUnits);
-    const initialETotal = Object.values(this.initialEnemyCounts).reduce((a, b) => a + b, 0);
-    this.playerKills = initialETotal - this.countAlive(this.enemyUnits);
+    const ip = Object.values(this.initialPlayerCounts).reduce((a, b) => a + b, 0);
+    this.enemyKills = ip - this.countAlive(this.playerUnits);
+    const ie = Object.values(this.initialEnemyCounts).reduce((a, b) => a + b, 0);
+    this.playerKills = ie - this.countAlive(this.enemyUnits);
   }
 
   checkWinLose() {
-    const pAlive = this.countAlive(this.playerUnits);
-    const eAlive = this.countAlive(this.enemyUnits);
-    if (eAlive === 0) { this.state = 'win'; this.showResult(true); }
-    else if (pAlive === 0) { this.state = 'lose'; this.showResult(false); }
+    const pa = this.countAlive(this.playerUnits), ea = this.countAlive(this.enemyUnits);
+    if (ea === 0) { this.state = 'win'; this.showResult(true); }
+    else if (pa === 0) { this.state = 'lose'; this.showResult(false); }
   }
 
   showResult(won) {
@@ -1252,153 +1242,110 @@ class Game {
     title.textContent = won ? '🎉 胜利！' : '💀 失败！';
     title.className = 'result-title ' + (won ? 'win' : 'lose');
 
-    const pCounts = this.countAliveByType(this.playerUnits);
-    const eCounts = this.countAliveByType(this.enemyUnits);
-    const mission = MISSIONS[this.selectedMissionIdx];
-    const diff = DIFFICULTY_LEVELS[this.selectedDifficulty];
+    if (won) this.soundSystem.victory(); else this.soundSystem.defeat();
 
+    const pc = this.countAliveByType(this.playerUnits), ec = this.countAliveByType(this.enemyUnits);
+    const mission = MISSIONS[this.selectedMissionIdx], diff = DIFFICULTY_LEVELS[this.selectedDifficulty];
     stats.innerHTML = `
       关卡: <b>${mission.name}</b> | 难度: <b>${diff.emoji} ${diff.name}</b><br>
       我方击杀: <b>${this.playerKills}</b> &nbsp; 敌方击杀: <b>${this.enemyKills}</b><br>
       <br>我方剩余:<br>
-      盾兵: ${pCounts.shield}/${UNIT_CONFIG.shield.maxCount} | 长矛兵: ${pCounts.spear}/${UNIT_CONFIG.spear.maxCount}<br>
-      骑兵: ${pCounts.cavalry}/${UNIT_CONFIG.cavalry.maxCount} | 射手: ${pCounts.archer}/${UNIT_CONFIG.archer.maxCount}<br>
-      马克沁: ${pCounts.maxim || 0}/${UNIT_CONFIG.maxim.maxCount} | 火枪手: ${pCounts.musketeer || 0}/${UNIT_CONFIG.musketeer.maxCount}<br>
-      炮兵: ${pCounts.artillery || 0}/${UNIT_CONFIG.artillery.maxCount} | 将军: ${pCounts.general ? '存活' : '阵亡'}<br>
+      盾兵: ${pc.shield}/${UNIT_CONFIG.shield.maxCount} | 矛兵: ${pc.spear}/${UNIT_CONFIG.spear.maxCount} | 骑兵: ${pc.cavalry}/${UNIT_CONFIG.cavalry.maxCount}<br>
+      射手: ${pc.archer}/${UNIT_CONFIG.archer.maxCount} | 马克沁: ${pc.maxim || 0}/${UNIT_CONFIG.maxim.maxCount}<br>
+      火枪手: ${pc.musketeer || 0}/${UNIT_CONFIG.musketeer.maxCount} | 炮兵: ${pc.artillery || 0}/${UNIT_CONFIG.artillery.maxCount}<br>
+      将军: ${pc.general ? '存活' : '阵亡'}<br>
       <br>敌方剩余:<br>
-      盾兵: ${eCounts.shield} | 长矛兵: ${eCounts.spear} | 骑兵: ${eCounts.cavalry}<br>
-      射手: ${eCounts.archer} | 火枪手: ${eCounts.musketeer || 0} | 炮兵: ${eCounts.artillery || 0}<br>
-      马克沁: ${eCounts.maxim || 0} | 将军: ${eCounts.general ? '存活' : '阵亡'}
+      盾兵: ${ec.shield} | 矛兵: ${ec.spear} | 骑兵: ${ec.cavalry} | 射手: ${ec.archer}<br>
+      马克沁: ${ec.maxim || 0} | 火枪手: ${ec.musketeer || 0} | 炮兵: ${ec.artillery || 0} | 将军: ${ec.general ? '存活' : '阵亡'}
     `;
     this.updateUI();
   }
 
   render() {
-    const ctx = this.ctx;
-    const w = this.canvasWidth, h = this.canvasHeight;
+    const ctx = this.ctx, w = this.canvasWidth, h = this.canvasHeight;
+    ctx.fillStyle = '#1a1a2e'; ctx.fillRect(0, 0, w, h);
 
-    ctx.fillStyle = '#1a1a2e';
-    ctx.fillRect(0, 0, w, h);
+    const doShake = this.screenShake > 0.5;
+    if (doShake) {
+      ctx.save();
+      ctx.translate((Math.random() - 0.5) * this.screenShake * 2, (Math.random() - 0.5) * this.screenShake * 2);
+    }
 
-    // Grid lines
+    // Grid
     ctx.strokeStyle = 'rgba(255,255,255,0.03)'; ctx.lineWidth = 1;
     for (let x = 0; x < w; x += 80) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
     for (let y = 0; y < h; y += 80) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
 
     // Midline
-    ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 2;
-    ctx.setLineDash([8, 12]);
-    ctx.beginPath(); ctx.moveTo(this.midline, 0); ctx.lineTo(this.midline, h); ctx.stroke();
-    ctx.setLineDash([]);
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 2; ctx.setLineDash([8, 12]);
+    ctx.beginPath(); ctx.moveTo(this.midline, 0); ctx.lineTo(this.midline, h); ctx.stroke(); ctx.setLineDash([]);
 
-    // Team zone labels
+    // Team zones
     ctx.fillStyle = 'rgba(50,80,180,0.06)'; ctx.fillRect(0, 0, this.midline, h);
     ctx.fillStyle = 'rgba(180,50,50,0.06)'; ctx.fillRect(this.midline, 0, w - this.midline, h);
 
-    // Draw terrain zones
-    for (const zone of this.terrainZones) {
-      switch (zone.type) {
+    // Terrain zones
+    for (const z of this.terrainZones) {
+      switch (z.type) {
         case 'river':
-          ctx.fillStyle = 'rgba(30,80,180,0.15)';
-          ctx.fillRect(zone.x1, zone.y1, zone.x2 - zone.x1, zone.y2 - zone.y1);
-          ctx.strokeStyle = 'rgba(60,120,220,0.3)'; ctx.lineWidth = 2;
-          ctx.setLineDash([4, 8]);
-          ctx.strokeRect(zone.x1, zone.y1, zone.x2 - zone.x1, zone.y2 - zone.y1);
-          ctx.setLineDash([]);
-          ctx.fillStyle = 'rgba(100,160,240,0.1)';
-          ctx.font = '18px sans-serif'; ctx.textAlign = 'center';
-          ctx.fillText('～ 河流 ～', (zone.x1 + zone.x2) / 2, (zone.y1 + zone.y2) / 2);
+          ctx.fillStyle = 'rgba(30,80,180,0.15)'; ctx.fillRect(z.x1, z.y1, z.x2 - z.x1, z.y2 - z.y1);
+          ctx.strokeStyle = 'rgba(60,120,220,0.25)'; ctx.lineWidth = 2; ctx.setLineDash([4, 8]);
+          ctx.strokeRect(z.x1, z.y1, z.x2 - z.x1, z.y2 - z.y1); ctx.setLineDash([]);
           break;
         case 'rough':
-          ctx.fillStyle = 'rgba(100,80,50,0.2)';
-          ctx.fillRect(zone.x1, zone.y1, zone.x2 - zone.x1, zone.y2 - zone.y1);
-          ctx.fillStyle = 'rgba(140,120,80,0.15)';
-          for (let i = 0; i < 20; i++) {
-            const rx = zone.x1 + Math.random() * (zone.x2 - zone.x1);
-            const ry = zone.y1 + Math.random() * (zone.y2 - zone.y1);
-            ctx.beginPath(); ctx.arc(rx, ry, 3 + Math.random() * 5, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = 'rgba(100,80,50,0.2)'; ctx.fillRect(z.x1, z.y1, z.x2 - z.x1, z.y2 - z.y1);
+          ctx.fillStyle = 'rgba(140,120,80,0.12)';
+          for (let i = 0; i < 15; i++) {
+            const rx = z.x1 + Math.random() * (z.x2 - z.x1), ry = z.y1 + Math.random() * (z.y2 - z.y1);
+            ctx.beginPath(); ctx.arc(rx, ry, 2 + Math.random() * 4, 0, Math.PI * 2); ctx.fill();
           }
           break;
         case 'highground':
-          const grad = ctx.createLinearGradient(zone.x1, 0, zone.x2, 0);
-          grad.addColorStop(0, 'rgba(100,140,80,0.18)');
-          grad.addColorStop(1, 'rgba(100,140,80,0.05)');
-          ctx.fillStyle = grad;
-          ctx.fillRect(zone.x1, zone.y1, zone.x2 - zone.x1, zone.y2 - zone.y1);
-          ctx.fillStyle = 'rgba(255,255,255,0.06)';
-          ctx.font = '16px sans-serif'; ctx.textAlign = 'center';
-          ctx.fillText('▲ 高地 ▲', (zone.x1 + zone.x2) / 2, zone.y1 + 30);
+          const g = ctx.createLinearGradient(z.x1, 0, z.x2, 0);
+          g.addColorStop(0, 'rgba(100,140,80,0.18)'); g.addColorStop(1, 'rgba(100,140,80,0.04)');
+          ctx.fillStyle = g; ctx.fillRect(z.x1, z.y1, z.x2 - z.x1, z.y2 - z.y1);
           break;
         case 'fort':
-          ctx.strokeStyle = 'rgba(150,150,180,0.4)'; ctx.lineWidth = 3;
-          ctx.strokeRect(zone.x1, zone.y1, zone.x2 - zone.x1, zone.y2 - zone.y1);
-          ctx.fillStyle = 'rgba(100,120,160,0.08)';
-          ctx.fillRect(zone.x1, zone.y1, zone.x2 - zone.x1, zone.y2 - zone.y1);
-          ctx.fillStyle = 'rgba(255,255,255,0.08)';
-          ctx.font = '16px sans-serif'; ctx.textAlign = 'center';
-          ctx.fillText('█ 要塞 █', (zone.x1 + zone.x2) / 2, zone.y1 + 30);
+          ctx.strokeStyle = 'rgba(150,150,180,0.35)'; ctx.lineWidth = 3;
+          ctx.strokeRect(z.x1, z.y1, z.x2 - z.x1, z.y2 - z.y1);
+          ctx.fillStyle = 'rgba(100,120,160,0.06)'; ctx.fillRect(z.x1, z.y1, z.x2 - z.x1, z.y2 - z.y1);
           break;
       }
     }
 
-    ctx.fillStyle = 'rgba(100,140,220,0.12)';
-    ctx.font = '22px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('我方阵地', this.midline / 2, h / 2);
-    ctx.fillStyle = 'rgba(220,120,100,0.12)';
-    ctx.fillText('敌方阵地', this.midline + (w - this.midline) / 2, h / 2);
+    // Zone labels
+    ctx.font = '20px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(100,140,220,0.1)'; ctx.fillText('我方阵地', this.midline / 2, h / 2);
+    ctx.fillStyle = 'rgba(220,120,100,0.1)'; ctx.fillText('敌方阵地', this.midline + (w - this.midline) / 2, h / 2);
 
-    // Draw units
+    // Particles (behind units)
+    for (const p of this.particles) p.draw(ctx);
+
+    // Units
     for (const u of this.playerUnits) if (u.alive) u.draw(ctx);
     for (const u of this.enemyUnits) if (u.alive) u.draw(ctx);
 
-    // Draw projectiles
+    // Projectiles
     for (const p of this.projectiles) p.draw(ctx);
 
     // Drag preview
     if (this.isDragging && this.state === 'deploy' && this.selectedType !== 'general') {
       const cfg = UNIT_CONFIG[this.selectedType];
-      ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 2;
-      ctx.setLineDash([4, 6]);
-      ctx.beginPath(); ctx.moveTo(this.dragStartX, this.dragStartY); ctx.lineTo(this.dragEndX, this.dragEndY); ctx.stroke();
-      ctx.setLineDash([]);
-
+      ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 2; ctx.setLineDash([4, 6]);
+      ctx.beginPath(); ctx.moveTo(this.dragStartX, this.dragStartY); ctx.lineTo(this.dragEndX, this.dragEndY); ctx.stroke(); ctx.setLineDash([]);
       const spacing = cfg.radius * 2.8;
       const ldx = this.dragEndX - this.dragStartX, ldy = this.dragEndY - this.dragStartY;
       const lineLen = Math.sqrt(ldx * ldx + ldy * ldy);
-      const maxFit = Math.floor(lineLen / spacing) + 1;
-      const remaining = this.getMaxForType(this.selectedType) - this.getDeployedForType(this.selectedType);
-      const count = Math.min(maxFit, remaining);
-
+      const count = Math.min(Math.floor(lineLen / spacing) + 1, this.getMaxForType(this.selectedType) - this.getDeployedForType(this.selectedType));
       for (let i = 0; i < count; i++) {
         const t = count === 1 ? 0.5 : i / (count - 1);
         const px = this.dragStartX + ldx * t, py = this.dragStartY + ldy * t;
         if (px < this.midline - 5 && px > 5 && py > 5 && py < h - 5) {
           ctx.globalAlpha = 0.5; ctx.fillStyle = cfg.color;
-          if (cfg.shape === 'maxim' || cfg.shape === 'artillery') {
-            ctx.fillRect(px - cfg.radius, py - cfg.radius * 0.35, cfg.radius * 2, cfg.radius * 0.7);
-          } else if (cfg.shape === 'musketeer') {
-            ctx.fillRect(px - cfg.radius * 0.5, py - cfg.radius * 0.6, cfg.radius, cfg.radius * 1.2);
-          } else {
-            ctx.beginPath(); ctx.arc(px, py, cfg.radius, 0, Math.PI * 2); ctx.fill();
-          }
+          ctx.beginPath(); ctx.arc(px, py, cfg.radius, 0, Math.PI * 2); ctx.fill();
           ctx.globalAlpha = 1;
         }
       }
-    }
-
-    // Mouse ghost
-    if (!this.isDragging && this.mouseOnCanvas && this.state === 'deploy' &&
-        this.mouseX < this.midline - 5 && this.selectedType !== 'general') {
-      const cfg = UNIT_CONFIG[this.selectedType];
-      ctx.globalAlpha = 0.4; ctx.fillStyle = cfg.color;
-      if (cfg.shape === 'maxim' || cfg.shape === 'artillery') {
-        ctx.fillRect(this.mouseX - cfg.radius, this.mouseY - cfg.radius * 0.35, cfg.radius * 2, cfg.radius * 0.7);
-      } else if (cfg.shape === 'musketeer') {
-        ctx.fillRect(this.mouseX - cfg.radius * 0.5, this.mouseY - cfg.radius * 0.6, cfg.radius, cfg.radius * 1.2);
-      } else {
-        ctx.beginPath(); ctx.arc(this.mouseX, this.mouseY, cfg.radius, 0, Math.PI * 2); ctx.fill();
-      }
-      ctx.globalAlpha = 1;
     }
 
     // Countdown overlay
@@ -1408,73 +1355,52 @@ class Game {
       ctx.fillStyle = '#ffcc00'; ctx.font = 'bold 80px sans-serif'; ctx.textAlign = 'center';
       ctx.fillText(sec > 0 ? sec : '开始！', w / 2, h / 2 + 20);
     }
+
+    if (doShake) ctx.restore();
   }
 
   updateUI() {
-    const pAlive = this.countAlive(this.playerUnits);
-    const eAlive = this.countAlive(this.enemyUnits);
-
+    const pAlive = this.countAlive(this.playerUnits), eAlive = this.countAlive(this.enemyUnits);
     document.getElementById('player-count').textContent = pAlive;
     document.getElementById('enemy-count').textContent = eAlive;
 
-    const mission = MISSIONS[this.selectedMissionIdx];
-    const diff = DIFFICULTY_LEVELS[this.selectedDifficulty];
+    const mission = MISSIONS[this.selectedMissionIdx], diff = DIFFICULTY_LEVELS[this.selectedDifficulty];
     document.getElementById('mission-name').textContent = mission.name;
-    const diffBadge = document.getElementById('difficulty-badge');
-    diffBadge.textContent = diff.emoji + ' ' + diff.name;
-    diffBadge.style.background = ['#2d4a1f', '#7a5a00', '#6b2121'][this.selectedDifficulty];
-    diffBadge.style.color = ['#95d5b2', '#ffcc44', '#f88'][this.selectedDifficulty];
+    const badge = document.getElementById('difficulty-badge');
+    badge.textContent = diff.emoji + ' ' + diff.name;
+    badge.style.background = ['#2d4a1f', '#7a5a00', '#6b2121'][this.selectedDifficulty];
+    badge.style.color = ['#95d5b2', '#ffcc44', '#f88'][this.selectedDifficulty];
 
-    // Per-type button text
-    const buttonTypes = [
-      ['btn-shield', 'shield'], ['btn-spear', 'spear'], ['btn-cavalry', 'cavalry'],
-      ['btn-archer', 'archer'], ['btn-maxim', 'maxim'], ['btn-musketeer', 'musketeer'],
-      ['btn-artillery', 'artillery']
-    ];
-    buttonTypes.forEach(([btnId, type]) => {
-      const btn = document.getElementById(btnId);
-      const cfg = UNIT_CONFIG[type];
-      const deployed = this.getDeployedForType(type);
-      const max = this.getMaxForType(type);
-      const countSpan = btn.querySelector('.unit-count');
-      if (countSpan) {
-        countSpan.textContent = `${deployed}/${max}`;
-        countSpan.style.color = deployed >= max ? '#f88' : '#888';
-      }
+    ['btn-shield','btn-spear','btn-cavalry','btn-archer','btn-maxim','btn-musketeer','btn-artillery'].forEach((bid, i) => {
+      const types = ['shield','spear','cavalry','archer','maxim','musketeer','artillery'];
+      const t = types[i], btn = document.getElementById(bid);
+      const dep = this.getDeployedForType(t), max = this.getMaxForType(t);
+      const cs = btn.querySelector('.unit-count');
+      if (cs) { cs.textContent = `${dep}/${max}`; cs.style.color = dep >= max ? '#f88' : '#888'; }
       btn.classList.toggle('active', btn.dataset.type === this.selectedType);
-      btn.classList.toggle('limited', deployed >= max);
+      btn.classList.toggle('limited', dep >= max);
       btn.disabled = this.state !== 'deploy';
     });
 
-    const statusEl = document.getElementById('status-text');
-    statusEl.className = 'status ' + this.state;
-    const statusMap = { deploy: '部署阶段', countdown: '倒计时', battle: '战斗中', win: '胜利！', lose: '失败！', select: '选择关卡' };
-    statusEl.textContent = statusMap[this.state] || '';
+    const st = document.getElementById('status-text');
+    st.className = 'status ' + this.state;
+    st.textContent = { deploy:'部署阶段', countdown:'倒计时', battle:'战斗中', win:'胜利！', lose:'失败！', select:'选择关卡' }[this.state] || '';
 
-    if (this.state === 'countdown') {
-      document.getElementById('countdown-text').textContent = Math.ceil(this.countdownRemaining) + 's';
-    } else {
-      document.getElementById('countdown-text').textContent = '--';
-    }
+    document.getElementById('countdown-text').textContent = this.state === 'countdown' ? Math.ceil(this.countdownRemaining) + 's' : '--';
 
-    const skillStatus = document.getElementById('skill-status-text');
-    const btnSkill = document.getElementById('btn-skill');
+    const ss = document.getElementById('skill-status-text'), bs = document.getElementById('btn-skill');
     if (this.skillActive) {
-      skillStatus.textContent = `生效中 ${(this.skillTimer / 1000).toFixed(1)}s`;
-      btnSkill.disabled = true;
-      btnSkill.textContent = `📯 生效中 ${(this.skillTimer / 1000).toFixed(1)}s`;
+      ss.textContent = `生效中 ${(this.skillTimer/1000).toFixed(1)}s`;
+      bs.disabled = true; bs.textContent = `📯 生效中 ${(this.skillTimer/1000).toFixed(1)}s`;
     } else if (this.skillCooldownRemaining > 0) {
-      skillStatus.textContent = `冷却 ${(this.skillCooldownRemaining / 1000).toFixed(1)}s`;
-      btnSkill.disabled = true;
-      btnSkill.textContent = `📯 冷却 ${(this.skillCooldownRemaining / 1000).toFixed(1)}s`;
+      ss.textContent = `冷却 ${(this.skillCooldownRemaining/1000).toFixed(1)}s`;
+      bs.disabled = true; bs.textContent = `📯 冷却 ${(this.skillCooldownRemaining/1000).toFixed(1)}s`;
     } else {
-      skillStatus.textContent = '就绪';
-      btnSkill.disabled = this.state !== 'battle' || !this.isPlayerGeneralAlive();
-      btnSkill.textContent = '📯 战鼓激励';
+      ss.textContent = '就绪'; bs.disabled = this.state !== 'battle' || !this.isPlayerGeneralAlive();
+      bs.textContent = '📯 战鼓';
     }
 
     document.getElementById('btn-start').disabled = this.state !== 'deploy';
-
     this.updateStatsPanel();
   }
 
@@ -1485,32 +1411,29 @@ class Game {
       return;
     }
     panel.style.display = 'block';
-
-    const pCounts = this.countAliveByType(this.playerUnits);
-    const eCounts = this.countAliveByType(this.enemyUnits);
-
+    const pc = this.countAliveByType(this.playerUnits), ec = this.countAliveByType(this.enemyUnits);
     panel.innerHTML = `
       <h3>📊 战斗统计</h3>
-      <div style="color:#8f8;margin-bottom:4px;">━ 我方 ━</div>
+      <div style="color:#8f8;margin-bottom:2px;">━ 我方 ━</div>
       <div class="stat-row"><span>击杀</span><span class="my-kills">${this.playerKills}</span></div>
-      <div class="stat-row"><span>🛡 盾兵</span><span>${pCounts.shield}/${UNIT_CONFIG.shield.maxCount}</span></div>
-      <div class="stat-row"><span>🔱 长矛兵</span><span>${pCounts.spear}/${UNIT_CONFIG.spear.maxCount}</span></div>
-      <div class="stat-row"><span>⚔ 骑兵</span><span>${pCounts.cavalry}/${UNIT_CONFIG.cavalry.maxCount}</span></div>
-      <div class="stat-row"><span>🏹 射手</span><span>${pCounts.archer}/${UNIT_CONFIG.archer.maxCount}</span></div>
-      <div class="stat-row"><span>🔫 马克沁</span><span>${pCounts.maxim || 0}/${UNIT_CONFIG.maxim.maxCount}</span></div>
-      <div class="stat-row"><span>🎯 火枪手</span><span>${pCounts.musketeer || 0}/${UNIT_CONFIG.musketeer.maxCount}</span></div>
-      <div class="stat-row"><span>💣 炮兵</span><span>${pCounts.artillery || 0}/${UNIT_CONFIG.artillery.maxCount}</span></div>
-      <div class="stat-row"><span>⭐ 将军</span><span>${pCounts.general ? '存活' : '<span style="color:#f44">阵亡</span>'}</span></div>
-      <div style="color:#f88;margin:6px 0 4px;">━ 敌方 ━</div>
+      <div class="stat-row"><span>🛡 盾兵</span><span>${pc.shield}/${UNIT_CONFIG.shield.maxCount}</span></div>
+      <div class="stat-row"><span>🔱 矛兵</span><span>${pc.spear}/${UNIT_CONFIG.spear.maxCount}</span></div>
+      <div class="stat-row"><span>⚔ 骑兵</span><span>${pc.cavalry}/${UNIT_CONFIG.cavalry.maxCount}</span></div>
+      <div class="stat-row"><span>🏹 射手</span><span>${pc.archer}/${UNIT_CONFIG.archer.maxCount}</span></div>
+      <div class="stat-row"><span>🔫 马克沁</span><span>${pc.maxim||0}/${UNIT_CONFIG.maxim.maxCount}</span></div>
+      <div class="stat-row"><span>🎯 火枪手</span><span>${pc.musketeer||0}/${UNIT_CONFIG.musketeer.maxCount}</span></div>
+      <div class="stat-row"><span>💣 炮兵</span><span>${pc.artillery||0}/${UNIT_CONFIG.artillery.maxCount}</span></div>
+      <div class="stat-row"><span>⭐ 将军</span><span>${pc.general?'存活':'<span style="color:#f44">阵亡</span>'}</span></div>
+      <div style="color:#f88;margin:4px 0 2px;">━ 敌方 ━</div>
       <div class="stat-row"><span>击杀</span><span class="kills">${this.enemyKills}</span></div>
-      <div class="stat-row"><span>🛡 盾兵</span><span>${eCounts.shield}</span></div>
-      <div class="stat-row"><span>🔱 长矛兵</span><span>${eCounts.spear}</span></div>
-      <div class="stat-row"><span>⚔ 骑兵</span><span>${eCounts.cavalry}</span></div>
-      <div class="stat-row"><span>🏹 射手</span><span>${eCounts.archer}</span></div>
-      <div class="stat-row"><span>🔫 马克沁</span><span>${eCounts.maxim || 0}</span></div>
-      <div class="stat-row"><span>🎯 火枪手</span><span>${eCounts.musketeer || 0}</span></div>
-      <div class="stat-row"><span>💣 炮兵</span><span>${eCounts.artillery || 0}</span></div>
-      <div class="stat-row"><span>⭐ 将军</span><span>${eCounts.general ? '存活' : '<span style="color:#f44">阵亡</span>'}</span></div>
+      <div class="stat-row"><span>🛡 盾兵</span><span>${ec.shield}</span></div>
+      <div class="stat-row"><span>🔱 矛兵</span><span>${ec.spear}</span></div>
+      <div class="stat-row"><span>⚔ 骑兵</span><span>${ec.cavalry}</span></div>
+      <div class="stat-row"><span>🏹 射手</span><span>${ec.archer}</span></div>
+      <div class="stat-row"><span>🔫 马克沁</span><span>${ec.maxim||0}</span></div>
+      <div class="stat-row"><span>🎯 火枪手</span><span>${ec.musketeer||0}</span></div>
+      <div class="stat-row"><span>💣 炮兵</span><span>${ec.artillery||0}</span></div>
+      <div class="stat-row"><span>⭐ 将军</span><span>${ec.general?'存活':'<span style="color:#f44">阵亡</span>'}</span></div>
     `;
   }
 
@@ -1520,164 +1443,97 @@ class Game {
     MISSIONS.forEach((m, i) => {
       const card = document.createElement('div');
       card.className = 'mission-card' + (i === this.selectedMissionIdx ? ' selected' : '');
-      card.innerHTML = `
-        <div class="m-icon">${m.icon}</div>
-        <div class="m-name">${m.name}</div>
-        <div class="m-desc">${m.desc}</div>
-      `;
-      card.addEventListener('click', () => {
-        this.selectedMissionIdx = i;
-        this.setupMissionSelectUI();
-      });
+      card.innerHTML = `<div class="m-icon">${m.icon}</div><div class="m-name">${m.name}</div><div class="m-desc">${m.desc}</div>`;
+      card.addEventListener('click', () => { this.selectedMissionIdx = i; this.setupMissionSelectUI(); });
       grid.appendChild(card);
     });
-
-    // Difficulty buttons
     document.querySelectorAll('#mission-select .diff-btn').forEach(btn => {
       const d = parseInt(btn.dataset.diff);
       btn.classList.toggle('selected', d === this.selectedDifficulty);
-      btn.onclick = () => {
-        this.selectedDifficulty = d;
-        this.setupMissionSelectUI();
-      };
+      btn.onclick = () => { this.selectedDifficulty = d; this.setupMissionSelectUI(); };
     });
-
     document.getElementById('btn-go').onclick = () => this.init();
   }
 
   setupEvents() {
-    // Unit selection
-    ['btn-shield', 'btn-spear', 'btn-cavalry', 'btn-archer', 'btn-maxim', 'btn-musketeer', 'btn-artillery'].forEach(id => {
+    ['btn-shield','btn-spear','btn-cavalry','btn-archer','btn-maxim','btn-musketeer','btn-artillery'].forEach(id => {
       document.getElementById(id).addEventListener('click', (e) => {
         if (this.state !== 'deploy') return;
-        this.selectedType = e.currentTarget.dataset.type;
-        this.updateUI();
+        this.soundSystem.init();
+        this.selectedType = e.currentTarget.dataset.type; this.updateUI();
       });
     });
-
     document.getElementById('btn-start').addEventListener('click', () => this.startBattle());
     document.getElementById('btn-reset').addEventListener('click', () => this.reset());
     document.getElementById('btn-choose-mission').addEventListener('click', () => this.showMissionSelect());
     document.getElementById('btn-skill').addEventListener('click', () => this.activateSkill());
-
-    // Result overlay buttons
     document.getElementById('btn-retry').addEventListener('click', () => this.reset());
     document.getElementById('btn-back').addEventListener('click', () => this.showMissionSelect());
 
-    // Canvas mouse events
-    this.canvas.addEventListener('mousedown', (e) => this.onMouseDown(e));
+    this.canvas.addEventListener('mousedown', (e) => { this.soundSystem.init(); this.onMouseDown(e); });
     this.canvas.addEventListener('mousemove', (e) => this.onMouseMove(e));
     this.canvas.addEventListener('mouseup', (e) => this.onMouseUp(e));
     this.canvas.addEventListener('mouseleave', (e) => this.onMouseLeave(e));
 
-    // Touch events
     this.canvas.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      const t = e.touches[0];
-      this.onMouseDown({ clientX: t.clientX, clientY: t.clientY });
+      e.preventDefault(); this.soundSystem.init();
+      const t = e.touches[0]; this.onMouseDown({ clientX: t.clientX, clientY: t.clientY });
     });
     this.canvas.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      const t = e.touches[0];
-      this.onMouseMove({ clientX: t.clientX, clientY: t.clientY });
+      e.preventDefault(); const t = e.touches[0]; this.onMouseMove({ clientX: t.clientX, clientY: t.clientY });
     });
-    this.canvas.addEventListener('touchend', (e) => {
-      e.preventDefault();
-      this.onMouseUp(e);
-    });
+    this.canvas.addEventListener('touchend', (e) => { e.preventDefault(); this.onMouseUp(e); });
 
     window.addEventListener('resize', () => this.resize());
-
-    // Keyboard shortcuts
     window.addEventListener('keydown', (e) => {
       if (this.state === 'select') return;
-      if (this.state !== 'deploy') {
-        if (e.key === 'r' || e.key === 'R') { this.reset(); return; }
-        return;
-      }
-      switch (e.key) {
-        case '1': this.selectedType = 'shield'; break;
-        case '2': this.selectedType = 'spear'; break;
-        case '3': this.selectedType = 'cavalry'; break;
-        case '4': this.selectedType = 'archer'; break;
-        case '5': this.selectedType = 'maxim'; break;
-        case '6': this.selectedType = 'musketeer'; break;
-        case '7': this.selectedType = 'artillery'; break;
-        case 'Enter': this.startBattle(); break;
-        case 'r': case 'R': this.reset(); break;
-        default: return;
-      }
-      this.updateUI();
+      if (this.state !== 'deploy') { if (e.key === 'r' || e.key === 'R') { this.reset(); return; } return; }
+      const keys = { '1':'shield','2':'spear','3':'cavalry','4':'archer','5':'maxim','6':'musketeer','7':'artillery' };
+      if (keys[e.key]) { this.selectedType = keys[e.key]; this.updateUI(); }
+      else if (e.key === 'Enter') this.startBattle();
+      else if (e.key === 'r' || e.key === 'R') this.reset();
     });
   }
 
   getCanvasPos(e) {
     const rect = this.canvas.getBoundingClientRect();
-    const scaleX = this.canvasWidth / rect.width;
-    const scaleY = this.canvasHeight / rect.height;
-    return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
+    return { x: (e.clientX - rect.left) * this.canvasWidth / rect.width, y: (e.clientY - rect.top) * this.canvasHeight / rect.height };
   }
 
   onMouseDown(e) {
     if (this.state !== 'deploy') return;
     const pos = this.getCanvasPos(e);
     if (pos.x >= this.midline - 5 || this.selectedType === 'general') return;
-    const max = this.getMaxForType(this.selectedType);
-    if (this.getDeployedForType(this.selectedType) >= max) return;
-    this.isDragging = true;
-    this.dragStartX = pos.x; this.dragStartY = pos.y;
-    this.dragEndX = pos.x; this.dragEndY = pos.y;
+    if (this.getDeployedForType(this.selectedType) >= this.getMaxForType(this.selectedType)) return;
+    this.isDragging = true; this.dragStartX = pos.x; this.dragStartY = pos.y; this.dragEndX = pos.x; this.dragEndY = pos.y;
   }
 
   onMouseMove(e) {
     const pos = this.getCanvasPos(e);
-    this.mouseX = pos.x; this.mouseY = pos.y;
-    this.mouseOnCanvas = true;
-    if (this.isDragging) {
-      this.dragEndX = Math.min(pos.x, this.midline - 8);
-      this.dragEndY = Math.max(8, Math.min(pos.y, this.canvasHeight - 8));
-    }
+    this.mouseX = pos.x; this.mouseY = pos.y; this.mouseOnCanvas = true;
+    if (this.isDragging) { this.dragEndX = Math.min(pos.x, this.midline - 8); this.dragEndY = Math.max(8, Math.min(pos.y, this.canvasHeight - 8)); }
   }
 
   onMouseUp(e) {
     if (!this.isDragging) return;
     this.isDragging = false;
-    const dx = this.dragEndX - this.dragStartX;
-    const dy = this.dragEndY - this.dragStartY;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist < 3) {
-      this.deployPlayerUnit(this.dragStartX, this.dragStartY);
-    } else {
-      this.deployLine(this.dragStartX, this.dragStartY, this.dragEndX, this.dragEndY);
-    }
+    const dx = this.dragEndX - this.dragStartX, dy = this.dragEndY - this.dragStartY;
+    if (Math.sqrt(dx * dx + dy * dy) < 3) this.deployPlayerUnit(this.dragStartX, this.dragStartY);
+    else this.deployLine(this.dragStartX, this.dragStartY, this.dragEndX, this.dragEndY);
   }
 
-  onMouseLeave(e) {
-    this.mouseOnCanvas = false;
-    if (this.isDragging) this.onMouseUp(e);
-  }
+  onMouseLeave(e) { this.mouseOnCanvas = false; if (this.isDragging) this.onMouseUp(e); }
 
   loop() {
-    const now = performance.now();
-    const dt = now - this.lastTime;
+    const now = performance.now(), dt = now - this.lastTime;
     this.lastTime = now;
-
-    this.update(dt);
-    this.render();
-
+    this.update(dt); this.render();
     if (this.state === 'countdown') this.updateUI();
-
     requestAnimationFrame(() => this.loop());
   }
 }
 
-// ============================================================
-// INIT
-// ============================================================
-window.addEventListener('DOMContentLoaded', () => {
-  const canvas = document.getElementById('gameCanvas');
-  new Game(canvas);
-});
+window.addEventListener('DOMContentLoaded', () => { new Game(document.getElementById('gameCanvas')); });
 </script>
 </body>
 </html>
